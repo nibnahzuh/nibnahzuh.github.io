@@ -6,7 +6,16 @@
     <description>Recent content on My New Hugo Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 13 Aug 2022 23:04:49 +0800</lastBuildDate><atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 13 Aug 2022 23:47:44 +0800</lastBuildDate><atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>My_second_blog</title>
+      <link>http://example.org/posts/my_second_blog/</link>
+      <pubDate>Sat, 13 Aug 2022 23:47:44 +0800</pubDate>
+      
+      <guid>http://example.org/posts/my_second_blog/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>My_first_blog</title>
       <link>http://example.org/posts/my_first_blog/</link>
