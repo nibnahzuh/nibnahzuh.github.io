@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on My New Hugo Site</title>
+    <title>Posts on Hzb&#39;s Study Blog</title>
     <link>http://example.org/posts/</link>
-    <description>Recent content in Posts on My New Hugo Site</description>
+    <description>Recent content in Posts on Hzb&#39;s Study Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 13 Aug 2022 23:47:44 +0800</lastBuildDate><atom:link href="http://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>My_second_blog</title>
-      <link>http://example.org/posts/my_second_blog/</link>
+      <title>新一代视觉感知综述</title>
+      <link>http://example.org/posts/%E6%96%B0%E4%B8%80%E4%BB%A3%E8%A7%86%E8%A7%89%E6%84%9F%E7%9F%A5%E7%BB%BC%E8%BF%B0/</link>
       <pubDate>Sat, 13 Aug 2022 23:47:44 +0800</pubDate>
       
-      <guid>http://example.org/posts/my_second_blog/</guid>
+      <guid>http://example.org/posts/%E6%96%B0%E4%B8%80%E4%BB%A3%E8%A7%86%E8%A7%89%E6%84%9F%E7%9F%A5%E7%BB%BC%E8%BF%B0/</guid>
       <description>新一代视觉感知技术综述 经典篇 Visual perception（视觉感知） Feature Extraction (特征提取) Bag of Words, BoW (词袋模型) 现代篇 CNN (卷积神经网络) Vision Transformer (视觉自注意力网络) 前沿篇 XAI (可解释性AI) Contrastive Pretraining (对比预训练） Multimodal Fusion (多模态融合） </description>
     </item>
     
