@@ -94,6 +94,27 @@
   <div class="bg-white mb3 pa4 gray overflow-hidden">
     <span class="f6 db">Posts</span>
     <h1 class="f3 near-black">
+      <a href="/posts/alexnet-vgg-googlenet/" class="link black dim">
+        AlexNet &amp; VGG &amp; GoogLeNet
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      AlexNet 简介 ​	AlexNet是2012年ISLVRC 2012（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，分类准确率由传统的 70%+提升到 80%+。由Hinton和他的学生Alex Krizhevsky设计。也是在那年之后，深度学习开始迅速发展。
+亮点 首次使用GPU进行模型训练； 使用了ReLU激活函数，而不是传统的Sigmoid激活函数以及Tanh激活函数； 使用了LRN局部响应归一化（Local Response Normalization，LRN）； 在全连接层的前两层中使用了Dropout随机失活神经元操作，以减少过拟合。 模型架构 ReLU激活函数 ​	针对sigmoid梯度饱和导致训练收敛慢的问题，在AlexNet中引入了ReLU。ReLU是一个分段线性函数，小于等于0则输出为0；大于0的则恒等输出。相比于sigmoid，ReLU有以下有特点：
+计算开销小，sigmoid的正向传播有指数运算，倒数运算，而ReLu是线性输出；反向传播中，sigmoid有指数运算，而ReLU有输出的部分，导数始终为1； 梯度饱和问题； 稀疏性，ReLU会使一部跟神经元的输出为0，这样造就了网络的稀疏性，并且减少了参数的相互依存关系，缓解了过拟合问题的发生。 Dropout ​	过拟合的根本原因是特征维度过多，模型过于复杂，参数过多，训练数据过少，噪声过多，导致模型完美拟合训练集，但缺乏泛化能力，对新数据的测试集预测结果差。
+Dropout的使用有效地缓解了模型复杂度提升导致的过拟合。Dropout通过修改神经网络本身结构来实现，对于某一层的神经元，通过定义的概率将神经元置为0，这个神经元就不参与前向和后向传播，就如同在网络中被删除了一样，同时保持输入层与输出层神经元的个数不变，然后按原有的学习方法进行参数更新。在下一次迭代中，又重新随机删除一些神经元（置为0），直至训练结束。 Dropout应该算是AlexNet中一个很大的创新，现在神经网络中的必备结构之一。Dropout也可以看成是一种模型组合，每次生成的网络结构都不一样，通过组合多个模型的方式能够有效地减少过拟合，Dropout只需要两倍的训练时间即可实现模型组合（类似取平均）的效果，非常高效。 VGG 简介 ​	VGG是由牛津大学视觉几何小组（Visual Geometry Group, VGG）提出的一种深层卷积网络结构，赢得了 2014 年 ILSVRC 分类任务的亚军（冠军由 GoogLeNet 夺得）和定位任务的冠军。VGG可以看成是加深版本的AlexNet，都是conv layer + FC layer。该网络是在ILSVRC 2014上的相关工作，主要工作是证明了增加网络的深度能够在一定程度上影响网络最终的性能。
+亮点 证明了增加网络的深度能够在一定程度上影响网络最终的性能； 小卷积核和小池化核，卷积核全部替换为3*3（极少用了1*1），相比AlexNet的3*3池化核，VGG全部为2*2的池化核； 层数更深特征图更宽，由于卷积核专注于扩大通道数、池化专注于缩小宽和高，使得模型架构上更深更宽的同时，计算量的增加放缓； 全连接层换成卷积层，网络测试阶段将训练阶段的三个全连接替换为三个卷积，测试重用训练时的参数，使得测试得到的全卷积网络因为没有全连接的限制，因而可以接收任意宽或高为的输入。 模型架构 
+    </div>
+  </div>
+</div>
+
+        </div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white">
+          <div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
       <a href="/posts/%E6%96%B0%E4%B8%80%E4%BB%A3%E8%A7%86%E8%A7%89%E6%84%9F%E7%9F%A5%E7%BB%BC%E8%BF%B0/" class="link black dim">
         新一代视觉感知综述
       </a>
