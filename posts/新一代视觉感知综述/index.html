@@ -6,9 +6,10 @@
     
     <title>新一代视觉感知综述 | Hzb&#39;s Study Blog</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="description" content="经典篇 Visual Perception (视觉感知) Characterizing edges (特征边缘)：边缘是指图像强度函数中急剧变化的位置
+    <meta name="description" content="经典篇 Visual Perception (视觉感知) Characterizing edges (特征边缘)：边缘是指图像强度函数中急剧变化的位置。
 图像滤波：在尽量保留图像细节特征的条件下对目标图像的噪声进行抑制，是图像处理中不可缺少的操作，其处理效果的好坏将直接影响到后续图像处理和分析的有效性和可靠性。
-Feature Extraction (特征提取) Bag of Words, BoW (词袋模型) 现代篇 CNN (卷积神经网络) Vision Transformer (视觉自注意力网络) 前沿篇 XAI (可解释性AI) Contrastive Pretraining (对比预训练） Multimodal Fusion (多模态融合） ">
+canny边缘检测算法：
+用高斯滤波器对图像进行平滑处理； 利用一阶偏导算子找到图像灰度沿水平方向和垂直方向的偏导数，并求出梯度的幅值和方位； 非极大值抑制，找到局部梯度最大值； 用双阈值算法检测和链接边缘，凡大于高阈值T1的一定是边缘，凡小于低阈值T2的一定不是边缘，若既大于低阈值又小于高阈值，则要看这个像素的邻接像素中是否有大于高阈值的边缘像素，若有则是边缘，否则不是。 Feature Extraction (特征提取) Bag of Words, BoW (词袋模型) 现代篇 CNN (卷积神经网络) Vision Transformer (视觉自注意力网络) 前沿篇 XAI (可解释性AI) Contrastive Pretraining (对比预训练） Multimodal Fusion (多模态融合） ">
     <meta name="generator" content="Hugo 0.101.0" />
     
     
@@ -32,25 +33,28 @@ Feature Extraction (特征提取) Bag of Words, BoW (词袋模型) 现代篇 CNN
     
     
     <meta property="og:title" content="新一代视觉感知综述" />
-<meta property="og:description" content="经典篇 Visual Perception (视觉感知) Characterizing edges (特征边缘)：边缘是指图像强度函数中急剧变化的位置
+<meta property="og:description" content="经典篇 Visual Perception (视觉感知) Characterizing edges (特征边缘)：边缘是指图像强度函数中急剧变化的位置。
 图像滤波：在尽量保留图像细节特征的条件下对目标图像的噪声进行抑制，是图像处理中不可缺少的操作，其处理效果的好坏将直接影响到后续图像处理和分析的有效性和可靠性。
-Feature Extraction (特征提取) Bag of Words, BoW (词袋模型) 现代篇 CNN (卷积神经网络) Vision Transformer (视觉自注意力网络) 前沿篇 XAI (可解释性AI) Contrastive Pretraining (对比预训练） Multimodal Fusion (多模态融合） " />
+canny边缘检测算法：
+用高斯滤波器对图像进行平滑处理； 利用一阶偏导算子找到图像灰度沿水平方向和垂直方向的偏导数，并求出梯度的幅值和方位； 非极大值抑制，找到局部梯度最大值； 用双阈值算法检测和链接边缘，凡大于高阈值T1的一定是边缘，凡小于低阈值T2的一定不是边缘，若既大于低阈值又小于高阈值，则要看这个像素的邻接像素中是否有大于高阈值的边缘像素，若有则是边缘，否则不是。 Feature Extraction (特征提取) Bag of Words, BoW (词袋模型) 现代篇 CNN (卷积神经网络) Vision Transformer (视觉自注意力网络) 前沿篇 XAI (可解释性AI) Contrastive Pretraining (对比预训练） Multimodal Fusion (多模态融合） " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://example.org/posts/%E6%96%B0%E4%B8%80%E4%BB%A3%E8%A7%86%E8%A7%89%E6%84%9F%E7%9F%A5%E7%BB%BC%E8%BF%B0/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-08-13T23:47:44+08:00" />
 <meta property="article:modified_time" content="2022-08-13T23:47:44+08:00" />
 
 <meta itemprop="name" content="新一代视觉感知综述">
-<meta itemprop="description" content="经典篇 Visual Perception (视觉感知) Characterizing edges (特征边缘)：边缘是指图像强度函数中急剧变化的位置
+<meta itemprop="description" content="经典篇 Visual Perception (视觉感知) Characterizing edges (特征边缘)：边缘是指图像强度函数中急剧变化的位置。
 图像滤波：在尽量保留图像细节特征的条件下对目标图像的噪声进行抑制，是图像处理中不可缺少的操作，其处理效果的好坏将直接影响到后续图像处理和分析的有效性和可靠性。
-Feature Extraction (特征提取) Bag of Words, BoW (词袋模型) 现代篇 CNN (卷积神经网络) Vision Transformer (视觉自注意力网络) 前沿篇 XAI (可解释性AI) Contrastive Pretraining (对比预训练） Multimodal Fusion (多模态融合） "><meta itemprop="datePublished" content="2022-08-13T23:47:44+08:00" />
+canny边缘检测算法：
+用高斯滤波器对图像进行平滑处理； 利用一阶偏导算子找到图像灰度沿水平方向和垂直方向的偏导数，并求出梯度的幅值和方位； 非极大值抑制，找到局部梯度最大值； 用双阈值算法检测和链接边缘，凡大于高阈值T1的一定是边缘，凡小于低阈值T2的一定不是边缘，若既大于低阈值又小于高阈值，则要看这个像素的邻接像素中是否有大于高阈值的边缘像素，若有则是边缘，否则不是。 Feature Extraction (特征提取) Bag of Words, BoW (词袋模型) 现代篇 CNN (卷积神经网络) Vision Transformer (视觉自注意力网络) 前沿篇 XAI (可解释性AI) Contrastive Pretraining (对比预训练） Multimodal Fusion (多模态融合） "><meta itemprop="datePublished" content="2022-08-13T23:47:44+08:00" />
 <meta itemprop="dateModified" content="2022-08-13T23:47:44+08:00" />
-<meta itemprop="wordCount" content="31">
+<meta itemprop="wordCount" content="36">
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="新一代视觉感知综述"/>
-<meta name="twitter:description" content="经典篇 Visual Perception (视觉感知) Characterizing edges (特征边缘)：边缘是指图像强度函数中急剧变化的位置
+<meta name="twitter:description" content="经典篇 Visual Perception (视觉感知) Characterizing edges (特征边缘)：边缘是指图像强度函数中急剧变化的位置。
 图像滤波：在尽量保留图像细节特征的条件下对目标图像的噪声进行抑制，是图像处理中不可缺少的操作，其处理效果的好坏将直接影响到后续图像处理和分析的有效性和可靠性。
-Feature Extraction (特征提取) Bag of Words, BoW (词袋模型) 现代篇 CNN (卷积神经网络) Vision Transformer (视觉自注意力网络) 前沿篇 XAI (可解释性AI) Contrastive Pretraining (对比预训练） Multimodal Fusion (多模态融合） "/>
+canny边缘检测算法：
+用高斯滤波器对图像进行平滑处理； 利用一阶偏导算子找到图像灰度沿水平方向和垂直方向的偏导数，并求出梯度的幅值和方位； 非极大值抑制，找到局部梯度最大值； 用双阈值算法检测和链接边缘，凡大于高阈值T1的一定是边缘，凡小于低阈值T2的一定不是边缘，若既大于低阈值又小于高阈值，则要看这个像素的邻接像素中是否有大于高阈值的边缘像素，若有则是边缘，否则不是。 Feature Extraction (特征提取) Bag of Words, BoW (词袋模型) 现代篇 CNN (卷积神经网络) Vision Transformer (视觉自注意力网络) 前沿篇 XAI (可解释性AI) Contrastive Pretraining (对比预训练） Multimodal Fusion (多模态融合） "/>
 
 	
   </head>
@@ -129,11 +133,20 @@ Feature Extraction (特征提取) Bag of Words, BoW (词袋模型) 现代篇 CNN
 <h4 id="visual-perception-视觉感知">Visual Perception (视觉感知)</h4>
 <ul>
 <li>
-<p>Characterizing edges (特征边缘)：边缘是指图像强度函数中急剧变化的位置</p>
-<p><img src="/images/image-20220819165142510.png" alt="image-20220819165142510"></p>
+<p>Characterizing edges (特征边缘)：边缘是指图像强度函数中急剧变化的位置。</p>
+<p><img src="C:%5CUsers%5Chuzhanbin%5CDesktop%5Cswap%5C%E8%AF%BE%E7%A8%8B%5C%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%5Cimage-20220819165142510.png" alt="image-20220819165142510"></p>
 </li>
 <li>
 <p>图像滤波：在尽量保留图像细节特征的条件下对目标图像的噪声进行抑制，是图像处理中不可缺少的操作，其处理效果的好坏将直接影响到后续图像处理和分析的有效性和可靠性。</p>
+</li>
+<li>
+<p>canny边缘检测算法：</p>
+<ol>
+<li>用高斯滤波器对图像进行平滑处理；</li>
+<li>利用一阶偏导算子找到图像灰度沿水平方向和垂直方向的偏导数，并求出梯度的幅值和方位；</li>
+<li>非极大值抑制，找到局部梯度最大值；</li>
+<li>用双阈值算法检测和链接边缘，凡大于高阈值T1的一定是边缘，凡小于低阈值T2的一定不是边缘，若既大于低阈值又小于高阈值，则要看这个像素的邻接像素中是否有大于高阈值的边缘像素，若有则是边缘，否则不是。</li>
+</ol>
 </li>
 </ul>
 </li>
