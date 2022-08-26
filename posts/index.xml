@@ -6,7 +6,17 @@
     <description>Recent content in Posts on Hzb&#39;s Study Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 20 Aug 2022 18:00:30 +0800</lastBuildDate><atom:link href="http://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 26 Aug 2022 10:54:08 +0800</lastBuildDate><atom:link href="http://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Resnet</title>
+      <link>http://example.org/posts/resnet/</link>
+      <pubDate>Fri, 26 Aug 2022 10:54:08 +0800</pubDate>
+      
+      <guid>http://example.org/posts/resnet/</guid>
+      <description>ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名。
+亮点 超深的网络结构（超过1000层） 提出residual（残差结构）模块 使用Batch Normalization加速训练（丢弃Dropout） 为什么采用residual 在ResNet提出之前，所有的神经网络都是通过卷积层和池化层的叠加组成的。人们认为卷积层和池化层的层数越多，获取到的图片特征信息越全，学习效果也就越好。但是在实际的试验中发现，随着卷积层和池化层的叠加，不但没有出现学习效果越来越好的情况，反而出现两种问题： 梯度消失和梯度爆炸。梯度消失：若每一层的误差梯度小于1，反向传播时，网络越深，梯度越趋近于0；梯度爆炸：若每一层的误差梯度大于1，反向传播时，网络越深，梯度越来越大。 退化问题。随着层数的增加，预测效果反而越来越差。 </description>
+    </item>
+    
     <item>
       <title>AlexNet &amp; VGG &amp; GoogLeNet</title>
       <link>http://example.org/posts/alexnet-vgg-googlenet/</link>
