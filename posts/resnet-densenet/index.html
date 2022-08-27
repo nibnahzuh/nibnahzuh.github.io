@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Resnet | Hzb&#39;s Study Blog</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名。
+亮点 超深的网络结构（超过1000层） 提出residual（残差结构）模块 使用Batch Normalization加速训练（丢弃Dropout） 网络结构 为什么采用residual 在ResNet提出之前，所有的神经网络都是通过卷积层和池化层的叠加组成的。人们认为卷积层和池化层的层数越多，获取到的图片特征信息越全，学习效果也就越好。但是在实际的试验中发现，随着卷积层和池化层的叠加，不但没有出现学习效果越来越好的情况，反而出现两种问题：
+梯度消失和梯度爆炸。目前优化神经网络的方法都是基于BP，即根据损失函数计算的误差通过梯度反向传播的方式，指导深度网络权值的更新优化。其中将误差从末层往前传递的过程需要链式法则（Chain Rule）的帮助。而链式法则是一个连乘的形式，所以当层数越深的时候，梯度将以指数形式传播。梯度消失问题和梯度爆炸问题一般随着网络层数的增加会变得越来越明显。在根据损失函数计算的误差通过梯度反向传播的方式对深度网络权值进行更新时，得到的梯度值接近0或特别大，也就是梯度消失或爆炸。
+退化问题。随着层数的增加，反传回来的梯度之间的相关性会越来越差，最后接近白噪声，预测效果反而越来越差。如下图所示
+为了解决梯度消失或梯度爆炸问题，ResNet论文提出通过数据的预处理以及在网络中使用BN（Batch Normalization）层来解决。
+为了解决深层网络中的退化问题，可以人为地让神经网络某些层跳过下一层神经元的连接，隔层相连，弱化每层之间的强联系。这种神经网络被称为残差网络 (ResNets)。ResNet论文提出了residual结构（残差结构）来减轻退化问题，下图是使用residual结构的卷积网络，可以看到随着网络的不断加深，效果并没有变差，而是变的更好了。
+residual结构 residual结构使用了一种shortcut的连接方式，也可理解为捷径。让特征矩阵隔层相加，注意F(X)和X形状要相同，所谓相加是特征矩阵相同位置上的数字进行相加。若某一较深的网络多出另一较浅网络的若干层有能力学习到恒等映射，那么这一较深网络训练得到的模型性能一定不会弱于该浅层网络。
+两种不同的residual：
+对于深层次网络，使用左边的block意味着有很大的计算量，因此右侧使用1x1卷积先将输入进行降维，然后再经过3x3卷积后，最后用1x1卷积进行升维，为了主分支上输出的特征矩阵和捷径分支上输出的特征矩阵形状相同，以便进行加法操作。（搭建深层次网络时，采用右侧的残差结构）
+降维时的shortcut 观察ResNet18层网络，可以发现有些残差块的shortcut是实线的，而有些则是虚线的。这些虚线的shortcut上通过1×1的卷积核进行了维度处理（特征矩阵在长宽方下采样，深度方向调整成下一层残差结构所需要的channel）。
+Batch Normalization Batch Normalization是指批标准化处理，将一批数据的feature map满足均值为0，方差为1的分布规律。
+对图像进行标准化处理，这样能够加速网络的收敛，如下图所示，对于Conv1来说输入的就是满足某一分布的特征矩阵，但对于Conv2而言输入的feature map就不一定满足某一分布规律了（注意这里所说满足某一分布规律并不是指某一个feature map的数据要满足分布规律，理论上是指整个训练样本集所对应feature map的数据要满足分布规律）。而我们Batch Normalization的目的就是使我们的feature map满足均值为0，方差为1的分布规律。计算公式如下：
+假设feature1、feature2分别是由image1、image2经过一系列卷积池化后得到的特征矩阵，feature的channel为2，那么代表该batch的所有feature的channel1的数据，同理代表该batch的所有feature的channel2的数据。然后分别计算和的均值与方差，得到两个向量。然后在根据标准差计算公式分别计算每个channel的值（公式中的是一个很小的常量，防止分母为零的情况）。在我们训练网络的过程中，我们是通过一个batch一个batch的数据进行训练的，但是我们在预测过程中通常都是输入一张图片进行预测，此时batch size为1，如果在通过上述方法计算均值和方差就没有意义了。所以我们在训练过程中要去不断的计算每个batch的均值和方差，并使用移动平均(moving average)的方法记录统计的均值和方差，在训练完后我们可以近似认为所统计的均值和方差就等于整个训练集的均值和方差。然后在我们验证以及预测过程中，就使用统计得到的均值和方差进行标准化处理。如下图：
+ResNet V2 ">
+    <meta name="generator" content="Hugo 0.101.0" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="Resnet" />
+<meta property="og:description" content="ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名。
+亮点 超深的网络结构（超过1000层） 提出residual（残差结构）模块 使用Batch Normalization加速训练（丢弃Dropout） 网络结构 为什么采用residual 在ResNet提出之前，所有的神经网络都是通过卷积层和池化层的叠加组成的。人们认为卷积层和池化层的层数越多，获取到的图片特征信息越全，学习效果也就越好。但是在实际的试验中发现，随着卷积层和池化层的叠加，不但没有出现学习效果越来越好的情况，反而出现两种问题：
+梯度消失和梯度爆炸。目前优化神经网络的方法都是基于BP，即根据损失函数计算的误差通过梯度反向传播的方式，指导深度网络权值的更新优化。其中将误差从末层往前传递的过程需要链式法则（Chain Rule）的帮助。而链式法则是一个连乘的形式，所以当层数越深的时候，梯度将以指数形式传播。梯度消失问题和梯度爆炸问题一般随着网络层数的增加会变得越来越明显。在根据损失函数计算的误差通过梯度反向传播的方式对深度网络权值进行更新时，得到的梯度值接近0或特别大，也就是梯度消失或爆炸。
+退化问题。随着层数的增加，反传回来的梯度之间的相关性会越来越差，最后接近白噪声，预测效果反而越来越差。如下图所示
+为了解决梯度消失或梯度爆炸问题，ResNet论文提出通过数据的预处理以及在网络中使用BN（Batch Normalization）层来解决。
+为了解决深层网络中的退化问题，可以人为地让神经网络某些层跳过下一层神经元的连接，隔层相连，弱化每层之间的强联系。这种神经网络被称为残差网络 (ResNets)。ResNet论文提出了residual结构（残差结构）来减轻退化问题，下图是使用residual结构的卷积网络，可以看到随着网络的不断加深，效果并没有变差，而是变的更好了。
+residual结构 residual结构使用了一种shortcut的连接方式，也可理解为捷径。让特征矩阵隔层相加，注意F(X)和X形状要相同，所谓相加是特征矩阵相同位置上的数字进行相加。若某一较深的网络多出另一较浅网络的若干层有能力学习到恒等映射，那么这一较深网络训练得到的模型性能一定不会弱于该浅层网络。
+两种不同的residual：
+对于深层次网络，使用左边的block意味着有很大的计算量，因此右侧使用1x1卷积先将输入进行降维，然后再经过3x3卷积后，最后用1x1卷积进行升维，为了主分支上输出的特征矩阵和捷径分支上输出的特征矩阵形状相同，以便进行加法操作。（搭建深层次网络时，采用右侧的残差结构）
+降维时的shortcut 观察ResNet18层网络，可以发现有些残差块的shortcut是实线的，而有些则是虚线的。这些虚线的shortcut上通过1×1的卷积核进行了维度处理（特征矩阵在长宽方下采样，深度方向调整成下一层残差结构所需要的channel）。
+Batch Normalization Batch Normalization是指批标准化处理，将一批数据的feature map满足均值为0，方差为1的分布规律。
+对图像进行标准化处理，这样能够加速网络的收敛，如下图所示，对于Conv1来说输入的就是满足某一分布的特征矩阵，但对于Conv2而言输入的feature map就不一定满足某一分布规律了（注意这里所说满足某一分布规律并不是指某一个feature map的数据要满足分布规律，理论上是指整个训练样本集所对应feature map的数据要满足分布规律）。而我们Batch Normalization的目的就是使我们的feature map满足均值为0，方差为1的分布规律。计算公式如下：
+假设feature1、feature2分别是由image1、image2经过一系列卷积池化后得到的特征矩阵，feature的channel为2，那么代表该batch的所有feature的channel1的数据，同理代表该batch的所有feature的channel2的数据。然后分别计算和的均值与方差，得到两个向量。然后在根据标准差计算公式分别计算每个channel的值（公式中的是一个很小的常量，防止分母为零的情况）。在我们训练网络的过程中，我们是通过一个batch一个batch的数据进行训练的，但是我们在预测过程中通常都是输入一张图片进行预测，此时batch size为1，如果在通过上述方法计算均值和方差就没有意义了。所以我们在训练过程中要去不断的计算每个batch的均值和方差，并使用移动平均(moving average)的方法记录统计的均值和方差，在训练完后我们可以近似认为所统计的均值和方差就等于整个训练集的均值和方差。然后在我们验证以及预测过程中，就使用统计得到的均值和方差进行标准化处理。如下图：
+ResNet V2 " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/posts/resnet-densenet/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-08-26T10:54:08+08:00" />
+<meta property="article:modified_time" content="2022-08-26T10:54:08+08:00" />
+
+<meta itemprop="name" content="Resnet">
+<meta itemprop="description" content="ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名。
+亮点 超深的网络结构（超过1000层） 提出residual（残差结构）模块 使用Batch Normalization加速训练（丢弃Dropout） 网络结构 为什么采用residual 在ResNet提出之前，所有的神经网络都是通过卷积层和池化层的叠加组成的。人们认为卷积层和池化层的层数越多，获取到的图片特征信息越全，学习效果也就越好。但是在实际的试验中发现，随着卷积层和池化层的叠加，不但没有出现学习效果越来越好的情况，反而出现两种问题：
+梯度消失和梯度爆炸。目前优化神经网络的方法都是基于BP，即根据损失函数计算的误差通过梯度反向传播的方式，指导深度网络权值的更新优化。其中将误差从末层往前传递的过程需要链式法则（Chain Rule）的帮助。而链式法则是一个连乘的形式，所以当层数越深的时候，梯度将以指数形式传播。梯度消失问题和梯度爆炸问题一般随着网络层数的增加会变得越来越明显。在根据损失函数计算的误差通过梯度反向传播的方式对深度网络权值进行更新时，得到的梯度值接近0或特别大，也就是梯度消失或爆炸。
+退化问题。随着层数的增加，反传回来的梯度之间的相关性会越来越差，最后接近白噪声，预测效果反而越来越差。如下图所示
+为了解决梯度消失或梯度爆炸问题，ResNet论文提出通过数据的预处理以及在网络中使用BN（Batch Normalization）层来解决。
+为了解决深层网络中的退化问题，可以人为地让神经网络某些层跳过下一层神经元的连接，隔层相连，弱化每层之间的强联系。这种神经网络被称为残差网络 (ResNets)。ResNet论文提出了residual结构（残差结构）来减轻退化问题，下图是使用residual结构的卷积网络，可以看到随着网络的不断加深，效果并没有变差，而是变的更好了。
+residual结构 residual结构使用了一种shortcut的连接方式，也可理解为捷径。让特征矩阵隔层相加，注意F(X)和X形状要相同，所谓相加是特征矩阵相同位置上的数字进行相加。若某一较深的网络多出另一较浅网络的若干层有能力学习到恒等映射，那么这一较深网络训练得到的模型性能一定不会弱于该浅层网络。
+两种不同的residual：
+对于深层次网络，使用左边的block意味着有很大的计算量，因此右侧使用1x1卷积先将输入进行降维，然后再经过3x3卷积后，最后用1x1卷积进行升维，为了主分支上输出的特征矩阵和捷径分支上输出的特征矩阵形状相同，以便进行加法操作。（搭建深层次网络时，采用右侧的残差结构）
+降维时的shortcut 观察ResNet18层网络，可以发现有些残差块的shortcut是实线的，而有些则是虚线的。这些虚线的shortcut上通过1×1的卷积核进行了维度处理（特征矩阵在长宽方下采样，深度方向调整成下一层残差结构所需要的channel）。
+Batch Normalization Batch Normalization是指批标准化处理，将一批数据的feature map满足均值为0，方差为1的分布规律。
+对图像进行标准化处理，这样能够加速网络的收敛，如下图所示，对于Conv1来说输入的就是满足某一分布的特征矩阵，但对于Conv2而言输入的feature map就不一定满足某一分布规律了（注意这里所说满足某一分布规律并不是指某一个feature map的数据要满足分布规律，理论上是指整个训练样本集所对应feature map的数据要满足分布规律）。而我们Batch Normalization的目的就是使我们的feature map满足均值为0，方差为1的分布规律。计算公式如下：
+假设feature1、feature2分别是由image1、image2经过一系列卷积池化后得到的特征矩阵，feature的channel为2，那么代表该batch的所有feature的channel1的数据，同理代表该batch的所有feature的channel2的数据。然后分别计算和的均值与方差，得到两个向量。然后在根据标准差计算公式分别计算每个channel的值（公式中的是一个很小的常量，防止分母为零的情况）。在我们训练网络的过程中，我们是通过一个batch一个batch的数据进行训练的，但是我们在预测过程中通常都是输入一张图片进行预测，此时batch size为1，如果在通过上述方法计算均值和方差就没有意义了。所以我们在训练过程中要去不断的计算每个batch的均值和方差，并使用移动平均(moving average)的方法记录统计的均值和方差，在训练完后我们可以近似认为所统计的均值和方差就等于整个训练集的均值和方差。然后在我们验证以及预测过程中，就使用统计得到的均值和方差进行标准化处理。如下图：
+ResNet V2 "><meta itemprop="datePublished" content="2022-08-26T10:54:08+08:00" />
+<meta itemprop="dateModified" content="2022-08-26T10:54:08+08:00" />
+<meta itemprop="wordCount" content="41">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Resnet"/>
+<meta name="twitter:description" content="ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名。
+亮点 超深的网络结构（超过1000层） 提出residual（残差结构）模块 使用Batch Normalization加速训练（丢弃Dropout） 网络结构 为什么采用residual 在ResNet提出之前，所有的神经网络都是通过卷积层和池化层的叠加组成的。人们认为卷积层和池化层的层数越多，获取到的图片特征信息越全，学习效果也就越好。但是在实际的试验中发现，随着卷积层和池化层的叠加，不但没有出现学习效果越来越好的情况，反而出现两种问题：
+梯度消失和梯度爆炸。目前优化神经网络的方法都是基于BP，即根据损失函数计算的误差通过梯度反向传播的方式，指导深度网络权值的更新优化。其中将误差从末层往前传递的过程需要链式法则（Chain Rule）的帮助。而链式法则是一个连乘的形式，所以当层数越深的时候，梯度将以指数形式传播。梯度消失问题和梯度爆炸问题一般随着网络层数的增加会变得越来越明显。在根据损失函数计算的误差通过梯度反向传播的方式对深度网络权值进行更新时，得到的梯度值接近0或特别大，也就是梯度消失或爆炸。
+退化问题。随着层数的增加，反传回来的梯度之间的相关性会越来越差，最后接近白噪声，预测效果反而越来越差。如下图所示
+为了解决梯度消失或梯度爆炸问题，ResNet论文提出通过数据的预处理以及在网络中使用BN（Batch Normalization）层来解决。
+为了解决深层网络中的退化问题，可以人为地让神经网络某些层跳过下一层神经元的连接，隔层相连，弱化每层之间的强联系。这种神经网络被称为残差网络 (ResNets)。ResNet论文提出了residual结构（残差结构）来减轻退化问题，下图是使用residual结构的卷积网络，可以看到随着网络的不断加深，效果并没有变差，而是变的更好了。
+residual结构 residual结构使用了一种shortcut的连接方式，也可理解为捷径。让特征矩阵隔层相加，注意F(X)和X形状要相同，所谓相加是特征矩阵相同位置上的数字进行相加。若某一较深的网络多出另一较浅网络的若干层有能力学习到恒等映射，那么这一较深网络训练得到的模型性能一定不会弱于该浅层网络。
+两种不同的residual：
+对于深层次网络，使用左边的block意味着有很大的计算量，因此右侧使用1x1卷积先将输入进行降维，然后再经过3x3卷积后，最后用1x1卷积进行升维，为了主分支上输出的特征矩阵和捷径分支上输出的特征矩阵形状相同，以便进行加法操作。（搭建深层次网络时，采用右侧的残差结构）
+降维时的shortcut 观察ResNet18层网络，可以发现有些残差块的shortcut是实线的，而有些则是虚线的。这些虚线的shortcut上通过1×1的卷积核进行了维度处理（特征矩阵在长宽方下采样，深度方向调整成下一层残差结构所需要的channel）。
+Batch Normalization Batch Normalization是指批标准化处理，将一批数据的feature map满足均值为0，方差为1的分布规律。
+对图像进行标准化处理，这样能够加速网络的收敛，如下图所示，对于Conv1来说输入的就是满足某一分布的特征矩阵，但对于Conv2而言输入的feature map就不一定满足某一分布规律了（注意这里所说满足某一分布规律并不是指某一个feature map的数据要满足分布规律，理论上是指整个训练样本集所对应feature map的数据要满足分布规律）。而我们Batch Normalization的目的就是使我们的feature map满足均值为0，方差为1的分布规律。计算公式如下：
+假设feature1、feature2分别是由image1、image2经过一系列卷积池化后得到的特征矩阵，feature的channel为2，那么代表该batch的所有feature的channel1的数据，同理代表该batch的所有feature的channel2的数据。然后分别计算和的均值与方差，得到两个向量。然后在根据标准差计算公式分别计算每个channel的值（公式中的是一个很小的常量，防止分母为零的情况）。在我们训练网络的过程中，我们是通过一个batch一个batch的数据进行训练的，但是我们在预测过程中通常都是输入一张图片进行预测，此时batch size为1，如果在通过上述方法计算均值和方差就没有意义了。所以我们在训练过程中要去不断的计算每个batch的均值和方差，并使用移动平均(moving average)的方法记录统计的均值和方差，在训练完后我们可以近似认为所统计的均值和方差就等于整个训练集的均值和方差。然后在我们验证以及预测过程中，就使用统计得到的均值和方差进行标准化处理。如下图：
+ResNet V2 "/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Hzb&#39;s Study Blog
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+<div class="ananke-socials">
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        POSTS
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">Resnet</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2022-08-26T10:54:08+08:00">August 26, 2022</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="resnet">ResNet</h2>
+<ul>
+<li>
+<h4 id="简介">简介</h4>
+<p><a href="https://arxiv.org/pdf/1512.03385.pdf">ResNet</a>网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名。</p>
+</li>
+<li>
+<h4 id="亮点">亮点</h4>
+<ul>
+<li>超深的网络结构（超过1000层）</li>
+<li>提出residual（残差结构）模块</li>
+<li>使用Batch Normalization加速训练（丢弃Dropout）</li>
+</ul>
+</li>
+<li>
+<h4 id="网络结构">网络结构</h4>
+<!-- raw HTML omitted -->
+<p><img src="/images/resnet8.jpg" alt="resnet8"></p>
+</li>
+<li>
+<h4 id="为什么采用residual">为什么采用residual</h4>
+<ul>
+<li>
+<p>在ResNet提出之前，所有的神经网络都是通过卷积层和池化层的叠加组成的。人们认为卷积层和池化层的层数越多，获取到的图片特征信息越全，学习效果也就越好。但是在实际的试验中发现，随着卷积层和池化层的叠加，不但没有出现学习效果越来越好的情况，反而出现两种问题：</p>
+<ol>
+<li>
+<p>梯度消失和梯度爆炸。目前优化神经网络的方法都是基于BP，即根据损失函数计算的误差通过梯度反向传播的方式，指导深度网络权值的更新优化。其中将误差从末层往前传递的过程需要链式法则（Chain Rule）的帮助。而链式法则是一个连乘的形式，所以当层数越深的时候，梯度将以指数形式传播。梯度消失问题和梯度爆炸问题一般随着网络层数的增加会变得越来越明显。在根据损失函数计算的误差通过梯度反向传播的方式对深度网络权值进行更新时，得到的梯度值接近0或特别大，也就是梯度消失或爆炸。</p>
+</li>
+<li>
+<p>退化问题。随着层数的增加，反传回来的梯度之间的相关性会越来越差，最后接近白噪声，预测效果反而越来越差。如下图所示</p>
+<!-- raw HTML omitted -->
+</li>
+</ol>
+</li>
+<li>
+<p>为了解决梯度消失或梯度爆炸问题，ResNet论文提出通过数据的预处理以及在网络中使用BN（Batch Normalization）层来解决。</p>
+</li>
+<li>
+<p>为了解决深层网络中的退化问题，可以人为地让神经网络某些层跳过下一层神经元的连接，隔层相连，弱化每层之间的强联系。这种神经网络被称为残差网络 (ResNets)。ResNet论文提出了residual结构（残差结构）来减轻退化问题，下图是使用residual结构的卷积网络，可以看到随着网络的不断加深，效果并没有变差，而是变的更好了。</p>
+<p><img src="/images/resnet2.jpg" alt="resnet2"></p>
+</li>
+</ul>
+</li>
+<li>
+<h4 id="residual结构">residual结构</h4>
+<ul>
+<li>
+<p>residual结构使用了一种shortcut的连接方式，也可理解为捷径。让特征矩阵隔层相加，注意F(X)和X形状要相同，所谓相加是特征矩阵相同位置上的数字进行相加。若某一较深的网络多出另一较浅网络的若干层有能力学习到恒等映射，那么这一较深网络训练得到的模型性能一定不会弱于该浅层网络。</p>
+<!-- raw HTML omitted -->
+</li>
+<li>
+<p>两种不同的residual：</p>
+<!-- raw HTML omitted -->
+<p>对于深层次网络，使用左边的block意味着有很大的计算量，因此右侧使用1x1卷积先将输入进行降维，然后再经过3x3卷积后，最后用1x1卷积进行升维，为了主分支上输出的特征矩阵和捷径分支上输出的特征矩阵形状相同，以便进行加法操作。（搭建深层次网络时，采用右侧的残差结构）</p>
+</li>
+</ul>
+</li>
+<li>
+<h4 id="降维时的shortcut">降维时的shortcut</h4>
+<p>观察ResNet18层网络，可以发现有些残差块的shortcut是实线的，而有些则是虚线的。这些虚线的shortcut上通过1×1的卷积核进行了维度处理（特征矩阵在长宽方下采样，深度方向调整成下一层残差结构所需要的channel）。</p>
+</li>
+<li>
+<h4 id="batch-normalization">Batch Normalization</h4>
+<ul>
+<li>
+<p>Batch Normalization是指批标准化处理，将一批数据的feature map满足均值为0，方差为1的分布规律。</p>
+</li>
+<li>
+<p>对图像进行标准化处理，这样能够加速网络的收敛，如下图所示，对于Conv1来说输入的就是满足某一分布的特征矩阵，但对于Conv2而言输入的feature map就不一定满足某一分布规律了（注意这里所说满足某一分布规律并不是指某一个feature map的数据要满足分布规律，理论上是指整个训练样本集所对应feature map的数据要满足分布规律）。而我们Batch Normalization的目的就是使我们的feature map满足均值为0，方差为1的分布规律。计算公式如下：</p>
+<!-- raw HTML omitted -->
+</li>
+<li>
+<p>假设feature1、feature2分别是由image1、image2经过一系列卷积池化后得到的特征矩阵，feature的channel为2，那么代表该batch的所有feature的channel1的数据，同理代表该batch的所有feature的channel2的数据。然后分别计算和的均值与方差，得到两个向量。然后在根据标准差计算公式分别计算每个channel的值（公式中的是一个很小的常量，防止分母为零的情况）。在我们训练网络的过程中，我们是通过一个batch一个batch的数据进行训练的，但是我们在预测过程中通常都是输入一张图片进行预测，此时batch size为1，如果在通过上述方法计算均值和方差就没有意义了。所以我们在训练过程中要去不断的计算每个batch的均值和方差，并使用移动平均(moving average)的方法记录统计的均值和方差，在训练完后我们可以近似认为所统计的均值和方差就等于整个训练集的均值和方差。然后在我们验证以及预测过程中，就使用统计得到的均值和方差进行标准化处理。如下图：</p>
+<!-- raw HTML omitted -->
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="resnet-v2">ResNet V2</h2>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://example.org/" >
+    &copy;  Hzb's Study Blog 2022 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>
