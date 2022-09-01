@@ -8,7 +8,7 @@
     <language>en-us</language>
     <lastBuildDate>Fri, 26 Aug 2022 10:54:08 +0800</lastBuildDate><atom:link href="http://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Resnet</title>
+      <title>ResNet &amp; DenseNet</title>
       <link>http://example.org/posts/resnet-densenet/</link>
       <pubDate>Fri, 26 Aug 2022 10:54:08 +0800</pubDate>
       
@@ -26,7 +26,17 @@ residual结构 residual结构使用了一种shortcut的连接方式，也可理�
 Batch Normalization Batch Normalization是指批标准化处理，将一批数据的feature map满足均值为0，方差为1的分布规律。
 对图像进行标准化处理，这样能够加速网络的收敛，如下图所示，对于Conv1来说输入的就是满足某一分布的特征矩阵，但对于Conv2而言输入的feature map就不一定满足某一分布规律了（注意这里所说满足某一分布规律并不是指某一个feature map的数据要满足分布规律，理论上是指整个训练样本集所对应feature map的数据要满足分布规律）。而我们Batch Normalization的目的就是使我们的feature map满足均值为0，方差为1的分布规律。计算公式如下：
 假设feature1、feature2分别是由image1、image2经过一系列卷积池化后得到的特征矩阵，feature的channel为2，那么代表该batch的所有feature的channel1的数据，同理代表该batch的所有feature的channel2的数据。然后分别计算和的均值与方差，得到两个向量。然后在根据标准差计算公式分别计算每个channel的值（公式中的是一个很小的常量，防止分母为零的情况）。在我们训练网络的过程中，我们是通过一个batch一个batch的数据进行训练的，但是我们在预测过程中通常都是输入一张图片进行预测，此时batch size为1，如果在通过上述方法计算均值和方差就没有意义了。所以我们在训练过程中要去不断的计算每个batch的均值和方差，并使用移动平均(moving average)的方法记录统计的均值和方差，在训练完后我们可以近似认为所统计的均值和方差就等于整个训练集的均值和方差。然后在我们验证以及预测过程中，就使用统计得到的均值和方差进行标准化处理。如下图：
-ResNet V2 </description>
+ResNet V2 简介 ResNet V2 的主要贡献在于通过理论分析和大量实验证明使用恒等映射（identity mapping）作为快捷连接（skip connection）对于残差块的重要性。同时，将BN/ReLu这些activation操作挪到了Conv（真正的weights filter操作）之前，提出预激活（Pre-activation）操作，并通过与后激活（Post-activation）操作做对比实验，表明对于多层网络，使用了预激活残差单元（Pre-activation residual unit）的resnet v2都取得了比 原版本resnet更好的结果。
+亮点 提出了新的残差模块结构：
+将激活函数移至旁路
+full pre-activation
+深度残差网络的分析 原先resnets的残差单元可表示为：
+如果函数f也是恒等映射，则公式可以合并为：
+那么任意深层的单元L与浅层单元l之间的关系可表示为：
+该公式有以下两个特性：
+深层单元的特征可以由浅层单元的特征和残差函数相加得到； 任意深层单元的特征都可以由起始特征x0与先前所有残差函数相加得到，这与普通（plain）网络不同，普通网络的深层特征是由一系列的矩阵向量相乘得到。残差网络是连加，普通网络是连乘。 该公式也带来了良好的反向传播特性，用ε表示损失函数，根据反向传播的链式传导规则，反向传播公式如下：
+从上述公式中可以看出，反向传播也是两条路径，其中之一直接将信息回传，另一条会经过所有的带权重层。另外可以注意到第二项的值在一个mini-batch中不可能一直是-1，也就是说回传的梯度不会消失，不论网络中的权值的值再小都不会发生梯度消失现象。
+恒等映射的重要性 考虑恒等映射的重要性。假设将恒等映射改为 $$ h(x_l) = \lambda_l x_l $$ 则有：</description>
     </item>
     
     <item>
