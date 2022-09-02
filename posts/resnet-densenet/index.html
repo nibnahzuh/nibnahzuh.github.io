@@ -223,7 +223,7 @@ full pre-activation
 </li>
 <li>
 <h4 id="网络结构">网络结构</h4>
-<!-- raw HTML omitted -->
+<p><img src="/images/resnet7.png" alt="resnet7"></p>
 <p><img src="/images/resnet8.jpg" alt="resnet8"></p>
 </li>
 <li>
@@ -237,7 +237,7 @@ full pre-activation
 </li>
 <li>
 <p>退化问题。随着层数的增加，反传回来的梯度之间的相关性会越来越差，最后接近白噪声，预测效果反而越来越差。如下图所示</p>
-<!-- raw HTML omitted -->
+<img src="/images/resnet.jpg" alt="resnet" style="zoom: 40%;" />
 </li>
 </ol>
 </li>
@@ -255,11 +255,11 @@ full pre-activation
 <ul>
 <li>
 <p>residual结构使用了一种shortcut的连接方式，也可理解为捷径。让特征矩阵隔层相加，注意F(X)和X形状要相同，所谓相加是特征矩阵相同位置上的数字进行相加。若某一较深的网络多出另一较浅网络的若干层有能力学习到恒等映射，那么这一较深网络训练得到的模型性能一定不会弱于该浅层网络。</p>
-<!-- raw HTML omitted -->
+<img src="/images/resnet3.jpg" alt="resnet3" style="zoom: 40%;" />
 </li>
 <li>
 <p>两种不同的residual：</p>
-<!-- raw HTML omitted -->
+<img src="/images/resnet4.jpg" alt="resnet4" style="zoom: 40%;" />
 <p>对于深层次网络，使用左边的block意味着有很大的计算量，因此右侧使用1x1卷积先将输入进行降维，然后再经过3x3卷积后，最后用1x1卷积进行升维，为了主分支上输出的特征矩阵和捷径分支上输出的特征矩阵形状相同，以便进行加法操作。（搭建深层次网络时，采用右侧的残差结构）</p>
 </li>
 </ul>
@@ -276,11 +276,11 @@ full pre-activation
 </li>
 <li>
 <p>对图像进行标准化处理，这样能够加速网络的收敛，如下图所示，对于Conv1来说输入的就是满足某一分布的特征矩阵，但对于Conv2而言输入的feature map就不一定满足某一分布规律了（注意这里所说满足某一分布规律并不是指某一个feature map的数据要满足分布规律，理论上是指整个训练样本集所对应feature map的数据要满足分布规律）。而我们Batch Normalization的目的就是使我们的feature map满足均值为0，方差为1的分布规律。计算公式如下：</p>
-<!-- raw HTML omitted -->
+<img src="/images/resnet6.jpg" alt="resnet6" style="zoom:33%;" />
 </li>
 <li>
 <p>假设feature1、feature2分别是由image1、image2经过一系列卷积池化后得到的特征矩阵，feature的channel为2，那么代表该batch的所有feature的channel1的数据，同理代表该batch的所有feature的channel2的数据。然后分别计算和的均值与方差，得到两个向量。然后在根据标准差计算公式分别计算每个channel的值（公式中的是一个很小的常量，防止分母为零的情况）。在我们训练网络的过程中，我们是通过一个batch一个batch的数据进行训练的，但是我们在预测过程中通常都是输入一张图片进行预测，此时batch size为1，如果在通过上述方法计算均值和方差就没有意义了。所以我们在训练过程中要去不断的计算每个batch的均值和方差，并使用移动平均(moving average)的方法记录统计的均值和方差，在训练完后我们可以近似认为所统计的均值和方差就等于整个训练集的均值和方差。然后在我们验证以及预测过程中，就使用统计得到的均值和方差进行标准化处理。如下图：</p>
-<!-- raw HTML omitted -->
+<img src="/images/resnet5.png" alt="resnet5" style="zoom: 30%;" />
 </li>
 </ul>
 </li>
@@ -306,18 +306,18 @@ full pre-activation
 <li>
 <h4 id="深度残差网络的分析">深度残差网络的分析</h4>
 <p>原先resnets的残差单元可表示为：</p>
-<!-- raw HTML omitted -->
+<img src="/images/resnet9.jpg" alt="resnet9" style="zoom:50%;" />
 <p>如果函数f也是恒等映射，则公式可以合并为：</p>
-<!-- raw HTML omitted -->
+<img src="/images/resnet10.jpg" alt="resnet10" style="zoom: 50%;" />
 <p>那么任意深层的单元L与浅层单元l之间的关系可表示为：</p>
-<!-- raw HTML omitted -->
+<img src="/images/resnet11.jpg" alt="resnet11" style="zoom:50%;" />
 <p>该公式有以下两个特性：</p>
 <ul>
 <li>深层单元的特征可以由浅层单元的特征和残差函数相加得到；</li>
 <li>任意深层单元的特征都可以由起始特征x0与先前所有残差函数相加得到，这与普通（plain）网络不同，普通网络的深层特征是由一系列的矩阵向量相乘得到。残差网络是连加，普通网络是连乘。</li>
 </ul>
 <p>该公式也带来了良好的反向传播特性，用ε表示损失函数，根据反向传播的链式传导规则，反向传播公式如下：</p>
-<!-- raw HTML omitted -->
+<img src="/images/resnet12.jpg" alt="resnet12" style="zoom:45%;" />
 <p>从上述公式中可以看出，反向传播也是两条路径，其中之一直接将信息回传，另一条会经过所有的带权重层。另外可以注意到第二项的值在一个mini-batch中不可能一直是-1，也就是说回传的梯度不会消失，不论网络中的权值的值再小都不会发生梯度消失现象。</p>
 </li>
 <li>
@@ -327,11 +327,11 @@ $$
 h(x_l) = \lambda_l x_l
 $$
 则有：</p>
-<!-- raw HTML omitted -->
+<img src="/images/resnet13.jpg" alt="resnet13" style="zoom:50%;" />
 <p>递归调用得：</p>
-<!-- raw HTML omitted -->
+<img src="/images/resnet14.jpg" alt="resnet14" style="zoom: 40%;" />
 <p>其中F表示将标量合并到残差函数中，反向传播公式如下：</p>
-<!-- raw HTML omitted -->
+<img src="/images/resnet15.jpg" alt="resnet15" style="zoom:40%;" />
 <p>与之前的公式不同，上公式的第一个加法项由因子 ∏i=lL−1λi 进行调节。对于一个极深的网络( L极大)，考虑第一个连乘的项，如果所有的 λ 都大于1，那么这一项会指数级增大；如果所有 λ 都小于1，那么这一项会很小甚至消失，会阻断来自shortcut的反向传播信号，并迫使其流过权重层。本文通过实验证明这种方式会对模型优化造成困难。另外其他不同形式的变换映射也都会阻碍信号的有效传播，进而影响训练进程。</p>
 </li>
 <li>
@@ -345,7 +345,7 @@ $$
 </li>
 <li>
 <p><strong>Post-activation or pre-activation</strong> 原来的设计中相加操作后面还有一个ReLU激活函数，这个激活函数会影响到残差单元的两个分支，现在将它移到残差函数分支上，快捷连接分支不再受到影响。具体操作如下图：</p>
-<!-- raw HTML omitted -->
+<img src="/images/resnet16.jpg" alt="ressnet16" style="zoom:50%;" />
 <p>根据激活函数与相加操作的位置关系，我们称之前的组合方式为“后激活（post-activation）”，现在新的组合方式称之为“预激活（pre-activation）”。预激活方式又可以分为两种：只将ReLU放在前面，或者将ReLU和BN都放到前面，实验结果显示full pre-activation的效果要更好。</p>
 </li>
 <li>
