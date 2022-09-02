@@ -108,7 +108,7 @@ full pre-activation
 从上述公式中可以看出，反向传播也是两条路径，其中之一直接将信息回传，另一条会经过所有的带权重层。另外可以注意到第二项的值在一个mini-batch中不可能一直是-1，也就是说回传的梯度不会消失，不论网络中的权值的值再小都不会发生梯度消失现象。
 恒等映射的重要性 考虑恒等映射的重要性。假设将恒等映射改为 $$ h(x_l) = \lambda_l x_l $$ 则有："><meta itemprop="datePublished" content="2022-08-26T10:54:08+08:00" />
 <meta itemprop="dateModified" content="2022-08-26T10:54:08+08:00" />
-<meta itemprop="wordCount" content="122">
+<meta itemprop="wordCount" content="123">
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="ResNet &amp; DenseNet"/>
 <meta name="twitter:description" content="ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名。
@@ -224,7 +224,7 @@ full pre-activation
 <li>
 <h4 id="网络结构">网络结构</h4>
 <!-- raw HTML omitted -->
-<p><img src="C:%5CUsers%5Chuzhanbin%5CDesktop%5Cswap%5Cblog%5Chzb_blog%5Cstatic%5Cimages%5Cresnet8.jpg" alt="resnet8"></p>
+<p><img src="/images/resnet8.jpg" alt="resnet8"></p>
 </li>
 <li>
 <h4 id="为什么采用residual">为什么采用residual</h4>
@@ -246,7 +246,7 @@ full pre-activation
 </li>
 <li>
 <p>为了解决深层网络中的退化问题，可以人为地让神经网络某些层跳过下一层神经元的连接，隔层相连，弱化每层之间的强联系。这种神经网络被称为残差网络 (ResNets)。ResNet论文提出了residual结构（残差结构）来减轻退化问题，下图是使用residual结构的卷积网络，可以看到随着网络的不断加深，效果并没有变差，而是变的更好了。</p>
-<p><img src="C:%5CUsers%5Chuzhanbin%5CDesktop%5Cswap%5Cblog%5Chzb_blog%5Cstatic%5Cimages%5Cresnet2.jpg" alt="resnet2"></p>
+<p><img src="/images/resnet2.jpg" alt="resnet2"></p>
 </li>
 </ul>
 </li>
@@ -367,6 +367,7 @@ $$
 </ul>
 </li>
 </ul>
+<h2 id="resnext">ResNeXt</h2>
 <h2 id="citation">Citation</h2>
 <blockquote>
 <p>北信科视觉感知研讨课程（陈露元同学分享）</p>
