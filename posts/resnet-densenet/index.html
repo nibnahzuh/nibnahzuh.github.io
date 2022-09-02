@@ -108,7 +108,7 @@ full pre-activation
 从上述公式中可以看出，反向传播也是两条路径，其中之一直接将信息回传，另一条会经过所有的带权重层。另外可以注意到第二项的值在一个mini-batch中不可能一直是-1，也就是说回传的梯度不会消失，不论网络中的权值的值再小都不会发生梯度消失现象。
 恒等映射的重要性 考虑恒等映射的重要性。假设将恒等映射改为 $$ h(x_l) = \lambda_l x_l $$ 则有："><meta itemprop="datePublished" content="2022-08-26T10:54:08+08:00" />
 <meta itemprop="dateModified" content="2022-08-26T10:54:08+08:00" />
-<meta itemprop="wordCount" content="123">
+<meta itemprop="wordCount" content="148">
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="ResNet &amp; DenseNet"/>
 <meta name="twitter:description" content="ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名。
@@ -368,12 +368,43 @@ $$
 </li>
 </ul>
 <h2 id="resnext">ResNeXt</h2>
+<ul>
+<li>
+<h4 id="简介-2">简介</h4>
+<p><a href="https://arxiv.org/pdf/1611.05431.pdf">ResNeXt</a>是ResNet和Inception的结合体，不同于Inception v4的是，ResNext不需要人工设计复杂的Inception结构细节，而是每一个分支都采用相同的拓扑结构。ResNeXt的本质是分组卷积（Group Convolution），通过变量基数（Cardinality）来控制组的数量。分组卷机是普通卷积和深度可分离卷积的一个折中方案，即每个分支产生的Feature Map的通道数为 n(n&gt;1) 。</p>
+</li>
+<li>
+<h4 id="神经网络标准范式">神经网络标准范式</h4>
+<p><strong>split-transform-merge</strong></p>
+<img src="/images/resnet17.png" alt="resnet17" style="zoom:40%;" />
+<p>如上图所示，先将输入分配到多路，然后每一路进行转换，最后再把所有支路的结果融合。</p>
+</li>
+<li>
+<h4 id="基本结构">基本结构</h4>
+<img src="/images/resnet18.jpg" alt="resnet18" style="zoom: 40%;" />
+</li>
+<li>
+<h4 id="具体结构">具体结构</h4>
+<img src="/images/resnet19.png" alt="resnet19" style="zoom:40%;" />
+<p>类似ResNet，作者选择了很简单的基本结构，每一组C个不同的分支都进行相同的简单变换，上面是ResNeXt-50（32x4d）的配置清单，32指进入网络的第一个ResNeXt基本结构的分组数量C（即基数）为32，4d表示depth即每一个分组的通道数为4（所以第一个基本结构输入通道数为128）。</p>
+<p>可以看到ResNet-50和ResNeXt-50（32x4d）拥有相同的参数，但是精度却更高。具体实现上，因为1x1卷积可以合并，就合并了，代码更简单，并且效率更高。</p>
+<p>得益于精心设计的复杂的网络结构，ResNet-Inception v2可能效果会更好一点，但是ResNeXt的网络结构更简单，可以防止对于特定数据集的过拟合。而且更简单的网络意味着在用于自己的任务的时候，自定义和修改起来更简单。</p>
+</li>
+<li>
+<h4 id="总结">总结</h4>
+<p>ResNeXt提出了一种介于普通卷积核深度可分离卷积的这种策略：分组卷积，他通过控制分组的数量（基数）来达到两种策略的平衡。分组卷积的思想是源自Inception，不同于Inception的需要人工设计每个分支，ResNeXt的每个分支的拓扑结构是相同的。最后再结合残差网络，得到的便是最终的ResNeXt。</p>
+<p>从上面的分析中我们可以看书ResNeXt的结构非常简单，但是其在ImageNet上取得了由于相同框架的残差网络，也算是Inception直接助攻了一把吧。</p>
+<p>ResNeXt确实比Inception V4的超参数更少，但是他直接废除了Inception的囊括不同感受野的特性仿佛不是很合理，在更多的环境中我们发现Inception V4的效果是优于ResNeXt的。类似结构的ResNeXt的运行速度应该是优于Inception V4的，因为ResNeXt的相同拓扑结构的分支的设计是更符合GPU的硬件设计原则。</p>
+</li>
+</ul>
 <h2 id="citation">Citation</h2>
 <blockquote>
 <p>北信科视觉感知研讨课程（陈露元同学分享）</p>
 <p><a href="https://blog.csdn.net/qq_45649076/article/details/120494328">ResNet详解</a></p>
 <p><a href="https://zhuanlan.zhihu.com/p/31852747">你必须要知道CNN模型：ResNet</a></p>
 <p><a href="https://zhuanlan.zhihu.com/p/410444216">Backbone论文-ResNet v2 解读</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/32913695">深度学习——分类之ResNeXt</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/51075096">ResNeXt详解</a></p>
 </blockquote>
 <h1 id="thanks-for-reading"><em>Thanks for reading!</em></h1>
 <ul class="pa0">
