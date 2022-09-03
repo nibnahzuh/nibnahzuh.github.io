@@ -108,7 +108,7 @@ full pre-activation
 从上述公式中可以看出，反向传播也是两条路径，其中之一直接将信息回传，另一条会经过所有的带权重层。另外可以注意到第二项的值在一个mini-batch中不可能一直是-1，也就是说回传的梯度不会消失，不论网络中的权值的值再小都不会发生梯度消失现象。
 恒等映射的重要性 考虑恒等映射的重要性。假设将恒等映射改为 $$ h(x_l) = \lambda_l x_l $$ 则有："><meta itemprop="datePublished" content="2022-08-26T10:54:08+08:00" />
 <meta itemprop="dateModified" content="2022-08-26T10:54:08+08:00" />
-<meta itemprop="wordCount" content="148">
+<meta itemprop="wordCount" content="214">
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="ResNet &amp; DenseNet"/>
 <meta name="twitter:description" content="ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名。
@@ -395,6 +395,63 @@ $$
 <p>ResNeXt提出了一种介于普通卷积核深度可分离卷积的这种策略：分组卷积，他通过控制分组的数量（基数）来达到两种策略的平衡。分组卷积的思想是源自Inception，不同于Inception的需要人工设计每个分支，ResNeXt的每个分支的拓扑结构是相同的。最后再结合残差网络，得到的便是最终的ResNeXt。</p>
 <p>从上面的分析中我们可以看书ResNeXt的结构非常简单，但是其在ImageNet上取得了由于相同框架的残差网络，也算是Inception直接助攻了一把吧。</p>
 <p>ResNeXt确实比Inception V4的超参数更少，但是他直接废除了Inception的囊括不同感受野的特性仿佛不是很合理，在更多的环境中我们发现Inception V4的效果是优于ResNeXt的。类似结构的ResNeXt的运行速度应该是优于Inception V4的，因为ResNeXt的相同拓扑结构的分支的设计是更符合GPU的硬件设计原则。</p>
+</li>
+</ul>
+<h2 id="densenet">DenseNet</h2>
+<ul>
+<li>
+<h4 id="简介-3">简介</h4>
+<p><a href="https://arxiv.org/pdf/1608.06993.pdf">DenseNet</a>模型的基本思路与ResNet一致，但是它建立的是前面所有层与后面层的密集连接。DenseNet脱离了加深网络层数(ResNet)和加宽网络结构(Inception)来提升网络性能的定式思维，从特征的角度考虑，通过特征重用和旁路(Bypass)设置，既大幅度减少了网络的参数量，又在一定程度上缓解了gradient vanishing问题的产生。这些特点让DenseNet在参数和计算成本更少的情形下实现比ResNet更优的性能，DenseNet也因此斩获CVPR 2017的最佳论文奖。</p>
+</li>
+<li>
+<h4 id="亮点-2">亮点</h4>
+<ul>
+<li>由于密集连接方式，DenseNet提升了梯度的反向传播，使得网络更容易训练。由于每层可以直达最后的误差信号，实现了隐式的“deep supervision”。</li>
+<li>参数更小且计算更高效，这有点违反直觉，由于DenseNet是通过concat特征来实现短路连接，实现了特征重用，并且采用较小的growth rate，每个层所独有的特征图是比较小的。</li>
+<li>由于特征复用，最后的分类器使用了低级特征。</li>
+</ul>
+</li>
+<li>
+<h4 id="设计理念">设计理念</h4>
+<p>相比ResNet，DenseNet提出了一个更激进的密集连接机制：即互相连接所有的层，具体来说就是每个层都会接受其前面所有层作为其额外的输入。下图1为ResNet网络的连接机制，作为对比，下图2为DenseNet的密集连接机制。可以看到，ResNet是每个层与前面的某层（一般是2~3层）短路连接在一起，连接方式是通过元素级相加。而在DenseNet中，每个层都会与前面所有层在channel维度上连接（concat）在一起（这里各个层的特征图大小是相同的），并作为下一层的输入。对于一个L层的网络，DenseNet共包含L(L+1)/2个连接，相比ResNet，这是一种密集连接。而DenseNet是直接concat来自不同层的特征图，这可以实现特征重用，提升效率，这一特点是DenseNet与ResNet最主要的区别。</p>
+<img src="/images/densenet1.png" alt="densenet1" style="zoom:60%;" />
+<img src="/images/densenet2.png" alt="densenet2" style="zoom:60%;" />
+</li>
+<li>
+<h4 id="网络结构-1">网络结构</h4>
+<img src="/images/densenet3.jpg" alt="densenet3" style="zoom:60%;" />
+<p>假设输入为一个图片 X0 , 经过一个L层的神经网络，其中第i层的非线性变换记为 Hi ()，Hi ()可以是多种函数操作的累加如BN、ReLU、Pooling或Conv等。第i层的特征输出记作 Xi。</p>
+<p>传统卷积前馈神经网络将第i层的输出Xi作为i+1层的输入，可以写作Xi = Hi ( Xi−1 )。ResNet增加了旁路连接，可以写作Xl = Xl ( Xl−1 )+ Xl−1。</p>
+<p>ResNet的一个最主要的优势便是梯度可以流经恒等函数来到达靠前的层，但恒等映射和非线性变换输出的叠加方式是相加，这在一定程度上破坏了网络中的信息流。</p>
+<p>为了进一步优化信息流的传播，DenseNet提出了上图的网络结构。如图所示，第i层的输入不仅与i-1层的输出相关，还有所有之前层的输出有关，记作:</p>
+<p>Xl = Hl ([ X0 , X1 ,…, Xl−1 ])，</p>
+<p>其中[]代表concatenation(拼接)，既将 X0 到 Xl−1 层的所有输出feature map按Channel组合在一起。这里所用到的非线性变换H为BN+ReLU+ Conv(3×3)的组合。</p>
+</li>
+<li>
+<h4 id="denseblocktransition">DenseBlock+Transition</h4>
+<p>CNN网络一般要经过Pooling或者stride&gt;1的Conv来降低特征图的大小，而DenseNet的密集连接方式需要特征图大小保持一致。为了解决这个问题，DenseNet网络中使用DenseBlock+Transition的结构。</p>
+<ul>
+<li>DenseBlock是包含很多层的模块，每个层的特征图大小相同，层与层之间采用密集连接方式。</li>
+<li>Transition模块是连接两个相邻的DenseBlock，并且通过Pooling使特征图大小降低。</li>
+</ul>
+<p><img src="/images/densenet4.jpg" alt="densenet4"></p>
+</li>
+<li>
+<h4 id="总结-1">总结</h4>
+<ul>
+<li>
+<p>一些较早层提取出的特征仍可能被较深层直接使用。</p>
+</li>
+<li>
+<p>即使是Transition layer也会使用到之前Denseblock中所有层的特征。</p>
+</li>
+<li>
+<p>第2-3个Denseblock中的层对之前Transition layer利用率很低,说明transition layer输出大量冗余特征.这也为DenseNet-BC提供了证据支持,既Compression的必要性。</p>
+</li>
+<li>
+<p>最后的分类层虽然使用了之前Denseblock中的多层信息,但更偏向于使用最后几个feature map的特征,说明在网络的最后几层,某些high-level的特征可能被产生。</p>
+</li>
+</ul>
 </li>
 </ul>
 <h2 id="citation">Citation</h2>
