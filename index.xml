@@ -13,7 +13,18 @@
       <pubDate>Fri, 02 Sep 2022 22:27:28 +0800</pubDate>
       
       <guid>http://example.org/posts/senet-mobilenet/</guid>
-      <description>SENet </description>
+      <description>SENet 简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在深度学习领域，已经有很多成果通过在空间维度上对网络的性能进行了提升。而SENet反其道而行之，通过对通道关系进行建模来提升网络的性能。SENet较早的将注意力机制引入CNN中，使用了模块化设计。
+亮点 引入通道注意力机制，关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。
+网络结构 原理 SENet网络的创新点在于关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。为此，SENet提出了Squeeze-and-Excitation (SE)模块，SE模块首先对卷积得到的特征图进行Squeeze操作，得到channel级的全局特征，然后对全局特征进行Excitation操作，学习各个channel间的关系，也得到不同channel的权重，最后乘以原来的特征图得到最终特征。
+本质上，SE模块是在channel维度上做attention或者gating操作，这种注意力机制让模型可以更加关注信息量最大的channel特征，而抑制那些不重要的channel特征。另外一点是SE模块是通用的，这意味着其可以嵌入到现有的网络架构中。
+Squeeze 原始feature map的维度为H×W×C，其中H是高度（Height），W是宽度（width），C是通道数（channel）。Squeeze就是用全局平均池化（global average pooling）把H×W×C压缩为1×1×C。H×W压缩成一维后，相当于这一维参数获得了之前H×W全局的视野，感受区域更广。公式如下：
+Excitation Sequeeze操作得到了全局描述特征，接下来需要另外一种运算来提取channel之间的关系。 用两个全连接层来学习通道间的相关性，第一个FC层起到降维的作用，然后采用ReLU激活。最后的全连接层恢复原始的维度。公式如下：
+Reweight 将Excitation的输出权重作为经过特征选择后的每个特征通道的重要性，然后通过乘法逐通道加权到先前的特征上，完成在通道维度上的对原始特征的重标定。
+全局平均池化 思想：对于输出的每一个通道的特征图的所有像素计算一个平均值，经过全局平均池化之后就得到一个 维度=类别数的特征向量，然后直接输入到softmax层。
+作用：代替全连接层，可接受任意尺寸的图像。
+优点：
+可以更好的将类别与最后一个卷积层的特征图对应起来（每一个通道对应一种类别，这样每一张特征图都可以看成是该类别对应的类别置信图）； 降低参数量，全局平均池化层没有参数，可防止在该层过拟合； 整合了全局空间信息，对于输入图片的spatial translation更加鲁棒。 结构融合 上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于： 具有更多的非线性，可以更好地拟合通道间复杂的相关性； 减少了参数量和计算量。 下图是SE模块嵌入到ResNet的示例。操作过程基本和SE-Inception一样，只不过是在Addition前对分支上Residual的特征进行了特征重标定。如果对Addition后主支上的特征进行重标定，由于在主干上存在0~1的scale操作，在网络较深BP优化时就会在靠近输入层容易出现梯度消散的情况，导致模型难以优化。 运算效率 实验表明，SE模块在参数量上的增加带来的计算量增长微乎其微，但是性能却有所提升，当然这也取决于实际应用，如果因为SE模块导致参数量增加的掠夺，可以针对性的在适当的位置削减SE模块的数量，而精度几乎不受影响。
+以ResNet-50和SE-ResNet-50对比举例来说，SE-ResNet-50相对于ResNet-50有着10%模型参数的增长。额外的模型参数都存在于Bottleneck设计的两个Fully Connected中，由于ResNet结构中最后一个stage的特征通道数目为2048，导致模型参数有着较大的增长，实验发现移除掉最后一个stage中3个build block上的SE设定，可以将10%参数量的增长减少到2%。此时模型的精度几乎无损失。</description>
     </item>
     
     <item>
