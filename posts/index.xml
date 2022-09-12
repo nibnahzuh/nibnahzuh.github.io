@@ -24,7 +24,9 @@ Reweight 将Excitation的输出权重作为经过特征选择后的每个特征�
 作用：代替全连接层，可接受任意尺寸的图像。
 优点：
 可以更好的将类别与最后一个卷积层的特征图对应起来（每一个通道对应一种类别，这样每一张特征图都可以看成是该类别对应的类别置信图）； 降低参数量，全局平均池化层没有参数，可防止在该层过拟合； 整合了全局空间信息，对于输入图片的spatial translation更加鲁棒。 结构融合 上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于： 具有更多的非线性，可以更好地拟合通道间复杂的相关性； 减少了参数量和计算量。 下图是SE模块嵌入到ResNet的示例。操作过程基本和SE-Inception一样，只不过是在Addition前对分支上Residual的特征进行了特征重标定。如果对Addition后主支上的特征进行重标定，由于在主干上存在0~1的scale操作，在网络较深BP优化时就会在靠近输入层容易出现梯度消散的情况，导致模型难以优化。 运算效率 实验表明，SE模块在参数量上的增加带来的计算量增长微乎其微，但是性能却有所提升，当然这也取决于实际应用，如果因为SE模块导致参数量增加的掠夺，可以针对性的在适当的位置削减SE模块的数量，而精度几乎不受影响。
-以ResNet-50和SE-ResNet-50对比举例来说，SE-ResNet-50相对于ResNet-50有着10%模型参数的增长。额外的模型参数都存在于Bottleneck设计的两个Fully Connected中，由于ResNet结构中最后一个stage的特征通道数目为2048，导致模型参数有着较大的增长，实验发现移除掉最后一个stage中3个build block上的SE设定，可以将10%参数量的增长减少到2%。此时模型的精度几乎无损失。</description>
+以ResNet-50和SE-ResNet-50对比举例来说，SE-ResNet-50相对于ResNet-50有着10%模型参数的增长。额外的模型参数都存在于Bottleneck设计的两个Fully Connected中，由于ResNet结构中最后一个stage的特征通道数目为2048，导致模型参数有着较大的增长，实验发现移除掉最后一个stage中3个build block上的SE设定，可以将10%参数量的增长减少到2%。此时模型的精度几乎无损失。
+MobileNet 简介 MobileNet V1是由google2016年提出，2017年发布的文章。其主要创新点在于深度可分离卷积，而整个网络实际上也是深度可分离模块的堆叠。它基于流线型架构，使用深度可分离卷积来构建轻量级深度神经网络，用于移动和嵌入式视觉应用。该网络引入了两个简单的全局超参数——宽度乘数和分辨率乘数，可以有效地在延迟和准确性之间进行权衡。
+亮点 深度可分离卷积的使用 Global Average Pooling 的使用 用CONV/s2（步进2的卷积）代替MaxPool+CONV 深度可分离卷积的使用 在进行 depthwise 卷积时只使用了一种维度为in_channels的卷积核进行特征提取（没有进行特征组合）。采用 depth-wise convolution 会有一个问题，就是导致 信息流通不畅 ，即输出的 feature map 仅包含输入的 feature map 的一部分，在这里，MobileNet 采用了 point-wise(1*1) convolution 帮助信息在通道之间流通。</description>
     </item>
     
     <item>
