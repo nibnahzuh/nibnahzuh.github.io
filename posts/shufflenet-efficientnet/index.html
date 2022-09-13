@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>ShuffleNet &amp; EfficientNet | Hzb&#39;s Study Blog</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="ShuffleNet 简介 ShuffleNet是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。所以，ShuffleNet的设计目标也是如何利用有限的计算资源来达到最好的模型精度，这需要很好地在速度和精度之间做平衡。ShuffleNet是一种专门为计算资源有限的设备设计的神经网络结构，主要采用了pointwise group convolution和channel shuffle两种技术，在保留了模型精度的同时极大减少了计算开销。
+旧网络存在问题 分组卷积GConv虽然能减少参数量和计算量，但是GConv中不同的组之间的信息没有交流。 在ResNeXt网络中，分组卷积占的计算量很少，大部分计算量都是1*1卷积产生的。 创新点 Channel Shuffle
+先通过一个分组卷积，得到对应的特征矩阵，接下来使用channel shuffle操作后的特征矩阵进行组卷积，融合不同组之间的维度信息。
+具体为，假设输入的feature map是一个一维的12个数据，分为3组，每一个分组有4个值，channel shuffle操作首先将这个矩阵进行升维，重构为一个g行n列的矩阵（这里g=3，n=4），然后对这个矩阵进行转置，后得到一个n行g列的新矩阵，再按照分组数g对这个得到的新矩阵进行展开，通过这一系列操作，达到了将原来固定的各分组打乱重排的目的。
+ShuffleNet Unit
+ShuffleNet Unit的结构灵感来源于ResNet的中的bottleneck残差模块，从某种意义上来说，二者看起来几乎一样，以下是ShuffleNet Unit的结构：
+相较于ResNet的bottleneck模块，ShuffleNet Unit有三处差别：
+ShuffleNet Unit将bottleneck模块中的3x3卷积替换为了3x3的depthwise卷积，也就是图中的DWConv，如图a所示。 对原残差模块的1x1卷积进行了替换，替换为了1x1的分组卷积，并在后面加上了一个channel shuffle操作，用于消除分组卷积的副作用，如图b所示。 在bottleneck的短路路径上使用了3x3的全局平均池化，然后将原来bottleneck模块的逐元素求和替换为了通道（Add）的拼接操作（Concat），如图c所示。使原来的数值1相加操作变成了维度的相加，更高的维度可以使网络拥有更多的通道数，从而提升网络的性能。 网络结构 基于shufflenet unit模块，整体的ShuffleNet网络结构图如下图所示：
+上图为一个图像分类任务，输入为224x224的图像，输出1000个概率，同时作者将分组数分别设置为1到5，以此探索不同的分组数对网络性能的影响，其中一般以g=3作为网络的基准版本。
+与传统的神经网络相比，ShuffleNet网络结构最大的区别在于拥有三个shufflenet unit模块，分别对应三个Stage，它们将输入特征图的尺寸减半，通道数加倍，除了升级版的shufflenet unit模块，网络的其他超参数与ResNet保持一致。
+Citation 北信科视觉感知研讨课程（周羿旭老师分享）
+【轻量化网络】ShuffleNet V1 论文研读
+论文阅读笔记：ShuffleNet
+Thanks for reading! ">
+    <meta name="generator" content="Hugo 0.101.0" />
+    
+    
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
+
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
+
+    
+    
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="ShuffleNet &amp; EfficientNet" />
+<meta property="og:description" content="ShuffleNet 简介 ShuffleNet是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。所以，ShuffleNet的设计目标也是如何利用有限的计算资源来达到最好的模型精度，这需要很好地在速度和精度之间做平衡。ShuffleNet是一种专门为计算资源有限的设备设计的神经网络结构，主要采用了pointwise group convolution和channel shuffle两种技术，在保留了模型精度的同时极大减少了计算开销。
+旧网络存在问题 分组卷积GConv虽然能减少参数量和计算量，但是GConv中不同的组之间的信息没有交流。 在ResNeXt网络中，分组卷积占的计算量很少，大部分计算量都是1*1卷积产生的。 创新点 Channel Shuffle
+先通过一个分组卷积，得到对应的特征矩阵，接下来使用channel shuffle操作后的特征矩阵进行组卷积，融合不同组之间的维度信息。
+具体为，假设输入的feature map是一个一维的12个数据，分为3组，每一个分组有4个值，channel shuffle操作首先将这个矩阵进行升维，重构为一个g行n列的矩阵（这里g=3，n=4），然后对这个矩阵进行转置，后得到一个n行g列的新矩阵，再按照分组数g对这个得到的新矩阵进行展开，通过这一系列操作，达到了将原来固定的各分组打乱重排的目的。
+ShuffleNet Unit
+ShuffleNet Unit的结构灵感来源于ResNet的中的bottleneck残差模块，从某种意义上来说，二者看起来几乎一样，以下是ShuffleNet Unit的结构：
+相较于ResNet的bottleneck模块，ShuffleNet Unit有三处差别：
+ShuffleNet Unit将bottleneck模块中的3x3卷积替换为了3x3的depthwise卷积，也就是图中的DWConv，如图a所示。 对原残差模块的1x1卷积进行了替换，替换为了1x1的分组卷积，并在后面加上了一个channel shuffle操作，用于消除分组卷积的副作用，如图b所示。 在bottleneck的短路路径上使用了3x3的全局平均池化，然后将原来bottleneck模块的逐元素求和替换为了通道（Add）的拼接操作（Concat），如图c所示。使原来的数值1相加操作变成了维度的相加，更高的维度可以使网络拥有更多的通道数，从而提升网络的性能。 网络结构 基于shufflenet unit模块，整体的ShuffleNet网络结构图如下图所示：
+上图为一个图像分类任务，输入为224x224的图像，输出1000个概率，同时作者将分组数分别设置为1到5，以此探索不同的分组数对网络性能的影响，其中一般以g=3作为网络的基准版本。
+与传统的神经网络相比，ShuffleNet网络结构最大的区别在于拥有三个shufflenet unit模块，分别对应三个Stage，它们将输入特征图的尺寸减半，通道数加倍，除了升级版的shufflenet unit模块，网络的其他超参数与ResNet保持一致。
+Citation 北信科视觉感知研讨课程（周羿旭老师分享）
+【轻量化网络】ShuffleNet V1 论文研读
+论文阅读笔记：ShuffleNet
+Thanks for reading! " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/posts/shufflenet-efficientnet/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-09-12T15:05:52+08:00" />
+<meta property="article:modified_time" content="2022-09-12T15:05:52+08:00" />
+
+<meta itemprop="name" content="ShuffleNet &amp; EfficientNet">
+<meta itemprop="description" content="ShuffleNet 简介 ShuffleNet是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。所以，ShuffleNet的设计目标也是如何利用有限的计算资源来达到最好的模型精度，这需要很好地在速度和精度之间做平衡。ShuffleNet是一种专门为计算资源有限的设备设计的神经网络结构，主要采用了pointwise group convolution和channel shuffle两种技术，在保留了模型精度的同时极大减少了计算开销。
+旧网络存在问题 分组卷积GConv虽然能减少参数量和计算量，但是GConv中不同的组之间的信息没有交流。 在ResNeXt网络中，分组卷积占的计算量很少，大部分计算量都是1*1卷积产生的。 创新点 Channel Shuffle
+先通过一个分组卷积，得到对应的特征矩阵，接下来使用channel shuffle操作后的特征矩阵进行组卷积，融合不同组之间的维度信息。
+具体为，假设输入的feature map是一个一维的12个数据，分为3组，每一个分组有4个值，channel shuffle操作首先将这个矩阵进行升维，重构为一个g行n列的矩阵（这里g=3，n=4），然后对这个矩阵进行转置，后得到一个n行g列的新矩阵，再按照分组数g对这个得到的新矩阵进行展开，通过这一系列操作，达到了将原来固定的各分组打乱重排的目的。
+ShuffleNet Unit
+ShuffleNet Unit的结构灵感来源于ResNet的中的bottleneck残差模块，从某种意义上来说，二者看起来几乎一样，以下是ShuffleNet Unit的结构：
+相较于ResNet的bottleneck模块，ShuffleNet Unit有三处差别：
+ShuffleNet Unit将bottleneck模块中的3x3卷积替换为了3x3的depthwise卷积，也就是图中的DWConv，如图a所示。 对原残差模块的1x1卷积进行了替换，替换为了1x1的分组卷积，并在后面加上了一个channel shuffle操作，用于消除分组卷积的副作用，如图b所示。 在bottleneck的短路路径上使用了3x3的全局平均池化，然后将原来bottleneck模块的逐元素求和替换为了通道（Add）的拼接操作（Concat），如图c所示。使原来的数值1相加操作变成了维度的相加，更高的维度可以使网络拥有更多的通道数，从而提升网络的性能。 网络结构 基于shufflenet unit模块，整体的ShuffleNet网络结构图如下图所示：
+上图为一个图像分类任务，输入为224x224的图像，输出1000个概率，同时作者将分组数分别设置为1到5，以此探索不同的分组数对网络性能的影响，其中一般以g=3作为网络的基准版本。
+与传统的神经网络相比，ShuffleNet网络结构最大的区别在于拥有三个shufflenet unit模块，分别对应三个Stage，它们将输入特征图的尺寸减半，通道数加倍，除了升级版的shufflenet unit模块，网络的其他超参数与ResNet保持一致。
+Citation 北信科视觉感知研讨课程（周羿旭老师分享）
+【轻量化网络】ShuffleNet V1 论文研读
+论文阅读笔记：ShuffleNet
+Thanks for reading! "><meta itemprop="datePublished" content="2022-09-12T15:05:52+08:00" />
+<meta itemprop="dateModified" content="2022-09-12T15:05:52+08:00" />
+<meta itemprop="wordCount" content="45">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ShuffleNet &amp; EfficientNet"/>
+<meta name="twitter:description" content="ShuffleNet 简介 ShuffleNet是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。所以，ShuffleNet的设计目标也是如何利用有限的计算资源来达到最好的模型精度，这需要很好地在速度和精度之间做平衡。ShuffleNet是一种专门为计算资源有限的设备设计的神经网络结构，主要采用了pointwise group convolution和channel shuffle两种技术，在保留了模型精度的同时极大减少了计算开销。
+旧网络存在问题 分组卷积GConv虽然能减少参数量和计算量，但是GConv中不同的组之间的信息没有交流。 在ResNeXt网络中，分组卷积占的计算量很少，大部分计算量都是1*1卷积产生的。 创新点 Channel Shuffle
+先通过一个分组卷积，得到对应的特征矩阵，接下来使用channel shuffle操作后的特征矩阵进行组卷积，融合不同组之间的维度信息。
+具体为，假设输入的feature map是一个一维的12个数据，分为3组，每一个分组有4个值，channel shuffle操作首先将这个矩阵进行升维，重构为一个g行n列的矩阵（这里g=3，n=4），然后对这个矩阵进行转置，后得到一个n行g列的新矩阵，再按照分组数g对这个得到的新矩阵进行展开，通过这一系列操作，达到了将原来固定的各分组打乱重排的目的。
+ShuffleNet Unit
+ShuffleNet Unit的结构灵感来源于ResNet的中的bottleneck残差模块，从某种意义上来说，二者看起来几乎一样，以下是ShuffleNet Unit的结构：
+相较于ResNet的bottleneck模块，ShuffleNet Unit有三处差别：
+ShuffleNet Unit将bottleneck模块中的3x3卷积替换为了3x3的depthwise卷积，也就是图中的DWConv，如图a所示。 对原残差模块的1x1卷积进行了替换，替换为了1x1的分组卷积，并在后面加上了一个channel shuffle操作，用于消除分组卷积的副作用，如图b所示。 在bottleneck的短路路径上使用了3x3的全局平均池化，然后将原来bottleneck模块的逐元素求和替换为了通道（Add）的拼接操作（Concat），如图c所示。使原来的数值1相加操作变成了维度的相加，更高的维度可以使网络拥有更多的通道数，从而提升网络的性能。 网络结构 基于shufflenet unit模块，整体的ShuffleNet网络结构图如下图所示：
+上图为一个图像分类任务，输入为224x224的图像，输出1000个概率，同时作者将分组数分别设置为1到5，以此探索不同的分组数对网络性能的影响，其中一般以g=3作为网络的基准版本。
+与传统的神经网络相比，ShuffleNet网络结构最大的区别在于拥有三个shufflenet unit模块，分别对应三个Stage，它们将输入特征图的尺寸减半，通道数加倍，除了升级版的shufflenet unit模块，网络的其他超参数与ResNet保持一致。
+Citation 北信科视觉感知研讨课程（周羿旭老师分享）
+【轻量化网络】ShuffleNet V1 论文研读
+论文阅读笔记：ShuffleNet
+Thanks for reading! "/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Hzb&#39;s Study Blog
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+<div class="ananke-socials">
+  
+</div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        POSTS
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">ShuffleNet &amp; EfficientNet</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2022-09-12T15:05:52+08:00">September 12, 2022</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="shufflenet">ShuffleNet</h2>
+<ul>
+<li>
+<h4 id="简介">简介</h4>
+<p><a href="https://arxiv.org/pdf/1707.01083.pdf">ShuffleNet</a>是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。所以，ShuffleNet的设计目标也是如何利用有限的计算资源来达到最好的模型精度，这需要很好地在速度和精度之间做平衡。ShuffleNet是一种专门为计算资源有限的设备设计的神经网络结构，主要采用了pointwise group convolution和channel shuffle两种技术，在保留了模型精度的同时极大减少了计算开销。</p>
+</li>
+<li>
+<h4 id="旧网络存在问题">旧网络存在问题</h4>
+<ul>
+<li>分组卷积GConv虽然能减少参数量和计算量，但是GConv中不同的组之间的信息没有交流。</li>
+<li>在ResNeXt网络中，分组卷积占的计算量很少，大部分计算量都是1*1卷积产生的。</li>
+</ul>
+</li>
+<li>
+<h4 id="创新点">创新点</h4>
+<ul>
+<li>
+<p>Channel Shuffle</p>
+<p><img src="C:%5CUsers%5Chuzhanbin%5CDesktop%5Cswap%5Cblog%5Chzb_blog%5Cstatic%5Cimages%5Cshufflenet1.png" alt="shufflenet1"></p>
+<p>先通过一个分组卷积，得到对应的特征矩阵，接下来使用channel shuffle操作后的特征矩阵进行组卷积，融合不同组之间的维度信息。</p>
+<p>具体为，假设输入的feature map是一个一维的12个数据，分为3组，每一个分组有4个值，channel shuffle操作首先将这个矩阵进行升维，重构为一个g行n列的矩阵（这里g=3，n=4），然后对这个矩阵进行转置，后得到一个n行g列的新矩阵，再按照分组数g对这个得到的新矩阵进行展开，通过这一系列操作，达到了将原来固定的各分组打乱重排的目的。</p>
+</li>
+<li>
+<p>ShuffleNet Unit</p>
+<p>ShuffleNet Unit的结构灵感来源于ResNet的中的bottleneck残差模块，从某种意义上来说，二者看起来几乎一样，以下是ShuffleNet Unit的结构：</p>
+<p><img src="C:%5CUsers%5Chuzhanbin%5CDesktop%5Cswap%5Cblog%5Chzb_blog%5Cstatic%5Cimages%5Cshufflenet2.png" alt="shufflenet2"></p>
+<p>相较于ResNet的bottleneck模块，ShuffleNet Unit有三处差别：</p>
+<ol>
+<li>ShuffleNet Unit将bottleneck模块中的3x3卷积替换为了3x3的depthwise卷积，也就是图中的DWConv，如图a所示。</li>
+<li>对原残差模块的1x1卷积进行了替换，替换为了1x1的分组卷积，并在后面加上了一个channel shuffle操作，用于消除分组卷积的副作用，如图b所示。</li>
+<li>在bottleneck的短路路径上使用了3x3的全局平均池化，然后将原来bottleneck模块的逐元素求和替换为了通道（Add）的拼接操作（Concat），如图c所示。使原来的数值1相加操作变成了维度的相加，更高的维度可以使网络拥有更多的通道数，从而提升网络的性能。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<h4 id="网络结构">网络结构</h4>
+<p>基于shufflenet unit模块，整体的ShuffleNet网络结构图如下图所示：</p>
+<img src="C:\Users\huzhanbin\Desktop\swap\blog\hzb_blog\static\images\shufflenet3.jpg" alt="shufflenet3" style="zoom: 67%;" />
+<p>上图为一个图像分类任务，输入为224x224的图像，输出1000个概率，同时作者将分组数分别设置为1到5，以此探索不同的分组数对网络性能的影响，其中一般以g=3作为网络的基准版本。</p>
+<p>与传统的神经网络相比，ShuffleNet网络结构最大的区别在于拥有三个shufflenet unit模块，分别对应三个Stage，它们将输入特征图的尺寸减半，通道数加倍，除了升级版的shufflenet unit模块，网络的其他超参数与ResNet保持一致。</p>
+</li>
+</ul>
+<h2 id="citation">Citation</h2>
+<blockquote>
+<p>北信科视觉感知研讨课程（周羿旭老师分享）</p>
+<p><a href="https://zhuanlan.zhihu.com/p/482776750">【轻量化网络】ShuffleNet V1 论文研读</a></p>
+<p><a href="https://blog.csdn.net/loki2018/article/details/124077822">论文阅读笔记：ShuffleNet</a></p>
+</blockquote>
+<h1 id="thanks-for-reading"><em>Thanks for reading!</em></h1>
+<ul class="pa0">
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://example.org/" >
+    &copy;  Hzb's Study Blog 2022 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
+</html>
