@@ -185,14 +185,14 @@ Thanks for reading! "/>
 <ul>
 <li>
 <p>Channel Shuffle</p>
-<p><img src="C:%5CUsers%5Chuzhanbin%5CDesktop%5Cswap%5Cblog%5Chzb_blog%5Cstatic%5Cimages%5Cshufflenet1.png" alt="shufflenet1"></p>
+<p><img src="/images/shufflenet1.png" alt="shufflenet1"></p>
 <p>先通过一个分组卷积，得到对应的特征矩阵，接下来使用channel shuffle操作后的特征矩阵进行组卷积，融合不同组之间的维度信息。</p>
 <p>具体为，假设输入的feature map是一个一维的12个数据，分为3组，每一个分组有4个值，channel shuffle操作首先将这个矩阵进行升维，重构为一个g行n列的矩阵（这里g=3，n=4），然后对这个矩阵进行转置，后得到一个n行g列的新矩阵，再按照分组数g对这个得到的新矩阵进行展开，通过这一系列操作，达到了将原来固定的各分组打乱重排的目的。</p>
 </li>
 <li>
 <p>ShuffleNet Unit</p>
 <p>ShuffleNet Unit的结构灵感来源于ResNet的中的bottleneck残差模块，从某种意义上来说，二者看起来几乎一样，以下是ShuffleNet Unit的结构：</p>
-<p><img src="C:%5CUsers%5Chuzhanbin%5CDesktop%5Cswap%5Cblog%5Chzb_blog%5Cstatic%5Cimages%5Cshufflenet2.png" alt="shufflenet2"></p>
+<p><img src="/images/shufflenet2.png" alt="shufflenet2"></p>
 <p>相较于ResNet的bottleneck模块，ShuffleNet Unit有三处差别：</p>
 <ol>
 <li>ShuffleNet Unit将bottleneck模块中的3x3卷积替换为了3x3的depthwise卷积，也就是图中的DWConv，如图a所示。</li>
@@ -205,7 +205,7 @@ Thanks for reading! "/>
 <li>
 <h4 id="网络结构">网络结构</h4>
 <p>基于shufflenet unit模块，整体的ShuffleNet网络结构图如下图所示：</p>
-<img src="C:\Users\huzhanbin\Desktop\swap\blog\hzb_blog\static\images\shufflenet3.jpg" alt="shufflenet3" style="zoom: 67%;" />
+<img src="/images/shufflenet3.jpg" alt="shufflenet3" style="zoom: 67%;" />
 <p>上图为一个图像分类任务，输入为224x224的图像，输出1000个概率，同时作者将分组数分别设置为1到5，以此探索不同的分组数对网络性能的影响，其中一般以g=3作为网络的基准版本。</p>
 <p>与传统的神经网络相比，ShuffleNet网络结构最大的区别在于拥有三个shufflenet unit模块，分别对应三个Stage，它们将输入特征图的尺寸减半，通道数加倍，除了升级版的shufflenet unit模块，网络的其他超参数与ResNet保持一致。</p>
 </li>
