@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Hzb&#39;s Study Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 12 Sep 2022 15:05:52 +0800</lastBuildDate><atom:link href="http://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 21 Sep 2022 16:55:23 +0800</lastBuildDate><atom:link href="http://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Rcnn</title>
+      <link>http://example.org/posts/rcnn/</link>
+      <pubDate>Wed, 21 Sep 2022 16:55:23 +0800</pubDate>
+      
+      <guid>http://example.org/posts/rcnn/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>ShuffleNet &amp; EfficientNet</title>
       <link>http://example.org/posts/shufflenet-efficientnet/</link>
@@ -23,10 +32,14 @@ ShuffleNet Unit的结构灵感来源于ResNet的中的bottleneck残差模块，�
 ShuffleNet Unit将bottleneck模块中的3x3卷积替换为了3x3的depthwise卷积，也就是图中的DWConv，如图a所示。 对原残差模块的1x1卷积进行了替换，替换为了1x1的分组卷积，并在后面加上了一个channel shuffle操作，用于消除分组卷积的副作用，如图b所示。 在bottleneck的短路路径上使用了3x3的全局平均池化，然后将原来bottleneck模块的逐元素求和替换为了通道（Add）的拼接操作（Concat），如图c所示。使原来的数值1相加操作变成了维度的相加，更高的维度可以使网络拥有更多的通道数，从而提升网络的性能。 网络结构 基于shufflenet unit模块，整体的ShuffleNet网络结构图如下图所示：
 上图为一个图像分类任务，输入为224x224的图像，输出1000个概率，同时作者将分组数分别设置为1到5，以此探索不同的分组数对网络性能的影响，其中一般以g=3作为网络的基准版本。
 与传统的神经网络相比，ShuffleNet网络结构最大的区别在于拥有三个shufflenet unit模块，分别对应三个Stage，它们将输入特征图的尺寸减半，通道数加倍，除了升级版的shufflenet unit模块，网络的其他超参数与ResNet保持一致。
-Citation 北信科视觉感知研讨课程（周羿旭老师分享）
-【轻量化网络】ShuffleNet V1 论文研读
-论文阅读笔记：ShuffleNet
-Thanks for reading! </description>
+Efficient Net 简介 EfficientNets是google在2019年5月发表的一个网络系列，使用神经架构搜索设计了一个baseline网络，并且将模型进行缩放获得一系列模型。它的精度和效率比之前所有的卷积网络都好。尤其是EfficientNet-B7在ImageNet上获得了当时最先进的 84.4%的top-1精度 和 97.1%的top-5精度，同时比之前最好的卷积网络大小缩小了8.4倍、速度提高了6.1倍。EfficientNets也可以很好的迁移，并且以更少的参量实现了最先进的精度——CIFAR-100（91.7%）、Flowers（98.8%）。
+背景 通常为了获得更好的精度，放大卷积神经网络是一种广泛的方法。举个例子，ResNet可以通过使用更多层从ResNet-18放大到ResNet-200；目前为止，GPipe通过将baseline模型放大四倍在ImageNet数据集上获得了84.3%的top-1精度，然而，放大CNN的过程从来没有很好的理解过，目前通用的几种方法是放大CNN的深度、宽度和分辨率，在之前都是单独放大这三个维度中的一个，尽管任意放大两个或者三个维度也是可能的，但是任意缩放需要繁琐的人工调参同时可能产生的是一个次优的精度和效率。
+模型缩放方法 Single Scaling（单尺度）
+深度（d）：缩放网络深度在许多ConvNets都有使用，直觉上更深的网络可以捕获到更丰富和更复杂的特征，在新任务上也可以泛化的更好。然而，更深的网络由于梯度消失问题（这里我更倾向于说成是网络退化问题）也更难训练。尽管有一些技术，例如跨层连接、批量归一化等可以有效减缓训练问题，但是深层网络的精度回报减弱了：举个例子，ResNet-1000和ResNet-101具有类似的精度，即使它的层数更多。 宽度（w）：缩放网络宽度也是一种常用的手段，正如之前讨论过的，更宽的网络可以捕捉到更细粒度的特征从而易于训练。然而，非常宽而又很浅的网络在捕捉高层次特征时有困难。 分辨率（r）：使用更高分辨率的输入图像，ConvNets可能可以捕捉到更细粒度的模式。从最早的 224x224，现在有些ConvNets为了获得更高的精度选择使用 229x229 或者 331x331。目前，GPipe使用 480x480 的分辨率获得了最先进的ImageNet精度，更好的精度比如 600x600 也被广泛使用在目标检测网络中。 Compound Scaling（混合尺度）
+论文中提出了Compound Scaling，同时对通过NAS得到的baseline模型Efficient-b0的深度（depth）、宽度（width）、输入图片分辨率（resolution）进行scaling，和 AutoML技术得到一系列网络模型EfficientNets。
+为了了解网络缩放的效果，作者系统地研究了缩放不同维数对模型的影响。 虽然缩放单个维度可以提高模型性能，但作者观察到，根据可用资源平衡网络的所有维度ーー宽度、深度和图像分辨率ーー可以最大限度地提高整体性能。
+复合缩放方法的第一步是执行网格搜索，以找到在固定资源约束下基线网络的不同缩放维度之间的关系。这决定了上面提到的每个维度的适当比例系数。 然后应用这些系数扩大基线网络，以达到期望的模型大小或资源要求。
+与传统的缩放方法（上图a-d）相比，这种复合缩放方法（上图e）不断提高模型的精度和效率，可用于扩展现有的模型，如 mobileet (+ 1.</description>
     </item>
     
     <item>
