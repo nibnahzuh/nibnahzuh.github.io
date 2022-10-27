@@ -6,7 +6,35 @@
     <description>Recent content in Posts on Hzb&#39;s Study Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 26 Oct 2022 15:42:33 +0800</lastBuildDate><atom:link href="http://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 27 Oct 2022 10:13:28 +0800</lastBuildDate><atom:link href="http://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RetinaNet &amp; FCOS</title>
+      <link>http://example.org/posts/retinanet-fcos/</link>
+      <pubDate>Thu, 27 Oct 2022 10:13:28 +0800</pubDate>
+      
+      <guid>http://example.org/posts/retinanet-fcos/</guid>
+      <description>RetinaNet 简介 RetinaNet 是 Tsung-Yi Lin 和 Kaiming He（四作） 于 2018 年发表的论文 Focal Loss for Dense Object Detection。深入分析了极度不平衡的正负（前景背景）样本比例导致 one-stage 检测器精度低于 two-stage 检测器，基于上述分析，提出了一种简单但是非常实用的 Focal Loss 焦点损失函数，并且 Loss 设计思想可以推广到其他领域，同时针对目标检测领域特定问题，设计了 RetinaNet 网络，结合 Focal Loss 使得 one-stage 检测器在精度上能够达到乃至超过 two-stage 检测器。
+网络结构 RetinaNet的特征提取网络选择了残差网络ResNet，特征融合这块选择了FPN（特征金字塔网络），以特征金字塔不同的尺寸特征图作为输入，搭建三个用于分类和框回归的子网络。分类网络输出的特征图尺寸为（W,H,KA)，其中W、H为特征图宽高，KA为特征图通道，存放A个anchor各自的类别信息（K为类别数）。
+历史问题 在One stage中，detector直接在类别不平衡（负样本很多，正样本很少）中进行分类和回归，直接输出bbox和类别，原有的交叉熵损失无法处理这种不平衡，导致训练不充分，精度低，但是却提升了检测速度。
+在Two stage中，FPN网络已经过滤了一部分的背景bbox，因此在fast r-cnn中正负样本比例较均衡，因此准确率较高。
+针对所有的负样本，数量过多，主导了损失函数，不利于模型收敛。
+针对单个负样本，大多数负样本不包含任何物体，属于易分样本，且易分样本数量很多，训练时对应背景类的预测得分会很高，那么单个样本的loss就很小，反向计算时梯度小，造成易分负样本对loss的收敛作用有限。
+主要贡献 提出Focal Loss：解决one-stage算法中，样本不平衡和难易样本的问题。
+样本不平衡：保证在损失函数中，正样本与负样本的贡献（比重）均衡。
+难易样本：希望模型更关注难分样本，难分样本在loss中的比重更大。
+Focal Loss 二分类交叉熵损失函数：
+解决正负样本不均：加上一个权重α（范围[0,1]）
+解决难易样本不均：引入因子γ(≥0)，将高置信度的样本的损失权重降低
+Focal Loss
+展开后为
+优缺点分析 优点：提升准确率，降低了正负样本和难易样本不均衡带来的影响；
+缺点：Focal Loss易受噪声干扰，对图像标注的准确性要求非常高，一旦有标错的样本，就会被focal loss当做困难样本，从而影响学习效果。
+Citation 北信科视觉感知研讨课程（高丹阳师姐分享）
+RetinaNet
+一阶段目标检测器-RetinaNet网络详解
+Thanks for reading!</description>
+    </item>
+    
     <item>
       <title>FPN &amp; SSD &amp; YOLO</title>
       <link>http://example.org/posts/fpn-ssd-yolo/</link>
