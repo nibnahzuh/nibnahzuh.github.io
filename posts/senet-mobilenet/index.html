@@ -6,21 +6,18 @@
     
     <title>SENet &amp; MobileNet | Hzb&#39;s Study Blog</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="description" content="SENet 简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在深度学习领域，已经有很多成果通过在空间维度上对网络的性能进行了提升。而SENet反其道而行之，通过对通道关系进行建模来提升网络的性能。SENet较早的将注意力机制引入CNN中，使用了模块化设计。
-亮点 引入通道注意力机制，关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。
-网络结构 原理 SENet网络的创新点在于关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。为此，SENet提出了Squeeze-and-Excitation (SE)模块，SE模块首先对卷积得到的特征图进行Squeeze操作，得到channel级的全局特征，然后对全局特征进行Excitation操作，学习各个channel间的关系，也得到不同channel的权重，最后乘以原来的特征图得到最终特征。
+    <meta name="description" content="SENet   简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在深度学习领域，已经有很多成果通过在空间维度上对网络的性能进行了提升。而SENet反其道而行之，通过对通道关系进行建模来提升网络的性能。SENet较早的将注意力机制引入CNN中，使用了模块化设计。
+  亮点 引入通道注意力机制，关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。
+  网络结构   原理 SENet网络的创新点在于关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。为此，SENet提出了Squeeze-and-Excitation (SE)模块，SE模块首先对卷积得到的特征图进行Squeeze操作，得到channel级的全局特征，然后对全局特征进行Excitation操作，学习各个channel间的关系，也得到不同channel的权重，最后乘以原来的特征图得到最终特征。
 本质上，SE模块是在channel维度上做attention或者gating操作，这种注意力机制让模型可以更加关注信息量最大的channel特征，而抑制那些不重要的channel特征。另外一点是SE模块是通用的，这意味着其可以嵌入到现有的网络架构中。
-Squeeze 原始feature map的维度为H×W×C，其中H是高度（Height），W是宽度（width），C是通道数（channel）。Squeeze就是用全局平均池化（global average pooling）把H×W×C压缩为1×1×C。H×W压缩成一维后，相当于这一维参数获得了之前H×W全局的视野，感受区域更广。公式如下：
-Excitation Sequeeze操作得到了全局描述特征，接下来需要另外一种运算来提取channel之间的关系。 用两个全连接层来学习通道间的相关性，第一个FC层起到降维的作用，然后采用ReLU激活。最后的全连接层恢复原始的维度。公式如下：
-Reweight 将Excitation的输出权重作为经过特征选择后的每个特征通道的重要性，然后通过乘法逐通道加权到先前的特征上，完成在通道维度上的对原始特征的重标定。
-全局平均池化 思想：对于输出的每一个通道的特征图的所有像素计算一个平均值，经过全局平均池化之后就得到一个 维度=类别数的特征向量，然后直接输入到softmax层。
-作用：代替全连接层，可接受任意尺寸的图像。
-优点：
-可以更好的将类别与最后一个卷积层的特征图对应起来（每一个通道对应一种类别，这样每一张特征图都可以看成是该类别对应的类别置信图）； 降低参数量，全局平均池化层没有参数，可防止在该层过拟合； 整合了全局空间信息，对于输入图片的spatial translation更加鲁棒。 结构融合 上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于： 具有更多的非线性，可以更好地拟合通道间复杂的相关性； 减少了参数量和计算量。 下图是SE模块嵌入到ResNet的示例。操作过程基本和SE-Inception一样，只不过是在Addition前对分支上Residual的特征进行了特征重标定。如果对Addition后主支上的特征进行重标定，由于在主干上存在0~1的scale操作，在网络较深BP优化时就会在靠近输入层容易出现梯度消散的情况，导致模型难以优化。 运算效率 实验表明，SE模块在参数量上的增加带来的计算量增长微乎其微，但是性能却有所提升，当然这也取决于实际应用，如果因为SE模块导致参数量增加的掠夺，可以针对性的在适当的位置削减SE模块的数量，而精度几乎不受影响。
-以ResNet-50和SE-ResNet-50对比举例来说，SE-ResNet-50相对于ResNet-50有着10%模型参数的增长。额外的模型参数都存在于Bottleneck设计的两个Fully Connected中，由于ResNet结构中最后一个stage的特征通道数目为2048，导致模型参数有着较大的增长，实验发现移除掉最后一个stage中3个build block上的SE设定，可以将10%参数量的增长减少到2%。此时模型的精度几乎无损失。
-MobileNet 简介 MobileNet V1是由google2016年提出，2017年发布的文章。其主要创新点在于深度可分离卷积，而整个网络实际上也是深度可分离模块的堆叠。它基于流线型架构，使用深度可分离卷积来构建轻量级深度神经网络，用于移动和嵌入式视觉应用。该网络引入了两个简单的全局超参数——宽度乘数和分辨率乘数，可以有效地在延迟和准确性之间进行权衡。
-亮点 深度可分离卷积的使用 Global Average Pooling 的使用 用CONV/s2（步进2的卷积）代替MaxPool&#43;CONV 深度可分离卷积的使用 在进行 depthwise 卷积时只使用了一种维度为in_channels的卷积核进行特征提取（没有进行特征组合）。采用 depth-wise convolution 会有一个问题，就是导致 信息流通不畅 ，即输出的 feature map 仅包含输入的 feature map 的一部分，在这里，MobileNet 采用了 point-wise(1*1) convolution 帮助信息在通道之间流通。">
-    <meta name="generator" content="Hugo 0.101.0" />
+  Squeeze 原始feature map的维度为H×W×C，其中H是高度（Height），W是宽度（width），C是通道数（channel）。Squeeze就是用全局平均池化（global average pooling）把H×W×C压缩为1×1×C。H×W压缩成一维后，相当于这一维参数获得了之前H×W全局的视野，感受区域更广。公式如下：
+  Excitation Sequeeze操作得到了全局描述特征，接下来需要另外一种运算来提取channel之间的关系。 用两个全连接层来学习通道间的相关性，第一个FC层起到降维的作用，然后采用ReLU激活。最后的全连接层恢复原始的维度。公式如下：
+  Reweight 将Excitation的输出权重作为经过特征选择后的每个特征通道的重要性，然后通过乘法逐通道加权到先前的特征上，完成在通道维度上的对原始特征的重标定。
+  全局平均池化   思想：对于输出的每一个通道的特征图的所有像素计算一个平均值，经过全局平均池化之后就得到一个 维度=类别数的特征向量，然后直接输入到softmax层。
+  作用：代替全连接层，可接受任意尺寸的图像。
+  优点：
+ 可以更好的将类别与最后一个卷积层的特征图对应起来（每一个通道对应一种类别，这样每一张特征图都可以看成是该类别对应的类别置信图）； 降低参数量，全局平均池化层没有参数，可防止在该层过拟合； 整合了全局空间信息，对于输入图片的spatial translation更加鲁棒。      结构融合  上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于：  具有更多的非线性，可以更好地拟合通道间复杂的相关性； 减少了参数量和计算量。   下图是SE模块嵌入到ResNet的示例。操作过程基本和SE-Inception一样，只不过是在Addition前对分支上Residual的特征进行了特征重标定。如果对Addition后主支上的特征进行重标定，由于在主干上存在0~1的scale操作，在网络较深BP优化时就会在靠近输入层容易出现梯度消散的情况，导致模型难以优化。    运算效率 实验表明，SE模块在参数量上的增加带来的计算量增长微乎其微，但是性能却有所提升，当然这也取决于实际应用，如果因为SE模块导致参数量增加的掠夺，可以针对性的在适当的位置削减SE模块的数量，而精度几乎不受影响。">
+    <meta name="generator" content="Hugo 0.88.0" />
     
     
     
@@ -43,58 +40,49 @@ MobileNet 简介 MobileNet V1是由google2016年提出，2017年发布的文章�
     
     
     <meta property="og:title" content="SENet &amp; MobileNet" />
-<meta property="og:description" content="SENet 简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在深度学习领域，已经有很多成果通过在空间维度上对网络的性能进行了提升。而SENet反其道而行之，通过对通道关系进行建模来提升网络的性能。SENet较早的将注意力机制引入CNN中，使用了模块化设计。
-亮点 引入通道注意力机制，关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。
-网络结构 原理 SENet网络的创新点在于关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。为此，SENet提出了Squeeze-and-Excitation (SE)模块，SE模块首先对卷积得到的特征图进行Squeeze操作，得到channel级的全局特征，然后对全局特征进行Excitation操作，学习各个channel间的关系，也得到不同channel的权重，最后乘以原来的特征图得到最终特征。
+<meta property="og:description" content="SENet   简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在深度学习领域，已经有很多成果通过在空间维度上对网络的性能进行了提升。而SENet反其道而行之，通过对通道关系进行建模来提升网络的性能。SENet较早的将注意力机制引入CNN中，使用了模块化设计。
+  亮点 引入通道注意力机制，关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。
+  网络结构   原理 SENet网络的创新点在于关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。为此，SENet提出了Squeeze-and-Excitation (SE)模块，SE模块首先对卷积得到的特征图进行Squeeze操作，得到channel级的全局特征，然后对全局特征进行Excitation操作，学习各个channel间的关系，也得到不同channel的权重，最后乘以原来的特征图得到最终特征。
 本质上，SE模块是在channel维度上做attention或者gating操作，这种注意力机制让模型可以更加关注信息量最大的channel特征，而抑制那些不重要的channel特征。另外一点是SE模块是通用的，这意味着其可以嵌入到现有的网络架构中。
-Squeeze 原始feature map的维度为H×W×C，其中H是高度（Height），W是宽度（width），C是通道数（channel）。Squeeze就是用全局平均池化（global average pooling）把H×W×C压缩为1×1×C。H×W压缩成一维后，相当于这一维参数获得了之前H×W全局的视野，感受区域更广。公式如下：
-Excitation Sequeeze操作得到了全局描述特征，接下来需要另外一种运算来提取channel之间的关系。 用两个全连接层来学习通道间的相关性，第一个FC层起到降维的作用，然后采用ReLU激活。最后的全连接层恢复原始的维度。公式如下：
-Reweight 将Excitation的输出权重作为经过特征选择后的每个特征通道的重要性，然后通过乘法逐通道加权到先前的特征上，完成在通道维度上的对原始特征的重标定。
-全局平均池化 思想：对于输出的每一个通道的特征图的所有像素计算一个平均值，经过全局平均池化之后就得到一个 维度=类别数的特征向量，然后直接输入到softmax层。
-作用：代替全连接层，可接受任意尺寸的图像。
-优点：
-可以更好的将类别与最后一个卷积层的特征图对应起来（每一个通道对应一种类别，这样每一张特征图都可以看成是该类别对应的类别置信图）； 降低参数量，全局平均池化层没有参数，可防止在该层过拟合； 整合了全局空间信息，对于输入图片的spatial translation更加鲁棒。 结构融合 上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于： 具有更多的非线性，可以更好地拟合通道间复杂的相关性； 减少了参数量和计算量。 下图是SE模块嵌入到ResNet的示例。操作过程基本和SE-Inception一样，只不过是在Addition前对分支上Residual的特征进行了特征重标定。如果对Addition后主支上的特征进行重标定，由于在主干上存在0~1的scale操作，在网络较深BP优化时就会在靠近输入层容易出现梯度消散的情况，导致模型难以优化。 运算效率 实验表明，SE模块在参数量上的增加带来的计算量增长微乎其微，但是性能却有所提升，当然这也取决于实际应用，如果因为SE模块导致参数量增加的掠夺，可以针对性的在适当的位置削减SE模块的数量，而精度几乎不受影响。
-以ResNet-50和SE-ResNet-50对比举例来说，SE-ResNet-50相对于ResNet-50有着10%模型参数的增长。额外的模型参数都存在于Bottleneck设计的两个Fully Connected中，由于ResNet结构中最后一个stage的特征通道数目为2048，导致模型参数有着较大的增长，实验发现移除掉最后一个stage中3个build block上的SE设定，可以将10%参数量的增长减少到2%。此时模型的精度几乎无损失。
-MobileNet 简介 MobileNet V1是由google2016年提出，2017年发布的文章。其主要创新点在于深度可分离卷积，而整个网络实际上也是深度可分离模块的堆叠。它基于流线型架构，使用深度可分离卷积来构建轻量级深度神经网络，用于移动和嵌入式视觉应用。该网络引入了两个简单的全局超参数——宽度乘数和分辨率乘数，可以有效地在延迟和准确性之间进行权衡。
-亮点 深度可分离卷积的使用 Global Average Pooling 的使用 用CONV/s2（步进2的卷积）代替MaxPool&#43;CONV 深度可分离卷积的使用 在进行 depthwise 卷积时只使用了一种维度为in_channels的卷积核进行特征提取（没有进行特征组合）。采用 depth-wise convolution 会有一个问题，就是导致 信息流通不畅 ，即输出的 feature map 仅包含输入的 feature map 的一部分，在这里，MobileNet 采用了 point-wise(1*1) convolution 帮助信息在通道之间流通。" />
+  Squeeze 原始feature map的维度为H×W×C，其中H是高度（Height），W是宽度（width），C是通道数（channel）。Squeeze就是用全局平均池化（global average pooling）把H×W×C压缩为1×1×C。H×W压缩成一维后，相当于这一维参数获得了之前H×W全局的视野，感受区域更广。公式如下：
+  Excitation Sequeeze操作得到了全局描述特征，接下来需要另外一种运算来提取channel之间的关系。 用两个全连接层来学习通道间的相关性，第一个FC层起到降维的作用，然后采用ReLU激活。最后的全连接层恢复原始的维度。公式如下：
+  Reweight 将Excitation的输出权重作为经过特征选择后的每个特征通道的重要性，然后通过乘法逐通道加权到先前的特征上，完成在通道维度上的对原始特征的重标定。
+  全局平均池化   思想：对于输出的每一个通道的特征图的所有像素计算一个平均值，经过全局平均池化之后就得到一个 维度=类别数的特征向量，然后直接输入到softmax层。
+  作用：代替全连接层，可接受任意尺寸的图像。
+  优点：
+ 可以更好的将类别与最后一个卷积层的特征图对应起来（每一个通道对应一种类别，这样每一张特征图都可以看成是该类别对应的类别置信图）； 降低参数量，全局平均池化层没有参数，可防止在该层过拟合； 整合了全局空间信息，对于输入图片的spatial translation更加鲁棒。      结构融合  上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于：  具有更多的非线性，可以更好地拟合通道间复杂的相关性； 减少了参数量和计算量。   下图是SE模块嵌入到ResNet的示例。操作过程基本和SE-Inception一样，只不过是在Addition前对分支上Residual的特征进行了特征重标定。如果对Addition后主支上的特征进行重标定，由于在主干上存在0~1的scale操作，在网络较深BP优化时就会在靠近输入层容易出现梯度消散的情况，导致模型难以优化。    运算效率 实验表明，SE模块在参数量上的增加带来的计算量增长微乎其微，但是性能却有所提升，当然这也取决于实际应用，如果因为SE模块导致参数量增加的掠夺，可以针对性的在适当的位置削减SE模块的数量，而精度几乎不受影响。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://example.org/posts/senet-mobilenet/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-09-02T22:27:28+08:00" />
 <meta property="article:modified_time" content="2022-09-02T22:27:28+08:00" />
 
 <meta itemprop="name" content="SENet &amp; MobileNet">
-<meta itemprop="description" content="SENet 简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在深度学习领域，已经有很多成果通过在空间维度上对网络的性能进行了提升。而SENet反其道而行之，通过对通道关系进行建模来提升网络的性能。SENet较早的将注意力机制引入CNN中，使用了模块化设计。
-亮点 引入通道注意力机制，关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。
-网络结构 原理 SENet网络的创新点在于关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。为此，SENet提出了Squeeze-and-Excitation (SE)模块，SE模块首先对卷积得到的特征图进行Squeeze操作，得到channel级的全局特征，然后对全局特征进行Excitation操作，学习各个channel间的关系，也得到不同channel的权重，最后乘以原来的特征图得到最终特征。
+<meta itemprop="description" content="SENet   简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在深度学习领域，已经有很多成果通过在空间维度上对网络的性能进行了提升。而SENet反其道而行之，通过对通道关系进行建模来提升网络的性能。SENet较早的将注意力机制引入CNN中，使用了模块化设计。
+  亮点 引入通道注意力机制，关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。
+  网络结构   原理 SENet网络的创新点在于关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。为此，SENet提出了Squeeze-and-Excitation (SE)模块，SE模块首先对卷积得到的特征图进行Squeeze操作，得到channel级的全局特征，然后对全局特征进行Excitation操作，学习各个channel间的关系，也得到不同channel的权重，最后乘以原来的特征图得到最终特征。
 本质上，SE模块是在channel维度上做attention或者gating操作，这种注意力机制让模型可以更加关注信息量最大的channel特征，而抑制那些不重要的channel特征。另外一点是SE模块是通用的，这意味着其可以嵌入到现有的网络架构中。
-Squeeze 原始feature map的维度为H×W×C，其中H是高度（Height），W是宽度（width），C是通道数（channel）。Squeeze就是用全局平均池化（global average pooling）把H×W×C压缩为1×1×C。H×W压缩成一维后，相当于这一维参数获得了之前H×W全局的视野，感受区域更广。公式如下：
-Excitation Sequeeze操作得到了全局描述特征，接下来需要另外一种运算来提取channel之间的关系。 用两个全连接层来学习通道间的相关性，第一个FC层起到降维的作用，然后采用ReLU激活。最后的全连接层恢复原始的维度。公式如下：
-Reweight 将Excitation的输出权重作为经过特征选择后的每个特征通道的重要性，然后通过乘法逐通道加权到先前的特征上，完成在通道维度上的对原始特征的重标定。
-全局平均池化 思想：对于输出的每一个通道的特征图的所有像素计算一个平均值，经过全局平均池化之后就得到一个 维度=类别数的特征向量，然后直接输入到softmax层。
-作用：代替全连接层，可接受任意尺寸的图像。
-优点：
-可以更好的将类别与最后一个卷积层的特征图对应起来（每一个通道对应一种类别，这样每一张特征图都可以看成是该类别对应的类别置信图）； 降低参数量，全局平均池化层没有参数，可防止在该层过拟合； 整合了全局空间信息，对于输入图片的spatial translation更加鲁棒。 结构融合 上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于： 具有更多的非线性，可以更好地拟合通道间复杂的相关性； 减少了参数量和计算量。 下图是SE模块嵌入到ResNet的示例。操作过程基本和SE-Inception一样，只不过是在Addition前对分支上Residual的特征进行了特征重标定。如果对Addition后主支上的特征进行重标定，由于在主干上存在0~1的scale操作，在网络较深BP优化时就会在靠近输入层容易出现梯度消散的情况，导致模型难以优化。 运算效率 实验表明，SE模块在参数量上的增加带来的计算量增长微乎其微，但是性能却有所提升，当然这也取决于实际应用，如果因为SE模块导致参数量增加的掠夺，可以针对性的在适当的位置削减SE模块的数量，而精度几乎不受影响。
-以ResNet-50和SE-ResNet-50对比举例来说，SE-ResNet-50相对于ResNet-50有着10%模型参数的增长。额外的模型参数都存在于Bottleneck设计的两个Fully Connected中，由于ResNet结构中最后一个stage的特征通道数目为2048，导致模型参数有着较大的增长，实验发现移除掉最后一个stage中3个build block上的SE设定，可以将10%参数量的增长减少到2%。此时模型的精度几乎无损失。
-MobileNet 简介 MobileNet V1是由google2016年提出，2017年发布的文章。其主要创新点在于深度可分离卷积，而整个网络实际上也是深度可分离模块的堆叠。它基于流线型架构，使用深度可分离卷积来构建轻量级深度神经网络，用于移动和嵌入式视觉应用。该网络引入了两个简单的全局超参数——宽度乘数和分辨率乘数，可以有效地在延迟和准确性之间进行权衡。
-亮点 深度可分离卷积的使用 Global Average Pooling 的使用 用CONV/s2（步进2的卷积）代替MaxPool&#43;CONV 深度可分离卷积的使用 在进行 depthwise 卷积时只使用了一种维度为in_channels的卷积核进行特征提取（没有进行特征组合）。采用 depth-wise convolution 会有一个问题，就是导致 信息流通不畅 ，即输出的 feature map 仅包含输入的 feature map 的一部分，在这里，MobileNet 采用了 point-wise(1*1) convolution 帮助信息在通道之间流通。"><meta itemprop="datePublished" content="2022-09-02T22:27:28+08:00" />
+  Squeeze 原始feature map的维度为H×W×C，其中H是高度（Height），W是宽度（width），C是通道数（channel）。Squeeze就是用全局平均池化（global average pooling）把H×W×C压缩为1×1×C。H×W压缩成一维后，相当于这一维参数获得了之前H×W全局的视野，感受区域更广。公式如下：
+  Excitation Sequeeze操作得到了全局描述特征，接下来需要另外一种运算来提取channel之间的关系。 用两个全连接层来学习通道间的相关性，第一个FC层起到降维的作用，然后采用ReLU激活。最后的全连接层恢复原始的维度。公式如下：
+  Reweight 将Excitation的输出权重作为经过特征选择后的每个特征通道的重要性，然后通过乘法逐通道加权到先前的特征上，完成在通道维度上的对原始特征的重标定。
+  全局平均池化   思想：对于输出的每一个通道的特征图的所有像素计算一个平均值，经过全局平均池化之后就得到一个 维度=类别数的特征向量，然后直接输入到softmax层。
+  作用：代替全连接层，可接受任意尺寸的图像。
+  优点：
+ 可以更好的将类别与最后一个卷积层的特征图对应起来（每一个通道对应一种类别，这样每一张特征图都可以看成是该类别对应的类别置信图）； 降低参数量，全局平均池化层没有参数，可防止在该层过拟合； 整合了全局空间信息，对于输入图片的spatial translation更加鲁棒。      结构融合  上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于：  具有更多的非线性，可以更好地拟合通道间复杂的相关性； 减少了参数量和计算量。   下图是SE模块嵌入到ResNet的示例。操作过程基本和SE-Inception一样，只不过是在Addition前对分支上Residual的特征进行了特征重标定。如果对Addition后主支上的特征进行重标定，由于在主干上存在0~1的scale操作，在网络较深BP优化时就会在靠近输入层容易出现梯度消散的情况，导致模型难以优化。    运算效率 实验表明，SE模块在参数量上的增加带来的计算量增长微乎其微，但是性能却有所提升，当然这也取决于实际应用，如果因为SE模块导致参数量增加的掠夺，可以针对性的在适当的位置削减SE模块的数量，而精度几乎不受影响。"><meta itemprop="datePublished" content="2022-09-02T22:27:28+08:00" />
 <meta itemprop="dateModified" content="2022-09-02T22:27:28+08:00" />
 <meta itemprop="wordCount" content="320">
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="SENet &amp; MobileNet"/>
-<meta name="twitter:description" content="SENet 简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在深度学习领域，已经有很多成果通过在空间维度上对网络的性能进行了提升。而SENet反其道而行之，通过对通道关系进行建模来提升网络的性能。SENet较早的将注意力机制引入CNN中，使用了模块化设计。
-亮点 引入通道注意力机制，关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。
-网络结构 原理 SENet网络的创新点在于关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。为此，SENet提出了Squeeze-and-Excitation (SE)模块，SE模块首先对卷积得到的特征图进行Squeeze操作，得到channel级的全局特征，然后对全局特征进行Excitation操作，学习各个channel间的关系，也得到不同channel的权重，最后乘以原来的特征图得到最终特征。
+<meta name="twitter:description" content="SENet   简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在深度学习领域，已经有很多成果通过在空间维度上对网络的性能进行了提升。而SENet反其道而行之，通过对通道关系进行建模来提升网络的性能。SENet较早的将注意力机制引入CNN中，使用了模块化设计。
+  亮点 引入通道注意力机制，关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。
+  网络结构   原理 SENet网络的创新点在于关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。为此，SENet提出了Squeeze-and-Excitation (SE)模块，SE模块首先对卷积得到的特征图进行Squeeze操作，得到channel级的全局特征，然后对全局特征进行Excitation操作，学习各个channel间的关系，也得到不同channel的权重，最后乘以原来的特征图得到最终特征。
 本质上，SE模块是在channel维度上做attention或者gating操作，这种注意力机制让模型可以更加关注信息量最大的channel特征，而抑制那些不重要的channel特征。另外一点是SE模块是通用的，这意味着其可以嵌入到现有的网络架构中。
-Squeeze 原始feature map的维度为H×W×C，其中H是高度（Height），W是宽度（width），C是通道数（channel）。Squeeze就是用全局平均池化（global average pooling）把H×W×C压缩为1×1×C。H×W压缩成一维后，相当于这一维参数获得了之前H×W全局的视野，感受区域更广。公式如下：
-Excitation Sequeeze操作得到了全局描述特征，接下来需要另外一种运算来提取channel之间的关系。 用两个全连接层来学习通道间的相关性，第一个FC层起到降维的作用，然后采用ReLU激活。最后的全连接层恢复原始的维度。公式如下：
-Reweight 将Excitation的输出权重作为经过特征选择后的每个特征通道的重要性，然后通过乘法逐通道加权到先前的特征上，完成在通道维度上的对原始特征的重标定。
-全局平均池化 思想：对于输出的每一个通道的特征图的所有像素计算一个平均值，经过全局平均池化之后就得到一个 维度=类别数的特征向量，然后直接输入到softmax层。
-作用：代替全连接层，可接受任意尺寸的图像。
-优点：
-可以更好的将类别与最后一个卷积层的特征图对应起来（每一个通道对应一种类别，这样每一张特征图都可以看成是该类别对应的类别置信图）； 降低参数量，全局平均池化层没有参数，可防止在该层过拟合； 整合了全局空间信息，对于输入图片的spatial translation更加鲁棒。 结构融合 上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于： 具有更多的非线性，可以更好地拟合通道间复杂的相关性； 减少了参数量和计算量。 下图是SE模块嵌入到ResNet的示例。操作过程基本和SE-Inception一样，只不过是在Addition前对分支上Residual的特征进行了特征重标定。如果对Addition后主支上的特征进行重标定，由于在主干上存在0~1的scale操作，在网络较深BP优化时就会在靠近输入层容易出现梯度消散的情况，导致模型难以优化。 运算效率 实验表明，SE模块在参数量上的增加带来的计算量增长微乎其微，但是性能却有所提升，当然这也取决于实际应用，如果因为SE模块导致参数量增加的掠夺，可以针对性的在适当的位置削减SE模块的数量，而精度几乎不受影响。
-以ResNet-50和SE-ResNet-50对比举例来说，SE-ResNet-50相对于ResNet-50有着10%模型参数的增长。额外的模型参数都存在于Bottleneck设计的两个Fully Connected中，由于ResNet结构中最后一个stage的特征通道数目为2048，导致模型参数有着较大的增长，实验发现移除掉最后一个stage中3个build block上的SE设定，可以将10%参数量的增长减少到2%。此时模型的精度几乎无损失。
-MobileNet 简介 MobileNet V1是由google2016年提出，2017年发布的文章。其主要创新点在于深度可分离卷积，而整个网络实际上也是深度可分离模块的堆叠。它基于流线型架构，使用深度可分离卷积来构建轻量级深度神经网络，用于移动和嵌入式视觉应用。该网络引入了两个简单的全局超参数——宽度乘数和分辨率乘数，可以有效地在延迟和准确性之间进行权衡。
-亮点 深度可分离卷积的使用 Global Average Pooling 的使用 用CONV/s2（步进2的卷积）代替MaxPool&#43;CONV 深度可分离卷积的使用 在进行 depthwise 卷积时只使用了一种维度为in_channels的卷积核进行特征提取（没有进行特征组合）。采用 depth-wise convolution 会有一个问题，就是导致 信息流通不畅 ，即输出的 feature map 仅包含输入的 feature map 的一部分，在这里，MobileNet 采用了 point-wise(1*1) convolution 帮助信息在通道之间流通。"/>
+  Squeeze 原始feature map的维度为H×W×C，其中H是高度（Height），W是宽度（width），C是通道数（channel）。Squeeze就是用全局平均池化（global average pooling）把H×W×C压缩为1×1×C。H×W压缩成一维后，相当于这一维参数获得了之前H×W全局的视野，感受区域更广。公式如下：
+  Excitation Sequeeze操作得到了全局描述特征，接下来需要另外一种运算来提取channel之间的关系。 用两个全连接层来学习通道间的相关性，第一个FC层起到降维的作用，然后采用ReLU激活。最后的全连接层恢复原始的维度。公式如下：
+  Reweight 将Excitation的输出权重作为经过特征选择后的每个特征通道的重要性，然后通过乘法逐通道加权到先前的特征上，完成在通道维度上的对原始特征的重标定。
+  全局平均池化   思想：对于输出的每一个通道的特征图的所有像素计算一个平均值，经过全局平均池化之后就得到一个 维度=类别数的特征向量，然后直接输入到softmax层。
+  作用：代替全连接层，可接受任意尺寸的图像。
+  优点：
+ 可以更好的将类别与最后一个卷积层的特征图对应起来（每一个通道对应一种类别，这样每一张特征图都可以看成是该类别对应的类别置信图）； 降低参数量，全局平均池化层没有参数，可防止在该层过拟合； 整合了全局空间信息，对于输入图片的spatial translation更加鲁棒。      结构融合  上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于：  具有更多的非线性，可以更好地拟合通道间复杂的相关性； 减少了参数量和计算量。   下图是SE模块嵌入到ResNet的示例。操作过程基本和SE-Inception一样，只不过是在Addition前对分支上Residual的特征进行了特征重标定。如果对Addition后主支上的特征进行重标定，由于在主干上存在0~1的scale操作，在网络较深BP优化时就会在靠近输入层容易出现梯度消散的情况，导致模型难以优化。    运算效率 实验表明，SE模块在参数量上的增加带来的计算量增长微乎其微，但是性能却有所提升，当然这也取决于实际应用，如果因为SE模块导致参数量增加的掠夺，可以针对性的在适当的位置削减SE模块的数量，而精度几乎不受影响。"/>
 
 	
   </head>
@@ -179,7 +167,7 @@ MobileNet 简介 MobileNet V1是由google2016年提出，2017年发布的文章�
 </li>
 <li>
 <h4 id="网络结构">网络结构</h4>
-<img src="/images/senet1.jpg" alt="senet1" style="zoom: 67%;" />
+<p><img src="/images/senet1.jpg" alt="senet1" style="zoom: 67%;" /></p>
 </li>
 <li>
 <h4 id="原理">原理</h4>
@@ -189,12 +177,12 @@ MobileNet 简介 MobileNet V1是由google2016年提出，2017年发布的文章�
 <li>
 <h4 id="squeeze">Squeeze</h4>
 <p>原始feature map的维度为H×W×C，其中H是高度（Height），W是宽度（width），C是通道数（channel）。Squeeze就是用全局平均池化（global average pooling）把H×W×C压缩为1×1×C。H×W压缩成一维后，相当于这一维参数获得了之前H×W全局的视野，感受区域更广。公式如下：</p>
-<img src="/images/senet2.jpg" alt="image-20220905093003811" style="zoom: 50%;" />
+<p><img src="/images/senet2.jpg" alt="image-20220905093003811" style="zoom: 50%;" /></p>
 </li>
 <li>
 <h4 id="excitation">Excitation</h4>
 <p>Sequeeze操作得到了全局描述特征，接下来需要另外一种运算来提取channel之间的关系。 用两个全连接层来学习通道间的相关性，第一个FC层起到降维的作用，然后采用ReLU激活。最后的全连接层恢复原始的维度。公式如下：</p>
-<img src="/images/senet3.jpg" alt="senet3" style="zoom:50%;" />
+<p><img src="/images/senet3.jpg" alt="senet3" style="zoom:50%;" /></p>
 </li>
 <li>
 <h4 id="reweight">Reweight</h4>
@@ -221,7 +209,7 @@ MobileNet 简介 MobileNet V1是由google2016年提出，2017年发布的文章�
 </li>
 <li>
 <h4 id="结构融合">结构融合</h4>
-<img src="/images/senet4.jpg" alt="senet4" style="zoom:50%;" />
+<p><img src="/images/senet4.jpg" alt="senet4" style="zoom:50%;" /></p>
 <ul>
 <li>上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于：
 <ol>
@@ -266,7 +254,7 @@ MobileNet 简介 MobileNet V1是由google2016年提出，2017年发布的文章�
 </li>
 <li>
 <p>原论文中对第一层没有用此卷积，深度可分离卷积中的每一个后面都跟 BN 和 RELU。其中，Relu6=min(max(0,x),6)。</p>
-<img src="/images/mobilenet1.png" alt="mobilenet1" style="zoom:50%;" />
+<p><img src="/images/mobilenet1.png" alt="mobilenet1" style="zoom:50%;" /></p>
 <pre tabindex="0"><code>ReLU6就是普通的ReLU但是限制最大输出值为6（对输出值做clip），这是为了在移动端设备float16的低精度的时候，也能有很好的数值分辨率，如果对ReLU的激活范围不加限制，输出范围为0到正无穷，如果激活值非常大，分布在一个很大的范围内，则低精度的float16无法很好地精确描述如此大范围的数值，带来精度损失。
 </code></pre></li>
 </ul>
@@ -321,13 +309,13 @@ MobileNet 简介 MobileNet V1是由google2016年提出，2017年发布的文章�
 </li>
 <li>
 <p>MobileNet V2 building block 如下所示，若需要下采样，可在 DWise 时采用步长为 2 的卷积；小网络使用小的扩张系数（expansion factor），大网络使用大一点的扩张系数（expansion factor），推荐是5~10，论文中 t = 6t。</p>
-<img src="/images/mobilenet2.jpg" alt="mobilenet2" style="zoom: 50%;" />
+<p><img src="/images/mobilenet2.jpg" alt="mobilenet2" style="zoom: 50%;" /></p>
 </li>
 </ul>
 </li>
 <li>
 <h4 id="具体改进">具体改进</h4>
-<img src="/images/mobilenet3.png" alt="mobilenet3" style="zoom:50%;" />
+<p><img src="/images/mobilenet3.png" alt="mobilenet3" style="zoom:50%;" /></p>
 <ul>
 <li>V2 去掉了第二个 PW 的激活函数改为线性激活。
 论文作者称其为 Linear Bottleneck。原因如上所述是因为作者认为激活函数在高维空间能够有效的增加非线性，而在低维空间时则会破坏特征，不如线性的效果好。</li>
@@ -355,12 +343,12 @@ MobileNet 简介 MobileNet V1是由google2016年提出，2017年发布的文章�
 <li>
 <p>引入SE结构</p>
 <p>在bottlenet结构中加入了SE结构，并且放在了depthwise filter之后，如下图。因为SE结构会消耗一定的时间，所以作者在含有SE的结构中，将expansion layer的channel变为原来的1/4,这样作者发现，即提高了精度，同时还没有增加时间消耗。并且SE结构放在了depthwise之后。</p>
-<img src="/images/mobilenet4.png" alt="image-20220912143433488" style="zoom:50%;" />
+<p><img src="/images/mobilenet4.png" alt="image-20220912143433488" style="zoom:50%;" /></p>
 </li>
 <li>
 <p>修改尾部结构</p>
 <p>在MobileNet V2中，avg pooling之前，存在一个1x1的卷积层，目的是提高特征图的维度，更有利于结构的预测，但是这其实带来了一定的计算量了，所以这里作者修改了，将其放在avg pooling的后面，首先利用avg pooling将特征图大小由7x7降到了1x1，降到1x1后，然后再利用1x1提高维度，这样就减少了7x7=49倍的计算量。并且为了进一步的降低计算量，作者直接去掉了前面纺锤型卷积的3x3以及1x1卷积，进一步减少了计算量，就变成了如下图第二行所示的结构，作者将其中的3x3以及1x1去掉后，精度并没有得到损失。这里降低了大约15ms的速度。</p>
-<img src="/images/mobilenet5.jpg" alt="mobilenet5" style="zoom:60%;" />
+<p><img src="/images/mobilenet5.jpg" alt="mobilenet5" style="zoom:60%;" /></p>
 </li>
 <li>
 <p>修改channel数量</p>
@@ -369,8 +357,8 @@ MobileNet 简介 MobileNet V1是由google2016年提出，2017年发布的文章�
 <li>
 <p>非线性变换的改变</p>
 <p>使用h-swish替换swish，swish是谷歌自家的研究成果，这次在其基础上，为速度进行了优化。swish与h-swish公式如下所示，由于sigmoid的计算耗时较长，特别是在移动端，这些耗时就会比较明显，所以作者使用ReLU6(x+3)/6来近似替代sigmoid，观察下图可以发现，其实相差不大的。利用ReLU有几点好处：1.可以在任何软硬件平台进行计算，2.量化的时候，它消除了潜在的精度损失，使用h-swish替换swith，在量化模式下回提高大约15%的效率，另外，h-swish在深层网络中更加明显。使用h-swish@16可以提高大约0.2%的精度，但是时间延长了大约20%。</p>
-<img src="/images/mobilenet6.png" alt="mobilenet6" style="zoom:50%;" />
-<img src="/images/mobilenet7.png" alt="mobilenet7" style="zoom:50%;" />
+<p><img src="/images/mobilenet6.png" alt="mobilenet6" style="zoom:50%;" /></p>
+<p><img src="/images/mobilenet7.png" alt="mobilenet7" style="zoom:50%;" /></p>
 </li>
 </ul>
 </li>

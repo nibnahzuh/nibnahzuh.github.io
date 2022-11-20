@@ -6,24 +6,20 @@
     
     <title>Rcnn &amp; Fast-Rcnn &amp; Faster-Rcnn | Hzb&#39;s Study Blog</title>
     <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="description" content="RCNN 简介 R-CNN的全称是Region-CNN，是第一个成功将深度学习应用到目标检测上的算法。R-CNN基于卷积神经网络，线性回归，和支持向量机等算法，实现目标检测技术。R-CNN遵循传统目标检测的思路，同样采用提取框，对每个框提取特征、图像分类、 非极大值抑制四个步骤进行目标检测。只不过在提取特征这一步，将传统的特征（如 SIFT、HOG 特征等）换成了深度卷积网络提取的特征。
-算法流程 候选区域生成
+    <meta name="description" content="RCNN   简介 R-CNN的全称是Region-CNN，是第一个成功将深度学习应用到目标检测上的算法。R-CNN基于卷积神经网络，线性回归，和支持向量机等算法，实现目标检测技术。R-CNN遵循传统目标检测的思路，同样采用提取框，对每个框提取特征、图像分类、 非极大值抑制四个步骤进行目标检测。只不过在提取特征这一步，将传统的特征（如 SIFT、HOG 特征等）换成了深度卷积网络提取的特征。
+  算法流程   候选区域生成
 使用Selective Search算法对每张输入图像使用选择性搜索来选取多个高质量的候选区域（Region Proposal）。这个算法先对图像基于像素信息做快速分割来得到多个区域，然后将当下最相似的两区域合并成一个区域，重复进行合并直到整张图像变成一个区域。最后根据合并的信息生成多个有层次结构的提议区 域，并为每个提议区域生成物体类别和真实边界框。
-特征提取
+  特征提取
 选取一个预先训练好的卷积神经网络，去掉最后的输出层来作为特征抽取模块。对每个提议区域，将其变形成卷积神经网络需要的输入尺寸后进行前向计算抽取特征。
-SVM分类器
+  SVM分类器
 将每个提议区域的特征连同其标注做成一个样本，训练多个支持向量机(SVM)来进行物 体类别分类，这里第 i 个 SVM 预测样本是否属于第 i 类。
-边界框回归器
+  边界框回归器
 在这些样本上训练一个线性回归模型来预测（精修）真实边界框。对于SVM分好类的候选区域做边框回归，用Bounding box回归值校正原来的建议窗口，生成预测窗口坐标
-Selective Search Selective Search（选择性搜索）是用于目标检测的region proposal算法，它计算速度快，具有很高的召回率，基于颜色，纹理，大小和形状兼容计算相似区域的分层分组。
+    Selective Search Selective Search（选择性搜索）是用于目标检测的region proposal算法，它计算速度快，具有很高的召回率，基于颜色，纹理，大小和形状兼容计算相似区域的分层分组。
 图像中区域特征比像素更具代表性，作者使用Felzenszwalb and Huttenlocher的方法产生图像初始区域，使用贪心算法对区域进行迭代分组：
-计算所有邻近区域之间的相似性； 两个最相似的区域被组合在一起； 计算合并区域和相邻区域的相似度； 重复2、3过程，直到整个图像变为一个地区。 在每次迭代中，形成更大的区域并将其添加到区域提议列表中。以自下而上的方式创建从较小的细分segments到较大细分segments的region proposal。
-Bounding box regression Rcnn的Bounding box regression（边框回归）是指对粗略的预测框P进行平移和尺度放缩来微调， 使得经过微调后的窗口G&rsquo;跟Ground Truth G更接近， 这样定位会更准确，其详细数学原理参考边框回归(Bounding Box Regression)详解。
-Citation 北信科视觉感知研讨课程（赵永瑞同学分享）
-边框回归(Bounding Box Regression)详解
-理解Selective Search
-Thanks for reading! ">
-    <meta name="generator" content="Hugo 0.101.0" />
+ 计算所有邻近区域之间的相似性； 两个最相似的区域被组合在一起； 计算合并区域和相邻区域的相似度； 重复2、3过程，直到整个图像变为一个地区。  在每次迭代中，形成更大的区域并将其添加到区域提议列表中。以自下而上的方式创建从较小的细分segments到较大细分segments的region proposal。
+  Bounding box regression Rcnn的Bounding box regression（边框回归）是指对粗略的预测框P进行平移和尺度放缩来微调， 使得经过微调后的窗口G&rsquo;跟Ground Truth G更接近， 这样定位会更准确，其详细数学原理参考边框回归(Bounding Box Regression)详解。">
+    <meta name="generator" content="Hugo 0.88.0" />
     
     
     
@@ -46,67 +42,55 @@ Thanks for reading! ">
     
     
     <meta property="og:title" content="Rcnn &amp; Fast-Rcnn &amp; Faster-Rcnn" />
-<meta property="og:description" content="RCNN 简介 R-CNN的全称是Region-CNN，是第一个成功将深度学习应用到目标检测上的算法。R-CNN基于卷积神经网络，线性回归，和支持向量机等算法，实现目标检测技术。R-CNN遵循传统目标检测的思路，同样采用提取框，对每个框提取特征、图像分类、 非极大值抑制四个步骤进行目标检测。只不过在提取特征这一步，将传统的特征（如 SIFT、HOG 特征等）换成了深度卷积网络提取的特征。
-算法流程 候选区域生成
+<meta property="og:description" content="RCNN   简介 R-CNN的全称是Region-CNN，是第一个成功将深度学习应用到目标检测上的算法。R-CNN基于卷积神经网络，线性回归，和支持向量机等算法，实现目标检测技术。R-CNN遵循传统目标检测的思路，同样采用提取框，对每个框提取特征、图像分类、 非极大值抑制四个步骤进行目标检测。只不过在提取特征这一步，将传统的特征（如 SIFT、HOG 特征等）换成了深度卷积网络提取的特征。
+  算法流程   候选区域生成
 使用Selective Search算法对每张输入图像使用选择性搜索来选取多个高质量的候选区域（Region Proposal）。这个算法先对图像基于像素信息做快速分割来得到多个区域，然后将当下最相似的两区域合并成一个区域，重复进行合并直到整张图像变成一个区域。最后根据合并的信息生成多个有层次结构的提议区 域，并为每个提议区域生成物体类别和真实边界框。
-特征提取
+  特征提取
 选取一个预先训练好的卷积神经网络，去掉最后的输出层来作为特征抽取模块。对每个提议区域，将其变形成卷积神经网络需要的输入尺寸后进行前向计算抽取特征。
-SVM分类器
+  SVM分类器
 将每个提议区域的特征连同其标注做成一个样本，训练多个支持向量机(SVM)来进行物 体类别分类，这里第 i 个 SVM 预测样本是否属于第 i 类。
-边界框回归器
+  边界框回归器
 在这些样本上训练一个线性回归模型来预测（精修）真实边界框。对于SVM分好类的候选区域做边框回归，用Bounding box回归值校正原来的建议窗口，生成预测窗口坐标
-Selective Search Selective Search（选择性搜索）是用于目标检测的region proposal算法，它计算速度快，具有很高的召回率，基于颜色，纹理，大小和形状兼容计算相似区域的分层分组。
+    Selective Search Selective Search（选择性搜索）是用于目标检测的region proposal算法，它计算速度快，具有很高的召回率，基于颜色，纹理，大小和形状兼容计算相似区域的分层分组。
 图像中区域特征比像素更具代表性，作者使用Felzenszwalb and Huttenlocher的方法产生图像初始区域，使用贪心算法对区域进行迭代分组：
-计算所有邻近区域之间的相似性； 两个最相似的区域被组合在一起； 计算合并区域和相邻区域的相似度； 重复2、3过程，直到整个图像变为一个地区。 在每次迭代中，形成更大的区域并将其添加到区域提议列表中。以自下而上的方式创建从较小的细分segments到较大细分segments的region proposal。
-Bounding box regression Rcnn的Bounding box regression（边框回归）是指对粗略的预测框P进行平移和尺度放缩来微调， 使得经过微调后的窗口G&rsquo;跟Ground Truth G更接近， 这样定位会更准确，其详细数学原理参考边框回归(Bounding Box Regression)详解。
-Citation 北信科视觉感知研讨课程（赵永瑞同学分享）
-边框回归(Bounding Box Regression)详解
-理解Selective Search
-Thanks for reading! " />
+ 计算所有邻近区域之间的相似性； 两个最相似的区域被组合在一起； 计算合并区域和相邻区域的相似度； 重复2、3过程，直到整个图像变为一个地区。  在每次迭代中，形成更大的区域并将其添加到区域提议列表中。以自下而上的方式创建从较小的细分segments到较大细分segments的region proposal。
+  Bounding box regression Rcnn的Bounding box regression（边框回归）是指对粗略的预测框P进行平移和尺度放缩来微调， 使得经过微调后的窗口G&rsquo;跟Ground Truth G更接近， 这样定位会更准确，其详细数学原理参考边框回归(Bounding Box Regression)详解。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://example.org/posts/rcnn-fast-rcnn-faster-rcnn/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-09-21T16:55:23+08:00" />
 <meta property="article:modified_time" content="2022-09-21T16:55:23+08:00" />
 
 <meta itemprop="name" content="Rcnn &amp; Fast-Rcnn &amp; Faster-Rcnn">
-<meta itemprop="description" content="RCNN 简介 R-CNN的全称是Region-CNN，是第一个成功将深度学习应用到目标检测上的算法。R-CNN基于卷积神经网络，线性回归，和支持向量机等算法，实现目标检测技术。R-CNN遵循传统目标检测的思路，同样采用提取框，对每个框提取特征、图像分类、 非极大值抑制四个步骤进行目标检测。只不过在提取特征这一步，将传统的特征（如 SIFT、HOG 特征等）换成了深度卷积网络提取的特征。
-算法流程 候选区域生成
+<meta itemprop="description" content="RCNN   简介 R-CNN的全称是Region-CNN，是第一个成功将深度学习应用到目标检测上的算法。R-CNN基于卷积神经网络，线性回归，和支持向量机等算法，实现目标检测技术。R-CNN遵循传统目标检测的思路，同样采用提取框，对每个框提取特征、图像分类、 非极大值抑制四个步骤进行目标检测。只不过在提取特征这一步，将传统的特征（如 SIFT、HOG 特征等）换成了深度卷积网络提取的特征。
+  算法流程   候选区域生成
 使用Selective Search算法对每张输入图像使用选择性搜索来选取多个高质量的候选区域（Region Proposal）。这个算法先对图像基于像素信息做快速分割来得到多个区域，然后将当下最相似的两区域合并成一个区域，重复进行合并直到整张图像变成一个区域。最后根据合并的信息生成多个有层次结构的提议区 域，并为每个提议区域生成物体类别和真实边界框。
-特征提取
+  特征提取
 选取一个预先训练好的卷积神经网络，去掉最后的输出层来作为特征抽取模块。对每个提议区域，将其变形成卷积神经网络需要的输入尺寸后进行前向计算抽取特征。
-SVM分类器
+  SVM分类器
 将每个提议区域的特征连同其标注做成一个样本，训练多个支持向量机(SVM)来进行物 体类别分类，这里第 i 个 SVM 预测样本是否属于第 i 类。
-边界框回归器
+  边界框回归器
 在这些样本上训练一个线性回归模型来预测（精修）真实边界框。对于SVM分好类的候选区域做边框回归，用Bounding box回归值校正原来的建议窗口，生成预测窗口坐标
-Selective Search Selective Search（选择性搜索）是用于目标检测的region proposal算法，它计算速度快，具有很高的召回率，基于颜色，纹理，大小和形状兼容计算相似区域的分层分组。
+    Selective Search Selective Search（选择性搜索）是用于目标检测的region proposal算法，它计算速度快，具有很高的召回率，基于颜色，纹理，大小和形状兼容计算相似区域的分层分组。
 图像中区域特征比像素更具代表性，作者使用Felzenszwalb and Huttenlocher的方法产生图像初始区域，使用贪心算法对区域进行迭代分组：
-计算所有邻近区域之间的相似性； 两个最相似的区域被组合在一起； 计算合并区域和相邻区域的相似度； 重复2、3过程，直到整个图像变为一个地区。 在每次迭代中，形成更大的区域并将其添加到区域提议列表中。以自下而上的方式创建从较小的细分segments到较大细分segments的region proposal。
-Bounding box regression Rcnn的Bounding box regression（边框回归）是指对粗略的预测框P进行平移和尺度放缩来微调， 使得经过微调后的窗口G&rsquo;跟Ground Truth G更接近， 这样定位会更准确，其详细数学原理参考边框回归(Bounding Box Regression)详解。
-Citation 北信科视觉感知研讨课程（赵永瑞同学分享）
-边框回归(Bounding Box Regression)详解
-理解Selective Search
-Thanks for reading! "><meta itemprop="datePublished" content="2022-09-21T16:55:23+08:00" />
+ 计算所有邻近区域之间的相似性； 两个最相似的区域被组合在一起； 计算合并区域和相邻区域的相似度； 重复2、3过程，直到整个图像变为一个地区。  在每次迭代中，形成更大的区域并将其添加到区域提议列表中。以自下而上的方式创建从较小的细分segments到较大细分segments的region proposal。
+  Bounding box regression Rcnn的Bounding box regression（边框回归）是指对粗略的预测框P进行平移和尺度放缩来微调， 使得经过微调后的窗口G&rsquo;跟Ground Truth G更接近， 这样定位会更准确，其详细数学原理参考边框回归(Bounding Box Regression)详解。"><meta itemprop="datePublished" content="2022-09-21T16:55:23+08:00" />
 <meta itemprop="dateModified" content="2022-09-21T16:55:23+08:00" />
 <meta itemprop="wordCount" content="62">
 <meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Rcnn &amp; Fast-Rcnn &amp; Faster-Rcnn"/>
-<meta name="twitter:description" content="RCNN 简介 R-CNN的全称是Region-CNN，是第一个成功将深度学习应用到目标检测上的算法。R-CNN基于卷积神经网络，线性回归，和支持向量机等算法，实现目标检测技术。R-CNN遵循传统目标检测的思路，同样采用提取框，对每个框提取特征、图像分类、 非极大值抑制四个步骤进行目标检测。只不过在提取特征这一步，将传统的特征（如 SIFT、HOG 特征等）换成了深度卷积网络提取的特征。
-算法流程 候选区域生成
+<meta name="twitter:description" content="RCNN   简介 R-CNN的全称是Region-CNN，是第一个成功将深度学习应用到目标检测上的算法。R-CNN基于卷积神经网络，线性回归，和支持向量机等算法，实现目标检测技术。R-CNN遵循传统目标检测的思路，同样采用提取框，对每个框提取特征、图像分类、 非极大值抑制四个步骤进行目标检测。只不过在提取特征这一步，将传统的特征（如 SIFT、HOG 特征等）换成了深度卷积网络提取的特征。
+  算法流程   候选区域生成
 使用Selective Search算法对每张输入图像使用选择性搜索来选取多个高质量的候选区域（Region Proposal）。这个算法先对图像基于像素信息做快速分割来得到多个区域，然后将当下最相似的两区域合并成一个区域，重复进行合并直到整张图像变成一个区域。最后根据合并的信息生成多个有层次结构的提议区 域，并为每个提议区域生成物体类别和真实边界框。
-特征提取
+  特征提取
 选取一个预先训练好的卷积神经网络，去掉最后的输出层来作为特征抽取模块。对每个提议区域，将其变形成卷积神经网络需要的输入尺寸后进行前向计算抽取特征。
-SVM分类器
+  SVM分类器
 将每个提议区域的特征连同其标注做成一个样本，训练多个支持向量机(SVM)来进行物 体类别分类，这里第 i 个 SVM 预测样本是否属于第 i 类。
-边界框回归器
+  边界框回归器
 在这些样本上训练一个线性回归模型来预测（精修）真实边界框。对于SVM分好类的候选区域做边框回归，用Bounding box回归值校正原来的建议窗口，生成预测窗口坐标
-Selective Search Selective Search（选择性搜索）是用于目标检测的region proposal算法，它计算速度快，具有很高的召回率，基于颜色，纹理，大小和形状兼容计算相似区域的分层分组。
+    Selective Search Selective Search（选择性搜索）是用于目标检测的region proposal算法，它计算速度快，具有很高的召回率，基于颜色，纹理，大小和形状兼容计算相似区域的分层分组。
 图像中区域特征比像素更具代表性，作者使用Felzenszwalb and Huttenlocher的方法产生图像初始区域，使用贪心算法对区域进行迭代分组：
-计算所有邻近区域之间的相似性； 两个最相似的区域被组合在一起； 计算合并区域和相邻区域的相似度； 重复2、3过程，直到整个图像变为一个地区。 在每次迭代中，形成更大的区域并将其添加到区域提议列表中。以自下而上的方式创建从较小的细分segments到较大细分segments的region proposal。
-Bounding box regression Rcnn的Bounding box regression（边框回归）是指对粗略的预测框P进行平移和尺度放缩来微调， 使得经过微调后的窗口G&rsquo;跟Ground Truth G更接近， 这样定位会更准确，其详细数学原理参考边框回归(Bounding Box Regression)详解。
-Citation 北信科视觉感知研讨课程（赵永瑞同学分享）
-边框回归(Bounding Box Regression)详解
-理解Selective Search
-Thanks for reading! "/>
+ 计算所有邻近区域之间的相似性； 两个最相似的区域被组合在一起； 计算合并区域和相邻区域的相似度； 重复2、3过程，直到整个图像变为一个地区。  在每次迭代中，形成更大的区域并将其添加到区域提议列表中。以自下而上的方式创建从较小的细分segments到较大细分segments的region proposal。
+  Bounding box regression Rcnn的Bounding box regression（边框回归）是指对粗略的预测框P进行平移和尺度放缩来微调， 使得经过微调后的窗口G&rsquo;跟Ground Truth G更接近， 这样定位会更准确，其详细数学原理参考边框回归(Bounding Box Regression)详解。"/>
 
 	
   </head>
@@ -187,7 +171,7 @@ Thanks for reading! "/>
 </li>
 <li>
 <h4 id="算法流程">算法流程</h4>
-<img src="/images/rcnn1.png" alt="rcnn1" style="zoom:67%;" />
+<p><img src="/images/rcnn1.png" alt="rcnn1" style="zoom:67%;" /></p>
 <ul>
 <li>
 <p>候选区域生成</p>
