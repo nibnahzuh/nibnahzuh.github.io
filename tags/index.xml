@@ -1,29 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
   <channel>
-    <title>Tags on Hzb&#39;s Study Blog</title>
+    <title>Tags - 标签 - Hzb&#39;s Study Blog</title>
     <link>http://example.org/tags/</link>
-    <description>Recent content in Tags on Hzb&#39;s Study Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sun, 01 Jan 2017 00:00:00 +0000</lastBuildDate><atom:link href="http://example.org/tags/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>blog</title>
-      <link>http://example.org/tags/blog/</link>
-      <pubDate>Sun, 01 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>http://example.org/tags/blog/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>test</title>
-      <link>http://example.org/tags/test/</link>
-      <pubDate>Fri, 01 Jan 2016 00:00:00 +0000</pubDate>
-      
-      <guid>http://example.org/tags/test/</guid>
-      <description></description>
-    </item>
-    
-  </channel>
+    <description>Tags - 标签 - Hzb&#39;s Study Blog</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 20 Nov 2022 11:23:46 &#43;0800</lastBuildDate><atom:link href="http://example.org/tags/" rel="self" type="application/rss+xml" /><item>
+  <title>test_tag</title>
+  <link>http://example.org/tags/test_tag/</link>
+  <pubDate>Sun, 20 Nov 2022 11:23:46 &#43;0800</pubDate>
+  <author>作者</author>
+  <guid>http://example.org/tags/test_tag/</guid>
+  <description><![CDATA[]]></description>
+</item>
+</channel>
 </rss>

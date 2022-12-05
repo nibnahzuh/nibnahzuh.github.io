@@ -1,214 +1,89 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
   <channel>
     <title>Hzb&#39;s Study Blog</title>
     <link>http://example.org/</link>
-    <description>Recent content on Hzb&#39;s Study Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sun, 20 Nov 2022 11:23:46 +0800</lastBuildDate><atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <description>Hzb&#39;s Study Blog</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 20 Nov 2022 11:23:46 &#43;0800</lastBuildDate>
+      <atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Self-Supervised PreTrain</title>
-      <link>http://example.org/posts/self-supervised-pretrain/</link>
-      <pubDate>Sun, 20 Nov 2022 11:23:46 +0800</pubDate>
-      
-      <guid>http://example.org/posts/self-supervised-pretrain/</guid>
-      <description>Self-Supervised PreTrain Pretext task Pretext task也叫surrogate task，也称作代理任务。
-Pretext可以理解为是一种为达到特定训练任务而设计的间接任务。比如，我们要训练一个网络来对ImageNet分类，可以表达为 fθ(x): x→y，我们的目的其实是获得具有语义特征提取/推理能力的 θ。我们假设有另外一个任务（也就是pretext），它可以近似获得这样的θ，比如，Auto-encoder（AE），表示为：gθ(x): x→x。为什么AE可以近似 θ呢？因为AE要重建 x 就必须学习 x 中的内在关系，而这种内在关系的学习又是有利于我们学习 fθ(x) 的。这种方式也叫做预训练，为了在目标任务上获得更好的泛化能力，一般还需要进行fine-tuning等操作。
-MAE Fine-tuning   linear probe
-linear probe不对训练好的模型做变动，只是用它从下游数据集提取特征，然后利用逻辑回归拟合标签；
-  fine-tune
-fine-tune利用下游数据再次微调预模型中的所有参数。
-  CAE (a)CAE；(b)BEiT；(c)DAE
-  encoder 仅用来做表征，将patches映射到一个表征空间。
-  latent contextual regressor 用来通过使用encoder表征的可视patches来预测masked patches的表征，并添加一个alignment constraint来与使用encoder表征的masked patches进行对齐。
-这一部分的作用使得CAE的encoder承担了全部的表征学习能力。
-  decoder 将masked patches的表征映射回targets。
-  Contrastive Learning 典型的对比学习的任务是通过解决最大化来自同一图像的增强视图之间的相似度以及最小化来自不同图像的增强图像之间的相似度来预训练一个网络。
-对于ImageNet数据集，典型的对比学习主要学到了图像中心关于这一千个分类的知识，而MIM方法能够学到非中心区域的、这一千个分类以外的知识。</description>
-    </item>
-    
-    <item>
-      <title>PSPNet</title>
-      <link>http://example.org/posts/pspnet-deeplab/</link>
-      <pubDate>Fri, 28 Oct 2022 14:52:12 +0800</pubDate>
-      
-      <guid>http://example.org/posts/pspnet-deeplab/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>FCN &amp; U-Net</title>
-      <link>http://example.org/posts/fcn-u-net/</link>
-      <pubDate>Thu, 27 Oct 2022 19:16:59 +0800</pubDate>
-      
-      <guid>http://example.org/posts/fcn-u-net/</guid>
-      <description>FCN   简介 FCN（Fully Convolutional Networks，全卷积网络）是Jonathan Long等人于2015年在Fully Convolutional Networks for Semantic Segmentation一文中提出的用于图像语义分割的一种框架，是深度学习用于语义分割领域的开山之作。FCN将传统CNN后面的全连接层换成了卷积层，这样网络的输出将是热力图而非类别；同时，为解决卷积和池化导致图像尺寸的变小，使用上采样方式对图像尺寸进行恢复。
-  核心思想  不含全连接层的全卷积网络，可适应任意尺寸输入； 反卷积层增大图像尺寸，输出精细结果； 结合不同深度层结果的跳级结构，确保鲁棒性和精确性。    网络结构 FCN是一个端到端，像素对像素的全卷积网络，用于进行图像的语义分割。整体的网络结构分为两个部分：全卷积部分和上采样部分。FCN中，使用了vgg16的卷积部分作为backbone，并将vgg16的最后三个全连接层也改为卷积层。除此之外，还增加了上采样部分，这里是使用转置卷积进行上采样.
-  优缺点分析   优点 FCN网络可以实现端到端的预测，可以接受任意大小的输入图像尺寸（因为没有全连接层），比较高效。
-  局限性 得到的结果还是不够精细。进行8倍上采样虽然比32倍的效果好了很多，但是上采样的结果还是比较模糊的，对图像中的细节不敏感。而且在对各个像素进行分类时，没有考虑像素与像素之间的关系。
-    U-Net   简介 U-Net最早发表在2015的MICCAI上。后成为大多做医疗影像语义分割任务的baseline，也启发了大量研究者去思考U型语义分割网络。在自然影像理解方面，越来越多的语义分割和目标检测SOTA模型开始关注和使用U型结构，比如语义分割Discriminative Feature Network(DFN)(CVPR2018)，目标检测Feature Pyramid Networks for Object Detection(FPN)(CVPR 2017)等。
-  网络结构 UNet 网络结构如上图所示，其网络结构是对称的，形似英文字母 U，故而被称为 UNet 。就整体而言，UNet 是一个Encoder-Decoder的结构（与 FCN 相同），前半部分是特征提取，后半部分是上采样。
- Encoder：左半部分，由两个 3x3 的卷积层（ReLU）+ 一个 2x2 的 maxpooling 层组成一个下采样模块。由卷积操作和下采样操作组成，所用卷积结构统一为 3x3 的卷积核，padding=0，striding=1。没有 padding 所以每次卷积之后特征图的 H 和 W 变小了，在跳层连接（Skip connection）时需注意特征图的维度。 Decoder：右半部分，由一个上采样的卷积层 + 特征拼接 concat + 两个 3x3 的卷积层（ReLU）构成一个上采样模块。Decoder 用以恢复特征图的原始分辨率，除了卷积以外，该过程的关键步骤就是上采样与跳层连接。上采样常用转置卷积和插值两种方式实现。在插值实现方式中，双线性插值（bilinear）的综合表现较好也较为常见 。UNet 中的跳层连接通过拼接将底层的位置信息与深层的语义信息相融合。而在在 FCN 中，特征图是以相加的方式进行融合。    与FCN对比  FCN：通过特征图对应像素值的相加来融合特征。特征图维度没有变化，但每个维度包含了更多特征。对于普通分类任务这种不需要从特征图复原到原始分辨率的任务来说，这是一个高效的选择； UNet ：通过通道数的拼接，以形成更厚的特征（当然这样会更佳消耗显存）。拼接方式：保留了更多的维度和位置信息，这使得后面的网络层可在浅层特征与深层特征间自由选择，这对语义分割任务来说更具优势。    与FPN的对比  同：  都使用了“由上至下”、“横向连接”及“由下至上”的结构，从而对多尺度特征图进行融合，即将高层的语义信息与低层的几何细节结合。另外，融合后都会再经过一层卷积。   异：  FPN对多尺度特征图融合的方式是element-wise add，而UNet采用的是concate； FPN对多尺度特征图都进行了预测，而UNet仅在（由上至下）最后一层进行预测，而且这一层通常还需要进行一次resize才能恢复到原图尺寸； FPN对高层特征图采用的放大方式是插值，而UNet通常还会使用转置卷积，通过网络自学习的方式来进行上采样； FPN的高层特征放大2倍后与低层的尺寸恰好一致，而在UNet中通常不一致，还需要对低层特征做crop使得与放大后的高层特征尺寸一致； FPN在下采样时的卷积带有padding，分辨率的下降仅由stirde决定，而UNet的卷积通常不带padding，使得分辨率下降在stride的基础上还会额外的减小。也就是说，FPN的“由下至上”和“由下至上”是对称结构，而UNet其实是非对称的，这也是导致4和2中最后提到的原因‘； FPN在特征层融合后经过一层卷积是为了消除上采样过程中产生的混叠效应带来的影响，而UNet中还起到了压缩通道的作用（也是由于UNet融合特征层时采用的是concate，因此需要压缩通道减少计算量）； FPN主要针对detection任务，而UNet针对segmentation任务，前者通常作为一个模块嵌入到网络结构中，而后者本身就是一种网络模型结构。      为什么适用于医学图像？  因为医学图像边界模糊、梯度复杂，需要较多的高分辨率信息。高分辨率用于精准分割。 人体内部结构相对固定，分割目标在人体图像中的分布很具有规律，语义简单明确，低分辨率信息能够提供这一信息，用于目标物体的识别。 UNet结合了低分辨率信息（提供物体类别识别依据）和高分辨率信息（提供精准分割定位依据），完美适用于医学图像分割。    Citation  北信科视觉感知研讨课程（周羿旭老师、赵永瑞同学分享）</description>
-    </item>
-    
-    <item>
-      <title>RetinaNet &amp; FCOS</title>
-      <link>http://example.org/posts/retinanet-fcos/</link>
-      <pubDate>Thu, 27 Oct 2022 10:13:28 +0800</pubDate>
-      
-      <guid>http://example.org/posts/retinanet-fcos/</guid>
-      <description>RetinaNet   简介 RetinaNet 是 Tsung-Yi Lin 和 Kaiming He（四作） 于 2018 年发表的论文 Focal Loss for Dense Object Detection。深入分析了极度不平衡的正负（前景背景）样本比例导致 one-stage 检测器精度低于 two-stage 检测器，基于上述分析，提出了一种简单但是非常实用的 Focal Loss 焦点损失函数，并且 Loss 设计思想可以推广到其他领域，同时针对目标检测领域特定问题，设计了 RetinaNet 网络，结合 Focal Loss 使得 one-stage 检测器在精度上能够达到乃至超过 two-stage 检测器。
-  网络结构 RetinaNet的特征提取网络选择了残差网络ResNet，特征融合这块选择了FPN（特征金字塔网络），以特征金字塔不同的尺寸特征图作为输入，搭建三个用于分类和框回归的子网络。分类网络输出的特征图尺寸为（W,H,KA)，其中W、H为特征图宽高，KA为特征图通道，存放A个anchor各自的类别信息（K为类别数）。
-  历史问题   在One stage中，detector直接在类别不平衡（负样本很多，正样本很少）中进行分类和回归，直接输出bbox和类别，原有的交叉熵损失无法处理这种不平衡，导致训练不充分，精度低，但是却提升了检测速度。
-  在Two stage中，FPN网络已经过滤了一部分的背景bbox，因此在fast r-cnn中正负样本比例较均衡，因此准确率较高。
-  针对所有的负样本，数量过多，主导了损失函数，不利于模型收敛。
-  针对单个负样本，大多数负样本不包含任何物体，属于易分样本，且易分样本数量很多，训练时对应背景类的预测得分会很高，那么单个样本的loss就很小，反向计算时梯度小，造成易分负样本对loss的收敛作用有限。
-    主要贡献 提出Focal Loss：解决one-stage算法中，样本不平衡和难易样本的问题。
-  样本不平衡：保证在损失函数中，正样本与负样本的贡献（比重）均衡。</description>
-    </item>
-    
-    <item>
-      <title>FPN &amp; SSD &amp; YOLO</title>
-      <link>http://example.org/posts/fpn-ssd-yolo/</link>
-      <pubDate>Wed, 26 Oct 2022 15:42:33 +0800</pubDate>
-      
-      <guid>http://example.org/posts/fpn-ssd-yolo/</guid>
-      <description>FPN 提出原因 卷积网络中，深层网络容易响应语义特征，浅层网络容易响应图像特征。然而，在目标检测中往往因为卷积网络的这个特征带来了不少麻烦：高层网络虽然能响应语义特征，但是由于Feature Map的尺寸太小，拥有的几何信息并不多，不利于目标的检测；浅层网络虽然包含比较多的几何信息，但是图像的语义特征并不多，不利于图像的分类。这个问题在小目标检测中更为突出。因此需要能够合并深层和浅层特征的网络，同时满足目标检测和图像分类的需要。
-参考思想 FPN使用的是图像金字塔的思想。
-传统的图像金字塔采用输入多尺度图像的方式构建多尺度的特征。输入一张图像后，可以通过一些手段获得多张不同尺度的图像，将这些不同尺度图像的4个顶点连接起来，就可以构造出一个类似真实金字塔的一个图像金字塔。整个过程有点像是我们看一个物品由远及近的过程（近大远小原理）。
-其中，中间的图像是原始图像，尺寸越来越小的图片是经过下采样处理后的结果，而尺寸越来越大的图片是经过上采样处理后的结果。把高层的特征传下来，补充低层的语义，这样就可以获得高分辨率、强语义的特征，有利于小目标的检测。
-特征金字塔 运用金字塔的思想可以提高算法的性能，但是需要大量的运算和内存。因此特征金字塔要在速度和准确率之间进行权衡，通过它获得更加鲁棒的语义信息。
-图像中存在不同大小的目标，而不同的目标具有不同的特征，所以需要特征金字塔来利用浅层的特征将简单的目标区分开，利用深层的特征将复杂的目标区分开。即利用大的特征图区分简单目标，利用小的特征图区分复杂目标。
-具体思路   图（a）：
-先对原始图像构造图像金字塔，然后在图像金字塔的每一层提出不同的特征，然后进行相应的预测。
-优点：精度较好。
-缺点：计算量和占用内存太大。
-  图（b）：
-通过对原始图像进行卷积和池化操作来获得不同尺寸的feature map，在图像的特征空间中构造出金字塔。因为浅层的网络更关注于细节信息，高层的网络更关注于语义信息，更有利于准确检测出目标，因此利用最后一个卷积层上的feature map来进行预测分类。
-优点：速度快、内存少。
-缺点：仅关注深层网络中最后一层的特征，却忽略了其它层的特征。
-  图（c）：
-同时利用低层特征和高层特征。就是首先在原始图像上面进行深度卷积，然后分别在不同的特征层上面进行预测。
-优点：在不同的层上面输出对应的目标，不需要经过所有的层才输出对应的目标（即对于有些目标来说，不用进行多余的前向操作），速度更快，又提高了算法的检测性能。
-缺点：获得的特征不鲁棒，都是一些弱特征（因为很多的特征都是从较浅的层获得的）。
-  图（d）：
-FPN网络，对最底层的特征进行向上采样，并与该底层特征进行融合，得到高分辨率、强语义的特征（即加强了特征的提取）。
-  整体过程  自下而上：先把预处理好的图片送进预训练的网络，如ResNet，构建自下而上的网络，对应上图左侧金字塔。 自上而下：左侧顶层直接复制到右侧顶层，对右侧顶层进行上采样操作（就是2 * up），再用1 * 1卷积对左侧次顶层进行降维处理，然后将两者对应元素相加（这里就是高低层特征的一个汇总），后续以此类推，如此构成自上而下网络。 卷积融合：最后我们对右侧各层分别来一个3 * 3卷积操作得到最终的预测（对应上图的predict）。  SSD 简介 SSD，全称Single Shot MultiBox Detector，是Wei Liu在ECCV 2016上提出的一种目标检测算法，截至目前是主要的检测框架之一，相比Faster RCNN有明显的速度优势，相比YOLO又有明显的mAP优势。
-背景 目标检测主流算法分成两个类型：
-  two-stage方法：RCNN系列
-通过算法产生候选框，然后再对这些候选框进行分类和回归。
-  one-stage方法：yolo和SSD
-直接通过主干网络给出类别位置信息，不需要区域生成。
-  特点  从YOLO中继承了将detection转化为regression的思路，一次完成目标定位与分类。 基于Faster RCNN中的Anchor，提出了相似的prior box。 加入基于特征金字塔（Pyramidal Feature Hierarchy）的检测方式，即在不同感受野的feature map上预测目标。 这些设计实现了简单的端到端的训练，而且即便使用低分辨率的输入图像也能得到高的精度。  网络结构   采用多尺度特征图用于检测</description>
-    </item>
-    
-    <item>
-      <title>Rcnn &amp; Fast-Rcnn &amp; Faster-Rcnn</title>
-      <link>http://example.org/posts/rcnn-fast-rcnn-faster-rcnn/</link>
-      <pubDate>Wed, 21 Sep 2022 16:55:23 +0800</pubDate>
-      
-      <guid>http://example.org/posts/rcnn-fast-rcnn-faster-rcnn/</guid>
-      <description>RCNN   简介 R-CNN的全称是Region-CNN，是第一个成功将深度学习应用到目标检测上的算法。R-CNN基于卷积神经网络，线性回归，和支持向量机等算法，实现目标检测技术。R-CNN遵循传统目标检测的思路，同样采用提取框，对每个框提取特征、图像分类、 非极大值抑制四个步骤进行目标检测。只不过在提取特征这一步，将传统的特征（如 SIFT、HOG 特征等）换成了深度卷积网络提取的特征。
-  算法流程   候选区域生成
-使用Selective Search算法对每张输入图像使用选择性搜索来选取多个高质量的候选区域（Region Proposal）。这个算法先对图像基于像素信息做快速分割来得到多个区域，然后将当下最相似的两区域合并成一个区域，重复进行合并直到整张图像变成一个区域。最后根据合并的信息生成多个有层次结构的提议区 域，并为每个提议区域生成物体类别和真实边界框。
-  特征提取
-选取一个预先训练好的卷积神经网络，去掉最后的输出层来作为特征抽取模块。对每个提议区域，将其变形成卷积神经网络需要的输入尺寸后进行前向计算抽取特征。
-  SVM分类器
-将每个提议区域的特征连同其标注做成一个样本，训练多个支持向量机(SVM)来进行物 体类别分类，这里第 i 个 SVM 预测样本是否属于第 i 类。
-  边界框回归器
-在这些样本上训练一个线性回归模型来预测（精修）真实边界框。对于SVM分好类的候选区域做边框回归，用Bounding box回归值校正原来的建议窗口，生成预测窗口坐标
-    Selective Search Selective Search（选择性搜索）是用于目标检测的region proposal算法，它计算速度快，具有很高的召回率，基于颜色，纹理，大小和形状兼容计算相似区域的分层分组。
-图像中区域特征比像素更具代表性，作者使用Felzenszwalb and Huttenlocher的方法产生图像初始区域，使用贪心算法对区域进行迭代分组：
- 计算所有邻近区域之间的相似性； 两个最相似的区域被组合在一起； 计算合并区域和相邻区域的相似度； 重复2、3过程，直到整个图像变为一个地区。  在每次迭代中，形成更大的区域并将其添加到区域提议列表中。以自下而上的方式创建从较小的细分segments到较大细分segments的region proposal。
-  Bounding box regression Rcnn的Bounding box regression（边框回归）是指对粗略的预测框P进行平移和尺度放缩来微调， 使得经过微调后的窗口G&amp;rsquo;跟Ground Truth G更接近， 这样定位会更准确，其详细数学原理参考边框回归(Bounding Box Regression)详解。</description>
-    </item>
-    
-    <item>
-      <title>ShuffleNet &amp; EfficientNet</title>
-      <link>http://example.org/posts/shufflenet-efficientnet/</link>
-      <pubDate>Mon, 12 Sep 2022 15:05:52 +0800</pubDate>
-      
-      <guid>http://example.org/posts/shufflenet-efficientnet/</guid>
-      <description>ShuffleNet   简介 ShuffleNet是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。所以，ShuffleNet的设计目标也是如何利用有限的计算资源来达到最好的模型精度，这需要很好地在速度和精度之间做平衡。ShuffleNet是一种专门为计算资源有限的设备设计的神经网络结构，主要采用了pointwise group convolution和channel shuffle两种技术，在保留了模型精度的同时极大减少了计算开销。
-  旧网络存在问题  分组卷积GConv虽然能减少参数量和计算量，但是GConv中不同的组之间的信息没有交流。 在ResNeXt网络中，分组卷积占的计算量很少，大部分计算量都是1*1卷积产生的。    创新点   Channel Shuffle
-先通过一个分组卷积，得到对应的特征矩阵，接下来使用channel shuffle操作后的特征矩阵进行组卷积，融合不同组之间的维度信息。
-具体为，假设输入的feature map是一个一维的12个数据，分为3组，每一个分组有4个值，channel shuffle操作首先将这个矩阵进行升维，重构为一个g行n列的矩阵（这里g=3，n=4），然后对这个矩阵进行转置，后得到一个n行g列的新矩阵，再按照分组数g对这个得到的新矩阵进行展开，通过这一系列操作，达到了将原来固定的各分组打乱重排的目的。
-  ShuffleNet Unit
-ShuffleNet Unit的结构灵感来源于ResNet的中的bottleneck残差模块，从某种意义上来说，二者看起来几乎一样，以下是ShuffleNet Unit的结构：
-相较于ResNet的bottleneck模块，ShuffleNet Unit有三处差别：
- ShuffleNet Unit将bottleneck模块中的3x3卷积替换为了3x3的depthwise卷积，也就是图中的DWConv，如图a所示。 对原残差模块的1x1卷积进行了替换，替换为了1x1的分组卷积，并在后面加上了一个channel shuffle操作，用于消除分组卷积的副作用，如图b所示。 在bottleneck的短路路径上使用了3x3的全局平均池化，然后将原来bottleneck模块的逐元素求和替换为了通道（Add）的拼接操作（Concat），如图c所示。使原来的数值1相加操作变成了维度的相加，更高的维度可以使网络拥有更多的通道数，从而提升网络的性能。      网络结构 基于shufflenet unit模块，整体的ShuffleNet网络结构图如下图所示：
-上图为一个图像分类任务，输入为224x224的图像，输出1000个概率，同时作者将分组数分别设置为1到5，以此探索不同的分组数对网络性能的影响，其中一般以g=3作为网络的基准版本。
-与传统的神经网络相比，ShuffleNet网络结构最大的区别在于拥有三个shufflenet unit模块，分别对应三个Stage，它们将输入特征图的尺寸减半，通道数加倍，除了升级版的shufflenet unit模块，网络的其他超参数与ResNet保持一致。
-  Efficient Net   简介 EfficientNets是google在2019年5月发表的一个网络系列，使用神经架构搜索设计了一个baseline网络，并且将模型进行缩放获得一系列模型。它的精度和效率比之前所有的卷积网络都好。尤其是EfficientNet-B7在ImageNet上获得了当时最先进的 84.4%的top-1精度 和 97.1%的top-5精度，同时比之前最好的卷积网络大小缩小了8.4倍、速度提高了6.1倍。EfficientNets也可以很好的迁移，并且以更少的参量实现了最先进的精度——CIFAR-100（91.7%）、Flowers（98.8%）。
-  背景 通常为了获得更好的精度，放大卷积神经网络是一种广泛的方法。举个例子，ResNet可以通过使用更多层从ResNet-18放大到ResNet-200；目前为止，GPipe通过将baseline模型放大四倍在ImageNet数据集上获得了84.3%的top-1精度，然而，放大CNN的过程从来没有很好的理解过，目前通用的几种方法是放大CNN的深度、宽度和分辨率，在之前都是单独放大这三个维度中的一个，尽管任意放大两个或者三个维度也是可能的，但是任意缩放需要繁琐的人工调参同时可能产生的是一个次优的精度和效率。
-  模型缩放方法   Single Scaling（单尺度）</description>
-    </item>
-    
-    <item>
-      <title>SENet &amp; MobileNet</title>
-      <link>http://example.org/posts/senet-mobilenet/</link>
-      <pubDate>Fri, 02 Sep 2022 22:27:28 +0800</pubDate>
-      
-      <guid>http://example.org/posts/senet-mobilenet/</guid>
-      <description>SENet   简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在深度学习领域，已经有很多成果通过在空间维度上对网络的性能进行了提升。而SENet反其道而行之，通过对通道关系进行建模来提升网络的性能。SENet较早的将注意力机制引入CNN中，使用了模块化设计。
-  亮点 引入通道注意力机制，关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。
-  网络结构   原理 SENet网络的创新点在于关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。为此，SENet提出了Squeeze-and-Excitation (SE)模块，SE模块首先对卷积得到的特征图进行Squeeze操作，得到channel级的全局特征，然后对全局特征进行Excitation操作，学习各个channel间的关系，也得到不同channel的权重，最后乘以原来的特征图得到最终特征。
-本质上，SE模块是在channel维度上做attention或者gating操作，这种注意力机制让模型可以更加关注信息量最大的channel特征，而抑制那些不重要的channel特征。另外一点是SE模块是通用的，这意味着其可以嵌入到现有的网络架构中。
-  Squeeze 原始feature map的维度为H×W×C，其中H是高度（Height），W是宽度（width），C是通道数（channel）。Squeeze就是用全局平均池化（global average pooling）把H×W×C压缩为1×1×C。H×W压缩成一维后，相当于这一维参数获得了之前H×W全局的视野，感受区域更广。公式如下：
-  Excitation Sequeeze操作得到了全局描述特征，接下来需要另外一种运算来提取channel之间的关系。 用两个全连接层来学习通道间的相关性，第一个FC层起到降维的作用，然后采用ReLU激活。最后的全连接层恢复原始的维度。公式如下：
-  Reweight 将Excitation的输出权重作为经过特征选择后的每个特征通道的重要性，然后通过乘法逐通道加权到先前的特征上，完成在通道维度上的对原始特征的重标定。
-  全局平均池化   思想：对于输出的每一个通道的特征图的所有像素计算一个平均值，经过全局平均池化之后就得到一个 维度=类别数的特征向量，然后直接输入到softmax层。
-  作用：代替全连接层，可接受任意尺寸的图像。
-  优点：
- 可以更好的将类别与最后一个卷积层的特征图对应起来（每一个通道对应一种类别，这样每一张特征图都可以看成是该类别对应的类别置信图）； 降低参数量，全局平均池化层没有参数，可防止在该层过拟合； 整合了全局空间信息，对于输入图片的spatial translation更加鲁棒。      结构融合  上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于：  具有更多的非线性，可以更好地拟合通道间复杂的相关性； 减少了参数量和计算量。   下图是SE模块嵌入到ResNet的示例。操作过程基本和SE-Inception一样，只不过是在Addition前对分支上Residual的特征进行了特征重标定。如果对Addition后主支上的特征进行重标定，由于在主干上存在0~1的scale操作，在网络较深BP优化时就会在靠近输入层容易出现梯度消散的情况，导致模型难以优化。    运算效率 实验表明，SE模块在参数量上的增加带来的计算量增长微乎其微，但是性能却有所提升，当然这也取决于实际应用，如果因为SE模块导致参数量增加的掠夺，可以针对性的在适当的位置削减SE模块的数量，而精度几乎不受影响。</description>
-    </item>
-    
-    <item>
-      <title>ResNet &amp; DenseNet</title>
-      <link>http://example.org/posts/resnet-densenet/</link>
-      <pubDate>Fri, 26 Aug 2022 10:54:08 +0800</pubDate>
-      
-      <guid>http://example.org/posts/resnet-densenet/</guid>
-      <description>ResNet   简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名。
-  亮点  超深的网络结构（超过1000层） 提出residual（残差结构）模块 使用Batch Normalization加速训练（丢弃Dropout）    网络结构   为什么采用residual   在ResNet提出之前，所有的神经网络都是通过卷积层和池化层的叠加组成的。人们认为卷积层和池化层的层数越多，获取到的图片特征信息越全，学习效果也就越好。但是在实际的试验中发现，随着卷积层和池化层的叠加，不但没有出现学习效果越来越好的情况，反而出现两种问题：
-  梯度消失和梯度爆炸。目前优化神经网络的方法都是基于BP，即根据损失函数计算的误差通过梯度反向传播的方式，指导深度网络权值的更新优化。其中将误差从末层往前传递的过程需要链式法则（Chain Rule）的帮助。而链式法则是一个连乘的形式，所以当层数越深的时候，梯度将以指数形式传播。梯度消失问题和梯度爆炸问题一般随着网络层数的增加会变得越来越明显。在根据损失函数计算的误差通过梯度反向传播的方式对深度网络权值进行更新时，得到的梯度值接近0或特别大，也就是梯度消失或爆炸。
-  退化问题。随着层数的增加，反传回来的梯度之间的相关性会越来越差，最后接近白噪声，预测效果反而越来越差。如下图所示
-    为了解决梯度消失或梯度爆炸问题，ResNet论文提出通过数据的预处理以及在网络中使用BN（Batch Normalization）层来解决。
-  为了解决深层网络中的退化问题，可以人为地让神经网络某些层跳过下一层神经元的连接，隔层相连，弱化每层之间的强联系。这种神经网络被称为残差网络 (ResNets)。ResNet论文提出了residual结构（残差结构）来减轻退化问题，下图是使用residual结构的卷积网络，可以看到随着网络的不断加深，效果并没有变差，而是变的更好了。
-    residual结构   residual结构使用了一种shortcut的连接方式，也可理解为捷径。让特征矩阵隔层相加，注意F(X)和X形状要相同，所谓相加是特征矩阵相同位置上的数字进行相加。若某一较深的网络多出另一较浅网络的若干层有能力学习到恒等映射，那么这一较深网络训练得到的模型性能一定不会弱于该浅层网络。
-  两种不同的residual：
-对于深层次网络，使用左边的block意味着有很大的计算量，因此右侧使用1x1卷积先将输入进行降维，然后再经过3x3卷积后，最后用1x1卷积进行升维，为了主分支上输出的特征矩阵和捷径分支上输出的特征矩阵形状相同，以便进行加法操作。（搭建深层次网络时，采用右侧的残差结构）
-    降维时的shortcut 观察ResNet18层网络，可以发现有些残差块的shortcut是实线的，而有些则是虚线的。这些虚线的shortcut上通过1×1的卷积核进行了维度处理（特征矩阵在长宽方下采样，深度方向调整成下一层残差结构所需要的channel）。
-  Batch Normalization   Batch Normalization是指批标准化处理，将一批数据的feature map满足均值为0，方差为1的分布规律。
-  对图像进行标准化处理，这样能够加速网络的收敛，如下图所示，对于Conv1来说输入的就是满足某一分布的特征矩阵，但对于Conv2而言输入的feature map就不一定满足某一分布规律了（注意这里所说满足某一分布规律并不是指某一个feature map的数据要满足分布规律，理论上是指整个训练样本集所对应feature map的数据要满足分布规律）。而我们Batch Normalization的目的就是使我们的feature map满足均值为0，方差为1的分布规律。计算公式如下：</description>
-    </item>
-    
-    <item>
-      <title>AlexNet &amp; VGG &amp; GoogLeNet</title>
-      <link>http://example.org/posts/alexnet-vgg-googlenet/</link>
-      <pubDate>Sat, 20 Aug 2022 18:00:30 +0800</pubDate>
-      
-      <guid>http://example.org/posts/alexnet-vgg-googlenet/</guid>
-      <description>AlexNet   简介 AlexNet是2012年ISLVRC 2012（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，分类准确率由传统的 70%+提升到 80%+。由Hinton和他的学生Alex Krizhevsky设计。也是在那年之后，深度学习开始迅速发展。
-  亮点  首次使用GPU进行模型训练。 使用了ReLU激活函数，而不是传统的Sigmoid激活函数以及Tanh激活函数。主要原因是ReLU函数在进行梯度下降的计算过程中能显著加快训练过程，也就是非饱和的线性的激活函数要快于sigmoid和tanh等饱和的非线性激活函数的收敛速度（在这篇论文中并没有谈及ReLU函数对于梯度消失问题的解决，只是从收敛速度上论述的）。 使用了LRN局部响应归一化（Local Response Normalization，LRN）。AlexNet中提出局部响应归一化层（LRN）,是跟在激活或池化之后的一种为了提高准确度的技术方法。LRN的主要思想就是对局部神经元的神经活动创建竞争机制，使得其中响应比较大的值变得相对更大，并抑制其他反馈更小的神经元，从而也在一定程度上增强了泛化能力。 在全连接层的前两层中使用了Dropout随机失活神经元操作，以减少过拟合。    模型架构   ReLU激活函数 针对sigmoid梯度饱和导致训练收敛慢的问题，在AlexNet中引入了ReLU。ReLU是一个分段线性函数，小于等于0则输出为0；大于0的则恒等输出。相比于sigmoid，ReLU有以下有特点：
- 计算开销小。sigmoid的正向传播有指数运算，倒数运算，而ReLu是线性输出；反向传播中，sigmoid有指数运算，而ReLU有输出的部分，导数始终为1。 梯度饱和问题。 稀疏性。ReLU会使一部跟神经元的输出为0，这样造就了网络的稀疏性，并且减少了参数的相互依存关系，缓解了过拟合问题的发生。    Dropout   过拟合的根本原因是特征维度过多，模型过于复杂，参数过多，训练数据过少，噪声过多，导致模型完美拟合训练集，但缺乏泛化能力，对新数据的测试集预测结果差。
-  Dropout的使用有效地缓解了模型复杂度提升导致的过拟合。Dropout通过修改神经网络本身结构来实现，对于某一层的神经元，通过定义的概率将神经元置为0，这个神经元就不参与前向和后向传播，就如同在网络中被删除了一样，同时保持输入层与输出层神经元的个数不变，然后按原有的学习方法进行参数更新。在下一次迭代中，又重新随机删除一些神经元（置为0），直至训练结束。
-  Dropout应该算是AlexNet中一个很大的创新，现在神经网络中的必备结构之一。Dropout也可以看成是一种模型组合，每次生成的网络结构都不一样，通过组合多个模型的方式能够有效地减少过拟合，Dropout只需要两倍的训练时间即可实现模型组合（类似取平均）的效果，非常高效。
-    VGG   简介 VGG是由牛津大学视觉几何小组（Visual Geometry Group, VGG）提出的一种深层卷积网络结构，赢得了 2014 年 ILSVRC 分类任务的亚军（冠军由 GoogLeNet 夺得）和定位任务的冠军。VGG可以看成是加深版本的AlexNet，都是conv layer + FC layer。该网络是在ILSVRC 2014上的相关工作，主要工作是证明了增加网络的深度能够在一定程度上影响网络最终的性能。</description>
-    </item>
-    
-    <item>
-      <title>新一代视觉感知综述</title>
-      <link>http://example.org/posts/%E6%96%B0%E4%B8%80%E4%BB%A3%E8%A7%86%E8%A7%89%E6%84%9F%E7%9F%A5%E7%BB%BC%E8%BF%B0/</link>
-      <pubDate>Sat, 13 Aug 2022 23:47:44 +0800</pubDate>
-      
-      <guid>http://example.org/posts/%E6%96%B0%E4%B8%80%E4%BB%A3%E8%A7%86%E8%A7%89%E6%84%9F%E7%9F%A5%E7%BB%BC%E8%BF%B0/</guid>
-      <description>经典篇   Visual Perception (视觉感知)   Characterizing edges (特征边缘)：边缘是指图像强度函数中急剧变化的位置。
-  图像滤波：在尽量保留图像细节特征的条件下对目标图像的噪声进行抑制，是图像处理中不可缺少的操作，其处理效果的好坏将直接影响到后续图像处理和分析的有效性和可靠性。
-  canny边缘检测算法：
- 用高斯滤波器对图像进行平滑处理； 利用一阶偏导算子找到图像灰度沿水平方向和垂直方向的偏导数，并求出梯度的幅值和方位； 非极大值抑制，找到局部梯度最大值； 用双阈值算法检测和链接边缘，凡大于高阈值T1的一定是边缘，凡小于低阈值T2的一定不是边缘，若既大于低阈值又小于高阈值，则要看这个像素的邻接像素中是否有大于高阈值的边缘像素，若有则是边缘，否则不是。      Feature Extraction (特征提取)   Bag of Words, BoW (词袋模型)   现代篇   CNN (卷积神经网络)   Vision Transformer (视觉自注意力网络)   前沿篇   XAI (可解释性AI)   Contrastive Pretraining (对比预训练）   Multimodal Fusion (多模态融合）   </description>
-    </item>
-    
-  </channel>
+  <title>Self-Supervised PreTrain</title>
+  <link>http://example.org/posts/self-supervised-pretrain/</link>
+  <pubDate>Sun, 20 Nov 2022 11:23:46 &#43;0800</pubDate>
+  <author>huzhanbin</author>
+  <guid>http://example.org/posts/self-supervised-pretrain/</guid>
+  <description><![CDATA[Self-Supervised PreTrain Pretext task Pretext task也叫surrogate task，也称作代理任务。 Pretext可以理解为是一种为达到特定训练任务而设计的间接任务。比如，我]]></description>
+</item>
+<item>
+  <title>PSPNet</title>
+  <link>http://example.org/posts/test/</link>
+  <pubDate>Fri, 28 Oct 2022 14:52:12 &#43;0800</pubDate>
+  <author>huzhanbin</author>
+  <guid>http://example.org/posts/test/</guid>
+  <description><![CDATA[description]]></description>
+</item>
+<item>
+  <title>FCN &amp; U-Net</title>
+  <link>http://example.org/posts/fcn-u-net/</link>
+  <pubDate>Thu, 27 Oct 2022 19:16:59 &#43;0800</pubDate>
+  <author>作者</author>
+  <guid>http://example.org/posts/fcn-u-net/</guid>
+  <description><![CDATA[FCN 简介 FCN（Fully Convolutional Networks，全卷积网络）是Jonathan Long等人于2015年在Fully Convolutional Networks for Semantic Segmentatio]]></description>
+</item>
+<item>
+  <title>RetinaNet &amp; FCOS</title>
+  <link>http://example.org/posts/retinanet-fcos/</link>
+  <pubDate>Thu, 27 Oct 2022 10:13:28 &#43;0800</pubDate>
+  <author>作者</author>
+  <guid>http://example.org/posts/retinanet-fcos/</guid>
+  <description><![CDATA[RetinaNet 简介 RetinaNet 是 Tsung-Yi Lin 和 Kaiming He（四作） 于 2018 年发表的论文 Focal Loss for Dense Object Detection。深入分析了极度不平衡的正负（前景背景）样本比例导致 one-stage 检测器精度低]]></description>
+</item>
+<item>
+  <title>FPN &amp; SSD &amp; YOLO</title>
+  <link>http://example.org/posts/fpn-ssd-yolo/</link>
+  <pubDate>Wed, 26 Oct 2022 15:42:33 &#43;0800</pubDate>
+  <author>作者</author>
+  <guid>http://example.org/posts/fpn-ssd-yolo/</guid>
+  <description><![CDATA[FPN 提出原因 卷积网络中，深层网络容易响应语义特征，浅层网络容易响应图像特征。然而，在目标检测中往往因为卷积网络的这个特征带来了不少麻烦：高层网]]></description>
+</item>
+<item>
+  <title>Rcnn &amp; Fast-Rcnn &amp; Faster-Rcnn</title>
+  <link>http://example.org/posts/rcnn-fast-rcnn-faster-rcnn/</link>
+  <pubDate>Wed, 21 Sep 2022 16:55:23 &#43;0800</pubDate>
+  <author>作者</author>
+  <guid>http://example.org/posts/rcnn-fast-rcnn-faster-rcnn/</guid>
+  <description><![CDATA[RCNN 简介 R-CNN的全称是Region-CNN，是第一个成功将深度学习应用到目标检测上的算法。R-CNN基于卷积神经网络，线性回归，和支持向量]]></description>
+</item>
+<item>
+  <title>ShuffleNet &amp; EfficientNet</title>
+  <link>http://example.org/posts/shufflenet-efficientnet/</link>
+  <pubDate>Mon, 12 Sep 2022 15:05:52 &#43;0800</pubDate>
+  <author>作者</author>
+  <guid>http://example.org/posts/shufflenet-efficientnet/</guid>
+  <description><![CDATA[ShuffleNet 简介 ShuffleNet是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。]]></description>
+</item>
+<item>
+  <title>SENet &amp; MobileNet</title>
+  <link>http://example.org/posts/senet-mobilenet/</link>
+  <pubDate>Fri, 02 Sep 2022 22:27:28 &#43;0800</pubDate>
+  <author>作者</author>
+  <guid>http://example.org/posts/senet-mobilenet/</guid>
+  <description><![CDATA[SENet 简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在]]></description>
+</item>
+<item>
+  <title>ResNet &amp; DenseNet</title>
+  <link>http://example.org/posts/resnet-densenet/</link>
+  <pubDate>Fri, 26 Aug 2022 10:54:08 &#43;0800</pubDate>
+  <author>作者</author>
+  <guid>http://example.org/posts/resnet-densenet/</guid>
+  <description><![CDATA[ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO]]></description>
+</item>
+<item>
+  <title>AlexNet &amp; VGG &amp; GoogLeNet</title>
+  <link>http://example.org/posts/alexnet-vgg-googlenet/</link>
+  <pubDate>Sat, 20 Aug 2022 18:00:30 &#43;0800</pubDate>
+  <author>作者</author>
+  <guid>http://example.org/posts/alexnet-vgg-googlenet/</guid>
+  <description><![CDATA[AlexNet 简介 AlexNet是2012年ISLVRC 2012（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，分类准确率由传统的 70%+]]></description>
+</item>
+</channel>
 </rss>

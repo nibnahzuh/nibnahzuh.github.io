@@ -1,173 +1,208 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
   <head>
+    
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    
-    <title>ShuffleNet &amp; EfficientNet | Hzb&#39;s Study Blog</title>
-    <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="description" content="ShuffleNet   简介 ShuffleNet是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。所以，ShuffleNet的设计目标也是如何利用有限的计算资源来达到最好的模型精度，这需要很好地在速度和精度之间做平衡。ShuffleNet是一种专门为计算资源有限的设备设计的神经网络结构，主要采用了pointwise group convolution和channel shuffle两种技术，在保留了模型精度的同时极大减少了计算开销。
-  旧网络存在问题  分组卷积GConv虽然能减少参数量和计算量，但是GConv中不同的组之间的信息没有交流。 在ResNeXt网络中，分组卷积占的计算量很少，大部分计算量都是1*1卷积产生的。    创新点   Channel Shuffle
-先通过一个分组卷积，得到对应的特征矩阵，接下来使用channel shuffle操作后的特征矩阵进行组卷积，融合不同组之间的维度信息。
-具体为，假设输入的feature map是一个一维的12个数据，分为3组，每一个分组有4个值，channel shuffle操作首先将这个矩阵进行升维，重构为一个g行n列的矩阵（这里g=3，n=4），然后对这个矩阵进行转置，后得到一个n行g列的新矩阵，再按照分组数g对这个得到的新矩阵进行展开，通过这一系列操作，达到了将原来固定的各分组打乱重排的目的。
-  ShuffleNet Unit
-ShuffleNet Unit的结构灵感来源于ResNet的中的bottleneck残差模块，从某种意义上来说，二者看起来几乎一样，以下是ShuffleNet Unit的结构：
-相较于ResNet的bottleneck模块，ShuffleNet Unit有三处差别：
- ShuffleNet Unit将bottleneck模块中的3x3卷积替换为了3x3的depthwise卷积，也就是图中的DWConv，如图a所示。 对原残差模块的1x1卷积进行了替换，替换为了1x1的分组卷积，并在后面加上了一个channel shuffle操作，用于消除分组卷积的副作用，如图b所示。 在bottleneck的短路路径上使用了3x3的全局平均池化，然后将原来bottleneck模块的逐元素求和替换为了通道（Add）的拼接操作（Concat），如图c所示。使原来的数值1相加操作变成了维度的相加，更高的维度可以使网络拥有更多的通道数，从而提升网络的性能。      网络结构 基于shufflenet unit模块，整体的ShuffleNet网络结构图如下图所示：
-上图为一个图像分类任务，输入为224x224的图像，输出1000个概率，同时作者将分组数分别设置为1到5，以此探索不同的分组数对网络性能的影响，其中一般以g=3作为网络的基准版本。
-与传统的神经网络相比，ShuffleNet网络结构最大的区别在于拥有三个shufflenet unit模块，分别对应三个Stage，它们将输入特征图的尺寸减半，通道数加倍，除了升级版的shufflenet unit模块，网络的其他超参数与ResNet保持一致。
-  Efficient Net   简介 EfficientNets是google在2019年5月发表的一个网络系列，使用神经架构搜索设计了一个baseline网络，并且将模型进行缩放获得一系列模型。它的精度和效率比之前所有的卷积网络都好。尤其是EfficientNet-B7在ImageNet上获得了当时最先进的 84.4%的top-1精度 和 97.1%的top-5精度，同时比之前最好的卷积网络大小缩小了8.4倍、速度提高了6.1倍。EfficientNets也可以很好的迁移，并且以更少的参量实现了最先进的精度——CIFAR-100（91.7%）、Flowers（98.8%）。
-  背景 通常为了获得更好的精度，放大卷积神经网络是一种广泛的方法。举个例子，ResNet可以通过使用更多层从ResNet-18放大到ResNet-200；目前为止，GPipe通过将baseline模型放大四倍在ImageNet数据集上获得了84.3%的top-1精度，然而，放大CNN的过程从来没有很好的理解过，目前通用的几种方法是放大CNN的深度、宽度和分辨率，在之前都是单独放大这三个维度中的一个，尽管任意放大两个或者三个维度也是可能的，但是任意缩放需要繁琐的人工调参同时可能产生的是一个次优的精度和效率。
-  模型缩放方法   Single Scaling（单尺度）">
-    <meta name="generator" content="Hugo 0.88.0" />
-    
-    
-    
-    
-      <meta name="robots" content="noindex, nofollow">
-    
-
-    
-<link rel="stylesheet" href="/ananke/css/main.min.css" >
-
-
-
-    
-    
-    
-      
-
-    
-
-    
-    
-    <meta property="og:title" content="ShuffleNet &amp; EfficientNet" />
-<meta property="og:description" content="ShuffleNet   简介 ShuffleNet是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。所以，ShuffleNet的设计目标也是如何利用有限的计算资源来达到最好的模型精度，这需要很好地在速度和精度之间做平衡。ShuffleNet是一种专门为计算资源有限的设备设计的神经网络结构，主要采用了pointwise group convolution和channel shuffle两种技术，在保留了模型精度的同时极大减少了计算开销。
-  旧网络存在问题  分组卷积GConv虽然能减少参数量和计算量，但是GConv中不同的组之间的信息没有交流。 在ResNeXt网络中，分组卷积占的计算量很少，大部分计算量都是1*1卷积产生的。    创新点   Channel Shuffle
-先通过一个分组卷积，得到对应的特征矩阵，接下来使用channel shuffle操作后的特征矩阵进行组卷积，融合不同组之间的维度信息。
-具体为，假设输入的feature map是一个一维的12个数据，分为3组，每一个分组有4个值，channel shuffle操作首先将这个矩阵进行升维，重构为一个g行n列的矩阵（这里g=3，n=4），然后对这个矩阵进行转置，后得到一个n行g列的新矩阵，再按照分组数g对这个得到的新矩阵进行展开，通过这一系列操作，达到了将原来固定的各分组打乱重排的目的。
-  ShuffleNet Unit
-ShuffleNet Unit的结构灵感来源于ResNet的中的bottleneck残差模块，从某种意义上来说，二者看起来几乎一样，以下是ShuffleNet Unit的结构：
-相较于ResNet的bottleneck模块，ShuffleNet Unit有三处差别：
- ShuffleNet Unit将bottleneck模块中的3x3卷积替换为了3x3的depthwise卷积，也就是图中的DWConv，如图a所示。 对原残差模块的1x1卷积进行了替换，替换为了1x1的分组卷积，并在后面加上了一个channel shuffle操作，用于消除分组卷积的副作用，如图b所示。 在bottleneck的短路路径上使用了3x3的全局平均池化，然后将原来bottleneck模块的逐元素求和替换为了通道（Add）的拼接操作（Concat），如图c所示。使原来的数值1相加操作变成了维度的相加，更高的维度可以使网络拥有更多的通道数，从而提升网络的性能。      网络结构 基于shufflenet unit模块，整体的ShuffleNet网络结构图如下图所示：
-上图为一个图像分类任务，输入为224x224的图像，输出1000个概率，同时作者将分组数分别设置为1到5，以此探索不同的分组数对网络性能的影响，其中一般以g=3作为网络的基准版本。
-与传统的神经网络相比，ShuffleNet网络结构最大的区别在于拥有三个shufflenet unit模块，分别对应三个Stage，它们将输入特征图的尺寸减半，通道数加倍，除了升级版的shufflenet unit模块，网络的其他超参数与ResNet保持一致。
-  Efficient Net   简介 EfficientNets是google在2019年5月发表的一个网络系列，使用神经架构搜索设计了一个baseline网络，并且将模型进行缩放获得一系列模型。它的精度和效率比之前所有的卷积网络都好。尤其是EfficientNet-B7在ImageNet上获得了当时最先进的 84.4%的top-1精度 和 97.1%的top-5精度，同时比之前最好的卷积网络大小缩小了8.4倍、速度提高了6.1倍。EfficientNets也可以很好的迁移，并且以更少的参量实现了最先进的精度——CIFAR-100（91.7%）、Flowers（98.8%）。
-  背景 通常为了获得更好的精度，放大卷积神经网络是一种广泛的方法。举个例子，ResNet可以通过使用更多层从ResNet-18放大到ResNet-200；目前为止，GPipe通过将baseline模型放大四倍在ImageNet数据集上获得了84.3%的top-1精度，然而，放大CNN的过程从来没有很好的理解过，目前通用的几种方法是放大CNN的深度、宽度和分辨率，在之前都是单独放大这三个维度中的一个，尽管任意放大两个或者三个维度也是可能的，但是任意缩放需要繁琐的人工调参同时可能产生的是一个次优的精度和效率。
-  模型缩放方法   Single Scaling（单尺度）" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>ShuffleNet &amp; EfficientNet - Hzb&#39;s Study Blog</title><meta name="author" content="">
+<meta name="author-link" content="">
+<meta name="description" content="ShuffleNet 简介 ShuffleNet是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。" /><meta name="keywords" content='Hugo, FixIt' /><meta itemprop="name" content="ShuffleNet &amp; EfficientNet">
+<meta itemprop="description" content="ShuffleNet 简介 ShuffleNet是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。"><meta itemprop="datePublished" content="2022-09-12T15:05:52+08:00" />
+<meta itemprop="dateModified" content="2022-09-12T15:05:52+08:00" />
+<meta itemprop="wordCount" content="2903">
+<meta itemprop="keywords" content="" /><meta property="og:title" content="ShuffleNet &amp; EfficientNet" />
+<meta property="og:description" content="ShuffleNet 简介 ShuffleNet是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://example.org/posts/shufflenet-efficientnet/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2022-09-12T15:05:52+08:00" />
 <meta property="article:modified_time" content="2022-09-12T15:05:52+08:00" />
 
-<meta itemprop="name" content="ShuffleNet &amp; EfficientNet">
-<meta itemprop="description" content="ShuffleNet   简介 ShuffleNet是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。所以，ShuffleNet的设计目标也是如何利用有限的计算资源来达到最好的模型精度，这需要很好地在速度和精度之间做平衡。ShuffleNet是一种专门为计算资源有限的设备设计的神经网络结构，主要采用了pointwise group convolution和channel shuffle两种技术，在保留了模型精度的同时极大减少了计算开销。
-  旧网络存在问题  分组卷积GConv虽然能减少参数量和计算量，但是GConv中不同的组之间的信息没有交流。 在ResNeXt网络中，分组卷积占的计算量很少，大部分计算量都是1*1卷积产生的。    创新点   Channel Shuffle
-先通过一个分组卷积，得到对应的特征矩阵，接下来使用channel shuffle操作后的特征矩阵进行组卷积，融合不同组之间的维度信息。
-具体为，假设输入的feature map是一个一维的12个数据，分为3组，每一个分组有4个值，channel shuffle操作首先将这个矩阵进行升维，重构为一个g行n列的矩阵（这里g=3，n=4），然后对这个矩阵进行转置，后得到一个n行g列的新矩阵，再按照分组数g对这个得到的新矩阵进行展开，通过这一系列操作，达到了将原来固定的各分组打乱重排的目的。
-  ShuffleNet Unit
-ShuffleNet Unit的结构灵感来源于ResNet的中的bottleneck残差模块，从某种意义上来说，二者看起来几乎一样，以下是ShuffleNet Unit的结构：
-相较于ResNet的bottleneck模块，ShuffleNet Unit有三处差别：
- ShuffleNet Unit将bottleneck模块中的3x3卷积替换为了3x3的depthwise卷积，也就是图中的DWConv，如图a所示。 对原残差模块的1x1卷积进行了替换，替换为了1x1的分组卷积，并在后面加上了一个channel shuffle操作，用于消除分组卷积的副作用，如图b所示。 在bottleneck的短路路径上使用了3x3的全局平均池化，然后将原来bottleneck模块的逐元素求和替换为了通道（Add）的拼接操作（Concat），如图c所示。使原来的数值1相加操作变成了维度的相加，更高的维度可以使网络拥有更多的通道数，从而提升网络的性能。      网络结构 基于shufflenet unit模块，整体的ShuffleNet网络结构图如下图所示：
-上图为一个图像分类任务，输入为224x224的图像，输出1000个概率，同时作者将分组数分别设置为1到5，以此探索不同的分组数对网络性能的影响，其中一般以g=3作为网络的基准版本。
-与传统的神经网络相比，ShuffleNet网络结构最大的区别在于拥有三个shufflenet unit模块，分别对应三个Stage，它们将输入特征图的尺寸减半，通道数加倍，除了升级版的shufflenet unit模块，网络的其他超参数与ResNet保持一致。
-  Efficient Net   简介 EfficientNets是google在2019年5月发表的一个网络系列，使用神经架构搜索设计了一个baseline网络，并且将模型进行缩放获得一系列模型。它的精度和效率比之前所有的卷积网络都好。尤其是EfficientNet-B7在ImageNet上获得了当时最先进的 84.4%的top-1精度 和 97.1%的top-5精度，同时比之前最好的卷积网络大小缩小了8.4倍、速度提高了6.1倍。EfficientNets也可以很好的迁移，并且以更少的参量实现了最先进的精度——CIFAR-100（91.7%）、Flowers（98.8%）。
-  背景 通常为了获得更好的精度，放大卷积神经网络是一种广泛的方法。举个例子，ResNet可以通过使用更多层从ResNet-18放大到ResNet-200；目前为止，GPipe通过将baseline模型放大四倍在ImageNet数据集上获得了84.3%的top-1精度，然而，放大CNN的过程从来没有很好的理解过，目前通用的几种方法是放大CNN的深度、宽度和分辨率，在之前都是单独放大这三个维度中的一个，尽管任意放大两个或者三个维度也是可能的，但是任意缩放需要繁琐的人工调参同时可能产生的是一个次优的精度和效率。
-  模型缩放方法   Single Scaling（单尺度）"><meta itemprop="datePublished" content="2022-09-12T15:05:52+08:00" />
-<meta itemprop="dateModified" content="2022-09-12T15:05:52+08:00" />
-<meta itemprop="wordCount" content="95">
-<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="ShuffleNet &amp; EfficientNet"/>
-<meta name="twitter:description" content="ShuffleNet   简介 ShuffleNet是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。所以，ShuffleNet的设计目标也是如何利用有限的计算资源来达到最好的模型精度，这需要很好地在速度和精度之间做平衡。ShuffleNet是一种专门为计算资源有限的设备设计的神经网络结构，主要采用了pointwise group convolution和channel shuffle两种技术，在保留了模型精度的同时极大减少了计算开销。
-  旧网络存在问题  分组卷积GConv虽然能减少参数量和计算量，但是GConv中不同的组之间的信息没有交流。 在ResNeXt网络中，分组卷积占的计算量很少，大部分计算量都是1*1卷积产生的。    创新点   Channel Shuffle
-先通过一个分组卷积，得到对应的特征矩阵，接下来使用channel shuffle操作后的特征矩阵进行组卷积，融合不同组之间的维度信息。
-具体为，假设输入的feature map是一个一维的12个数据，分为3组，每一个分组有4个值，channel shuffle操作首先将这个矩阵进行升维，重构为一个g行n列的矩阵（这里g=3，n=4），然后对这个矩阵进行转置，后得到一个n行g列的新矩阵，再按照分组数g对这个得到的新矩阵进行展开，通过这一系列操作，达到了将原来固定的各分组打乱重排的目的。
-  ShuffleNet Unit
-ShuffleNet Unit的结构灵感来源于ResNet的中的bottleneck残差模块，从某种意义上来说，二者看起来几乎一样，以下是ShuffleNet Unit的结构：
-相较于ResNet的bottleneck模块，ShuffleNet Unit有三处差别：
- ShuffleNet Unit将bottleneck模块中的3x3卷积替换为了3x3的depthwise卷积，也就是图中的DWConv，如图a所示。 对原残差模块的1x1卷积进行了替换，替换为了1x1的分组卷积，并在后面加上了一个channel shuffle操作，用于消除分组卷积的副作用，如图b所示。 在bottleneck的短路路径上使用了3x3的全局平均池化，然后将原来bottleneck模块的逐元素求和替换为了通道（Add）的拼接操作（Concat），如图c所示。使原来的数值1相加操作变成了维度的相加，更高的维度可以使网络拥有更多的通道数，从而提升网络的性能。      网络结构 基于shufflenet unit模块，整体的ShuffleNet网络结构图如下图所示：
-上图为一个图像分类任务，输入为224x224的图像，输出1000个概率，同时作者将分组数分别设置为1到5，以此探索不同的分组数对网络性能的影响，其中一般以g=3作为网络的基准版本。
-与传统的神经网络相比，ShuffleNet网络结构最大的区别在于拥有三个shufflenet unit模块，分别对应三个Stage，它们将输入特征图的尺寸减半，通道数加倍，除了升级版的shufflenet unit模块，网络的其他超参数与ResNet保持一致。
-  Efficient Net   简介 EfficientNets是google在2019年5月发表的一个网络系列，使用神经架构搜索设计了一个baseline网络，并且将模型进行缩放获得一系列模型。它的精度和效率比之前所有的卷积网络都好。尤其是EfficientNet-B7在ImageNet上获得了当时最先进的 84.4%的top-1精度 和 97.1%的top-5精度，同时比之前最好的卷积网络大小缩小了8.4倍、速度提高了6.1倍。EfficientNets也可以很好的迁移，并且以更少的参量实现了最先进的精度——CIFAR-100（91.7%）、Flowers（98.8%）。
-  背景 通常为了获得更好的精度，放大卷积神经网络是一种广泛的方法。举个例子，ResNet可以通过使用更多层从ResNet-18放大到ResNet-200；目前为止，GPipe通过将baseline模型放大四倍在ImageNet数据集上获得了84.3%的top-1精度，然而，放大CNN的过程从来没有很好的理解过，目前通用的几种方法是放大CNN的深度、宽度和分辨率，在之前都是单独放大这三个维度中的一个，尽管任意放大两个或者三个维度也是可能的，但是任意缩放需要繁琐的人工调参同时可能产生的是一个次优的精度和效率。
-  模型缩放方法   Single Scaling（单尺度）"/>
-
-	
-  </head>
-
-  <body class="ma0 avenir bg-near-white">
-
-    
-   
-  
-
-  <header>
-    <div class="bg-black">
-      <nav class="pv3 ph3 ph4-ns" role="navigation">
-  <div class="flex-l justify-between items-center center">
-    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
-      
-        Hzb&#39;s Study Blog
-      
-    </a>
-    <div class="flex-l items-center">
-      
-
-      
-      
-<div class="ananke-socials">
-  
-</div>
-
-    </div>
+<meta name="twitter:description" content="ShuffleNet 简介 ShuffleNet是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。"/>
+<meta name="application-name" content="FixIt">
+<meta name="apple-mobile-web-app-title" content="FixIt"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://example.org/posts/shufflenet-efficientnet/" /><link rel="prev" href="http://example.org/posts/senet-mobilenet/" /><link rel="next" href="http://example.org/posts/rcnn-fast-rcnn-faster-rcnn/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "ShuffleNet \u0026 EfficientNet",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/example.org\/posts\/shufflenet-efficientnet\/"
+    },"genre": "posts","wordcount":  2903 ,
+    "url": "http:\/\/example.org\/posts\/shufflenet-efficientnet\/","datePublished": "2022-09-12T15:05:52+08:00","dateModified": "2022-09-12T15:05:52+08:00","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "作者"
+      },"description": ""
+  }
+  </script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><script>(window.localStorage?.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('data-theme', 'dark');</script><div class="wrapper"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="Hzb&#39;s Study Blog"><img
+    class="lazyload logo"
+    src="/svg/loading.min.svg"
+    data-src="/fixit.min.svg"
+    data-srcset="/fixit.min.svg, /fixit.min.svg 1.5x, /fixit.min.svg 2x"
+    data-sizes="auto"
+    alt="Hzb&#39;s Study Blog"
+    title="Hzb&#39;s Study Blog"/><span class="header-title-text">Hzb&#39;s Study Blog</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容 ..." id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li>
+      </ul>
+    </nav>
   </div>
-</nav>
-
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="Hzb&#39;s Study Blog"><img
+    class="lazyload logo"
+    src="/svg/loading.min.svg"
+    data-src="/fixit.min.svg"
+    data-srcset="/fixit.min.svg, /fixit.min.svg 1.5x, /fixit.min.svg 2x"
+    data-sizes="auto"
+    alt="/fixit.min.svg"
+    title="/fixit.min.svg"/><span class="header-title-text">Hzb&#39;s Study Blog</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
     </div>
-  </header>
-
-
-
-    <main class="pb7" role="main">
-      
-  
-  <article class="flex-l flex-wrap justify-between mw8 center ph3">
-    <header class="mt4 w-100">
-      <aside class="instapaper_ignoref b helvetica tracked">
-          
-        POSTS
-      </aside>
-      
-
-
-
-
-
-
-
-
-
-
-  <div id="sharing" class="mt3 ananke-socials">
-    
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容 ..." id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/posts/"
+                  
+                  
+                ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/categories/"
+                  
+                  
+                ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/tags/"
+                  
+                  
+                ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
   </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container" data-page-style="normal"><aside class="toc" id="toc-auto"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside>
 
+  <aside class="aside-custom">
+    
+</aside>
 
-      <h1 class="f1 athelas mt3 mb1">ShuffleNet &amp; EfficientNet</h1>
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX">
+        <span>ShuffleNet &amp; EfficientNet</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><span class="author"><img
+    class="lazyload avatar"
+    src="/svg/loading.min.svg"
+    data-src="/fixit.min.svg"
+    data-srcset="/fixit.min.svg, /fixit.min.svg 1.5x, /fixit.min.svg 2x"
+    data-sizes="auto"
+    alt="Anonymous"
+    title="Anonymous"/>&nbsp;Anonymous</span></span></div>
+      <div class="post-meta-line"><span title=2022-09-12&#32;15:05:52><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-09-12">2022-09-12</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 2903 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 6 分钟</span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>目录</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#shufflenet">ShuffleNet</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#efficient-net">Efficient Net</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#citation">Citation</a></li>
+  </ul>
+</nav></div>
+      </div><div
+      class="content"
+      id="content"
       
       
-      
-      <time class="f6 mv4 dib tracked" datetime="2022-09-12T15:05:52+08:00">September 12, 2022</time>
-      
-
-      
-      
-    </header>
-    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="shufflenet">ShuffleNet</h2>
+    ><h2 id="shufflenet">ShuffleNet</h2>
 <ul>
 <li>
 <h4 id="简介">简介</h4>
-<p><a href="https://arxiv.org/pdf/1707.01083.pdf">ShuffleNet</a>是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。所以，ShuffleNet的设计目标也是如何利用有限的计算资源来达到最好的模型精度，这需要很好地在速度和精度之间做平衡。ShuffleNet是一种专门为计算资源有限的设备设计的神经网络结构，主要采用了pointwise group convolution和channel shuffle两种技术，在保留了模型精度的同时极大减少了计算开销。</p>
+<p><a href="https://arxiv.org/pdf/1707.01083.pdf"target="_blank" rel="external nofollow noopener noreferrer">ShuffleNet</a>是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。所以，ShuffleNet的设计目标也是如何利用有限的计算资源来达到最好的模型精度，这需要很好地在速度和精度之间做平衡。ShuffleNet是一种专门为计算资源有限的设备设计的神经网络结构，主要采用了pointwise group convolution和channel shuffle两种技术，在保留了模型精度的同时极大减少了计算开销。</p>
 </li>
 <li>
 <h4 id="旧网络存在问题">旧网络存在问题</h4>
@@ -181,14 +216,28 @@ ShuffleNet Unit的结构灵感来源于ResNet的中的bottleneck残差模块，�
 <ul>
 <li>
 <p>Channel Shuffle</p>
-<p><img src="/images/shufflenet1.png" alt="shufflenet1"></p>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="/images/shufflenet1.png"
+    data-srcset="/images/shufflenet1.png, /images/shufflenet1.png 1.5x, /images/shufflenet1.png 2x"
+    data-sizes="auto"
+    alt="shufflenet1"
+    title="shufflenet1"/></p>
 <p>先通过一个分组卷积，得到对应的特征矩阵，接下来使用channel shuffle操作后的特征矩阵进行组卷积，融合不同组之间的维度信息。</p>
 <p>具体为，假设输入的feature map是一个一维的12个数据，分为3组，每一个分组有4个值，channel shuffle操作首先将这个矩阵进行升维，重构为一个g行n列的矩阵（这里g=3，n=4），然后对这个矩阵进行转置，后得到一个n行g列的新矩阵，再按照分组数g对这个得到的新矩阵进行展开，通过这一系列操作，达到了将原来固定的各分组打乱重排的目的。</p>
 </li>
 <li>
 <p>ShuffleNet Unit</p>
 <p>ShuffleNet Unit的结构灵感来源于ResNet的中的bottleneck残差模块，从某种意义上来说，二者看起来几乎一样，以下是ShuffleNet Unit的结构：</p>
-<p><img src="/images/shufflenet2.png" alt="shufflenet2"></p>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="/images/shufflenet2.png"
+    data-srcset="/images/shufflenet2.png, /images/shufflenet2.png 1.5x, /images/shufflenet2.png 2x"
+    data-sizes="auto"
+    alt="shufflenet2"
+    title="shufflenet2"/></p>
 <p>相较于ResNet的bottleneck模块，ShuffleNet Unit有三处差别：</p>
 <ol>
 <li>ShuffleNet Unit将bottleneck模块中的3x3卷积替换为了3x3的depthwise卷积，也就是图中的DWConv，如图a所示。</li>
@@ -201,7 +250,7 @@ ShuffleNet Unit的结构灵感来源于ResNet的中的bottleneck残差模块，�
 <li>
 <h4 id="网络结构">网络结构</h4>
 <p>基于shufflenet unit模块，整体的ShuffleNet网络结构图如下图所示：</p>
-<p><img src="/images/shufflenet3.jpg" alt="shufflenet3" style="zoom: 67%;" /></p>
+<!-- raw HTML omitted -->
 <p>上图为一个图像分类任务，输入为224x224的图像，输出1000个概率，同时作者将分组数分别设置为1到5，以此探索不同的分组数对网络性能的影响，其中一般以g=3作为网络的基准版本。</p>
 <p>与传统的神经网络相比，ShuffleNet网络结构最大的区别在于拥有三个shufflenet unit模块，分别对应三个Stage，它们将输入特征图的尺寸减半，通道数加倍，除了升级版的shufflenet unit模块，网络的其他超参数与ResNet保持一致。</p>
 </li>
@@ -210,7 +259,7 @@ ShuffleNet Unit的结构灵感来源于ResNet的中的bottleneck残差模块，�
 <ul>
 <li>
 <h4 id="简介-1">简介</h4>
-<p><a href="https://arxiv.org/pdf/1905.11946.pdf">EfficientNets</a>是google在2019年5月发表的一个网络系列，使用神经架构搜索设计了一个baseline网络，并且将模型进行缩放获得一系列模型。它的精度和效率比之前所有的卷积网络都好。尤其是EfficientNet-B7在ImageNet上获得了当时最先进的 84.4%的top-1精度 和 97.1%的top-5精度，同时比之前最好的卷积网络大小缩小了8.4倍、速度提高了6.1倍。EfficientNets也可以很好的迁移，并且以更少的参量实现了最先进的精度——CIFAR-100（91.7%）、Flowers（98.8%）。</p>
+<p><a href="https://arxiv.org/pdf/1905.11946.pdf"target="_blank" rel="external nofollow noopener noreferrer">EfficientNets</a>是google在2019年5月发表的一个网络系列，使用神经架构搜索设计了一个baseline网络，并且将模型进行缩放获得一系列模型。它的精度和效率比之前所有的卷积网络都好。尤其是EfficientNet-B7在ImageNet上获得了当时最先进的 84.4%的top-1精度 和 97.1%的top-5精度，同时比之前最好的卷积网络大小缩小了8.4倍、速度提高了6.1倍。EfficientNets也可以很好的迁移，并且以更少的参量实现了最先进的精度——CIFAR-100（91.7%）、Flowers（98.8%）。</p>
 </li>
 <li>
 <h4 id="背景">背景</h4>
@@ -238,7 +287,7 @@ ShuffleNet Unit的结构灵感来源于ResNet的中的bottleneck残差模块，�
 <p>复合缩放方法的第一步是执行网格搜索，以找到在固定资源约束下基线网络的不同缩放维度之间的关系。这决定了上面提到的每个维度的适当比例系数。 然后应用这些系数扩大基线网络，以达到期望的模型大小或资源要求。</p>
 </li>
 </ul>
-<p><img src="/images/efficientnet1.png" alt="efficientnet1" style="zoom: 67%;" /></p>
+<!-- raw HTML omitted -->
 <ul>
 <li>与传统的缩放方法（上图a-d）相比，这种复合缩放方法（上图e）不断提高模型的精度和效率，可用于扩展现有的模型，如 mobileet (+ 1.4% 的图像集精度)和 ResNet (+ 0.7%)。</li>
 </ul>
@@ -246,49 +295,55 @@ ShuffleNet Unit的结构灵感来源于ResNet的中的bottleneck残差模块，�
 <li>
 <h4 id="网络结构-1">网络结构</h4>
 <p>作者指明，由于模型缩放不会改变基线网络中的层，但是拥有一个良好的基线网络也是至关重要的。作者使用现有的基础网络来评估该缩放方法，但是为了更好地证明该缩放方法的有效性，作者还开发了一种新的mobile-size baseline，称为 EfficientNet，EfficientNet-B0的网络结构如下 (类似于 MobileNetV2 和 MnasNet)：</p>
-<p><img src="/images/efficientnet2.png" alt="efficientnet2" style="zoom: 67%;" /></p>
+<!-- raw HTML omitted -->
 </li>
 </ul>
 <h2 id="citation">Citation</h2>
 <blockquote>
 <p>北信科视觉感知研讨课程（周羿旭老师分享）</p>
-<p><a href="https://zhuanlan.zhihu.com/p/482776750">【轻量化网络】ShuffleNet V1 论文研读</a></p>
-<p><a href="https://blog.csdn.net/loki2018/article/details/124077822">论文阅读笔记：ShuffleNet</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/96773680">令人拍案叫绝的EfficientNet和EfficientDet</a></p>
-<p><a href="https://blog.csdn.net/Q1u1NG/article/details/106317925">EfficientNet详解</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/482776750"target="_blank" rel="external nofollow noopener noreferrer">【轻量化网络】ShuffleNet V1 论文研读</a></p>
+<p><a href="https://blog.csdn.net/loki2018/article/details/124077822"target="_blank" rel="external nofollow noopener noreferrer">论文阅读笔记：ShuffleNet</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/96773680"target="_blank" rel="external nofollow noopener noreferrer">令人拍案叫绝的EfficientNet和EfficientDet</a></p>
+<p><a href="https://blog.csdn.net/Q1u1NG/article/details/106317925"target="_blank" rel="external nofollow noopener noreferrer">EfficientNet详解</a></p>
 </blockquote>
 <h1 id="thanks-for-reading"><em>Thanks for reading!</em></h1>
-<ul class="pa0">
-  
-</ul>
-<div class="mt6 instapaper_ignoref">
-      
-      
+</div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title=2022-09-12&#32;15:05:52>更新于 2022-09-12&nbsp;</span>
+      </div><div class="post-info-license">
+          <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
+        </div></div>
+    <div class="post-info-line">
+      <div class="post-info-md"></div>
+      <div class="post-info-share">
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://example.org/posts/shufflenet-efficientnet/" data-title="ShuffleNet &amp; EfficientNet"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://example.org/posts/shufflenet-efficientnet/"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://example.org/posts/shufflenet-efficientnet/" data-title="ShuffleNet &amp; EfficientNet"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
       </div>
     </div>
-
-    <aside class="w-30-l mt6-l">
-
-
-
-
-</aside>
-
-  </article>
-
-    </main>
-    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
-  <div class="flex justify-between">
-  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://example.org/" >
-    &copy;  Hzb's Study Blog 2022 
-  </a>
-    <div>
-<div class="ananke-socials">
-  
-</div>
-</div>
   </div>
-</footer>
 
-  </body>
+  <div class="post-info-more">
+    <section class="post-tags"></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div>
+
+  <div class="post-nav"><a href="/posts/senet-mobilenet/" class="prev" rel="prev" title="SENet &amp; MobileNet"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>SENet &amp; MobileNet</a>
+      <a href="/posts/rcnn-fast-rcnn-faster-rcnn/" class="next" rel="next" title="Rcnn &amp; Fast-Rcnn &amp; Faster-Rcnn">Rcnn &amp; Fast-Rcnn &amp; Faster-Rcnn<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.101.0">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.2.16"><img class="fixit-icon" src="/fixit.min.svg" alt="FixIt logo" />&nbsp;FixIt</a>
+        </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2021 - 2022</span><span class="author" itemprop="copyrightHolder">
+              <a href="/"></a></span><span class="license footer-divider"><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div><div class="footer-line statistics"></div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
+        </div></div><div id="mask"></div><noscript>
+    <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/lunr/lunr.min.js" defer></script><script src="/lib/lunr/lunr.stemmer.support.min.js" defer></script><script src="/lib/lunr/lunr.zh.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script src="/js/theme.min.js" defer></script></body>
 </html>
