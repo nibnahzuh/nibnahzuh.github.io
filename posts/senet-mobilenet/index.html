@@ -1,93 +1,161 @@
 <!DOCTYPE html>
 <html lang="en-us">
-
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-  	<meta property="og:title" content=" SENet &amp; MobileNet &middot;  Hzb&#39;s Study Blog" />
-  	<meta property="og:site_name" content="Hzb&#39;s Study Blog" />
-  	<meta property="og:url" content="http://example.org/posts/senet-mobilenet/" />
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>SENet &amp; MobileNet | Hzb&#39;s Study Blog</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="SENet   简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在深度学习领域，已经有很多成果通过在空间维度上对网络的性能进行了提升。而SENet反其道而行之，通过对通道关系进行建模来提升网络的性能。SENet较早的将注意力机制引入CNN中，使用了模块化设计。
+  亮点 引入通道注意力机制，关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。
+  网络结构   原理 SENet网络的创新点在于关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。为此，SENet提出了Squeeze-and-Excitation (SE)模块，SE模块首先对卷积得到的特征图进行Squeeze操作，得到channel级的全局特征，然后对全局特征进行Excitation操作，学习各个channel间的关系，也得到不同channel的权重，最后乘以原来的特征图得到最终特征。
+本质上，SE模块是在channel维度上做attention或者gating操作，这种注意力机制让模型可以更加关注信息量最大的channel特征，而抑制那些不重要的channel特征。另外一点是SE模块是通用的，这意味着其可以嵌入到现有的网络架构中。
+  Squeeze 原始feature map的维度为H×W×C，其中H是高度（Height），W是宽度（width），C是通道数（channel）。Squeeze就是用全局平均池化（global average pooling）把H×W×C压缩为1×1×C。H×W压缩成一维后，相当于这一维参数获得了之前H×W全局的视野，感受区域更广。公式如下：
+  Excitation Sequeeze操作得到了全局描述特征，接下来需要另外一种运算来提取channel之间的关系。 用两个全连接层来学习通道间的相关性，第一个FC层起到降维的作用，然后采用ReLU激活。最后的全连接层恢复原始的维度。公式如下：
+  Reweight 将Excitation的输出权重作为经过特征选择后的每个特征通道的重要性，然后通过乘法逐通道加权到先前的特征上，完成在通道维度上的对原始特征的重标定。
+  全局平均池化   思想：对于输出的每一个通道的特征图的所有像素计算一个平均值，经过全局平均池化之后就得到一个 维度=类别数的特征向量，然后直接输入到softmax层。
+  作用：代替全连接层，可接受任意尺寸的图像。
+  优点：
+ 可以更好的将类别与最后一个卷积层的特征图对应起来（每一个通道对应一种类别，这样每一张特征图都可以看成是该类别对应的类别置信图）； 降低参数量，全局平均池化层没有参数，可防止在该层过拟合； 整合了全局空间信息，对于输入图片的spatial translation更加鲁棒。      结构融合  上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于：  具有更多的非线性，可以更好地拟合通道间复杂的相关性； 减少了参数量和计算量。   下图是SE模块嵌入到ResNet的示例。操作过程基本和SE-Inception一样，只不过是在Addition前对分支上Residual的特征进行了特征重标定。如果对Addition后主支上的特征进行重标定，由于在主干上存在0~1的scale操作，在网络较深BP优化时就会在靠近输入层容易出现梯度消散的情况，导致模型难以优化。    运算效率 实验表明，SE模块在参数量上的增加带来的计算量增长微乎其微，但是性能却有所提升，当然这也取决于实际应用，如果因为SE模块导致参数量增加的掠夺，可以针对性的在适当的位置削减SE模块的数量，而精度几乎不受影响。">
+    <meta name="generator" content="Hugo 0.88.0" />
     
     
-  	<meta property="og:type" content="article" />
+    
+    
+      <meta name="robots" content="noindex, nofollow">
+    
 
-    <meta property="og:article:published_time" content="2022-09-02T22:27:28&#43;08:00" />
+    
+<link rel="stylesheet" href="/ananke/css/main.min.css" >
+
+
 
     
     
-
-  <title>
-     SENet &amp; MobileNet &middot;  Hzb&#39;s Study Blog
-  </title>
-
-    <meta name="description" content="this is my description" />
-
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <link rel="shortcut icon" href="http://example.org/images/favicon.ico">
-	  <link rel="apple-touch-icon" href="http://example.org/images/apple-touch-icon.png" />
-    
-    <link rel="stylesheet" type="text/css" href="http://example.org/css/screen.css" />
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata" />
-
-
     
       
-          <link href="http://example.org/index.xml" rel="alternate" type="application/rss+xml" title="Hzb&#39;s Study Blog" />
-      
-      
+
     
-    <meta name="generator" content="Hugo 0.107.0">
 
-    <link rel="canonical" href="http://example.org/posts/senet-mobilenet/" />
+    
+    
+    <meta property="og:title" content="SENet &amp; MobileNet" />
+<meta property="og:description" content="SENet   简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在深度学习领域，已经有很多成果通过在空间维度上对网络的性能进行了提升。而SENet反其道而行之，通过对通道关系进行建模来提升网络的性能。SENet较早的将注意力机制引入CNN中，使用了模块化设计。
+  亮点 引入通道注意力机制，关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。
+  网络结构   原理 SENet网络的创新点在于关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。为此，SENet提出了Squeeze-and-Excitation (SE)模块，SE模块首先对卷积得到的特征图进行Squeeze操作，得到channel级的全局特征，然后对全局特征进行Excitation操作，学习各个channel间的关系，也得到不同channel的权重，最后乘以原来的特征图得到最终特征。
+本质上，SE模块是在channel维度上做attention或者gating操作，这种注意力机制让模型可以更加关注信息量最大的channel特征，而抑制那些不重要的channel特征。另外一点是SE模块是通用的，这意味着其可以嵌入到现有的网络架构中。
+  Squeeze 原始feature map的维度为H×W×C，其中H是高度（Height），W是宽度（width），C是通道数（channel）。Squeeze就是用全局平均池化（global average pooling）把H×W×C压缩为1×1×C。H×W压缩成一维后，相当于这一维参数获得了之前H×W全局的视野，感受区域更广。公式如下：
+  Excitation Sequeeze操作得到了全局描述特征，接下来需要另外一种运算来提取channel之间的关系。 用两个全连接层来学习通道间的相关性，第一个FC层起到降维的作用，然后采用ReLU激活。最后的全连接层恢复原始的维度。公式如下：
+  Reweight 将Excitation的输出权重作为经过特征选择后的每个特征通道的重要性，然后通过乘法逐通道加权到先前的特征上，完成在通道维度上的对原始特征的重标定。
+  全局平均池化   思想：对于输出的每一个通道的特征图的所有像素计算一个平均值，经过全局平均池化之后就得到一个 维度=类别数的特征向量，然后直接输入到softmax层。
+  作用：代替全连接层，可接受任意尺寸的图像。
+  优点：
+ 可以更好的将类别与最后一个卷积层的特征图对应起来（每一个通道对应一种类别，这样每一张特征图都可以看成是该类别对应的类别置信图）； 降低参数量，全局平均池化层没有参数，可防止在该层过拟合； 整合了全局空间信息，对于输入图片的spatial translation更加鲁棒。      结构融合  上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于：  具有更多的非线性，可以更好地拟合通道间复杂的相关性； 减少了参数量和计算量。   下图是SE模块嵌入到ResNet的示例。操作过程基本和SE-Inception一样，只不过是在Addition前对分支上Residual的特征进行了特征重标定。如果对Addition后主支上的特征进行重标定，由于在主干上存在0~1的scale操作，在网络较深BP优化时就会在靠近输入层容易出现梯度消散的情况，导致模型难以优化。    运算效率 实验表明，SE模块在参数量上的增加带来的计算量增长微乎其微，但是性能却有所提升，当然这也取决于实际应用，如果因为SE模块导致参数量增加的掠夺，可以针对性的在适当的位置削减SE模块的数量，而精度几乎不受影响。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/posts/senet-mobilenet/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-09-02T22:27:28+08:00" />
+<meta property="article:modified_time" content="2022-09-02T22:27:28+08:00" />
 
-     
-</head>
-<body class="nav-closed">
-<div id="particles-js"></div>
+<meta itemprop="name" content="SENet &amp; MobileNet">
+<meta itemprop="description" content="SENet   简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在深度学习领域，已经有很多成果通过在空间维度上对网络的性能进行了提升。而SENet反其道而行之，通过对通道关系进行建模来提升网络的性能。SENet较早的将注意力机制引入CNN中，使用了模块化设计。
+  亮点 引入通道注意力机制，关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。
+  网络结构   原理 SENet网络的创新点在于关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。为此，SENet提出了Squeeze-and-Excitation (SE)模块，SE模块首先对卷积得到的特征图进行Squeeze操作，得到channel级的全局特征，然后对全局特征进行Excitation操作，学习各个channel间的关系，也得到不同channel的权重，最后乘以原来的特征图得到最终特征。
+本质上，SE模块是在channel维度上做attention或者gating操作，这种注意力机制让模型可以更加关注信息量最大的channel特征，而抑制那些不重要的channel特征。另外一点是SE模块是通用的，这意味着其可以嵌入到现有的网络架构中。
+  Squeeze 原始feature map的维度为H×W×C，其中H是高度（Height），W是宽度（width），C是通道数（channel）。Squeeze就是用全局平均池化（global average pooling）把H×W×C压缩为1×1×C。H×W压缩成一维后，相当于这一维参数获得了之前H×W全局的视野，感受区域更广。公式如下：
+  Excitation Sequeeze操作得到了全局描述特征，接下来需要另外一种运算来提取channel之间的关系。 用两个全连接层来学习通道间的相关性，第一个FC层起到降维的作用，然后采用ReLU激活。最后的全连接层恢复原始的维度。公式如下：
+  Reweight 将Excitation的输出权重作为经过特征选择后的每个特征通道的重要性，然后通过乘法逐通道加权到先前的特征上，完成在通道维度上的对原始特征的重标定。
+  全局平均池化   思想：对于输出的每一个通道的特征图的所有像素计算一个平均值，经过全局平均池化之后就得到一个 维度=类别数的特征向量，然后直接输入到softmax层。
+  作用：代替全连接层，可接受任意尺寸的图像。
+  优点：
+ 可以更好的将类别与最后一个卷积层的特征图对应起来（每一个通道对应一种类别，这样每一张特征图都可以看成是该类别对应的类别置信图）； 降低参数量，全局平均池化层没有参数，可防止在该层过拟合； 整合了全局空间信息，对于输入图片的spatial translation更加鲁棒。      结构融合  上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于：  具有更多的非线性，可以更好地拟合通道间复杂的相关性； 减少了参数量和计算量。   下图是SE模块嵌入到ResNet的示例。操作过程基本和SE-Inception一样，只不过是在Addition前对分支上Residual的特征进行了特征重标定。如果对Addition后主支上的特征进行重标定，由于在主干上存在0~1的scale操作，在网络较深BP优化时就会在靠近输入层容易出现梯度消散的情况，导致模型难以优化。    运算效率 实验表明，SE模块在参数量上的增加带来的计算量增长微乎其微，但是性能却有所提升，当然这也取决于实际应用，如果因为SE模块导致参数量增加的掠夺，可以针对性的在适当的位置削减SE模块的数量，而精度几乎不受影响。"><meta itemprop="datePublished" content="2022-09-02T22:27:28+08:00" />
+<meta itemprop="dateModified" content="2022-09-02T22:27:28+08:00" />
+<meta itemprop="wordCount" content="320">
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SENet &amp; MobileNet"/>
+<meta name="twitter:description" content="SENet   简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在深度学习领域，已经有很多成果通过在空间维度上对网络的性能进行了提升。而SENet反其道而行之，通过对通道关系进行建模来提升网络的性能。SENet较早的将注意力机制引入CNN中，使用了模块化设计。
+  亮点 引入通道注意力机制，关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。
+  网络结构   原理 SENet网络的创新点在于关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。为此，SENet提出了Squeeze-and-Excitation (SE)模块，SE模块首先对卷积得到的特征图进行Squeeze操作，得到channel级的全局特征，然后对全局特征进行Excitation操作，学习各个channel间的关系，也得到不同channel的权重，最后乘以原来的特征图得到最终特征。
+本质上，SE模块是在channel维度上做attention或者gating操作，这种注意力机制让模型可以更加关注信息量最大的channel特征，而抑制那些不重要的channel特征。另外一点是SE模块是通用的，这意味着其可以嵌入到现有的网络架构中。
+  Squeeze 原始feature map的维度为H×W×C，其中H是高度（Height），W是宽度（width），C是通道数（channel）。Squeeze就是用全局平均池化（global average pooling）把H×W×C压缩为1×1×C。H×W压缩成一维后，相当于这一维参数获得了之前H×W全局的视野，感受区域更广。公式如下：
+  Excitation Sequeeze操作得到了全局描述特征，接下来需要另外一种运算来提取channel之间的关系。 用两个全连接层来学习通道间的相关性，第一个FC层起到降维的作用，然后采用ReLU激活。最后的全连接层恢复原始的维度。公式如下：
+  Reweight 将Excitation的输出权重作为经过特征选择后的每个特征通道的重要性，然后通过乘法逐通道加权到先前的特征上，完成在通道维度上的对原始特征的重标定。
+  全局平均池化   思想：对于输出的每一个通道的特征图的所有像素计算一个平均值，经过全局平均池化之后就得到一个 维度=类别数的特征向量，然后直接输入到softmax层。
+  作用：代替全连接层，可接受任意尺寸的图像。
+  优点：
+ 可以更好的将类别与最后一个卷积层的特征图对应起来（每一个通道对应一种类别，这样每一张特征图都可以看成是该类别对应的类别置信图）； 降低参数量，全局平均池化层没有参数，可防止在该层过拟合； 整合了全局空间信息，对于输入图片的spatial translation更加鲁棒。      结构融合  上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于：  具有更多的非线性，可以更好地拟合通道间复杂的相关性； 减少了参数量和计算量。   下图是SE模块嵌入到ResNet的示例。操作过程基本和SE-Inception一样，只不过是在Addition前对分支上Residual的特征进行了特征重标定。如果对Addition后主支上的特征进行重标定，由于在主干上存在0~1的scale操作，在网络较深BP优化时就会在靠近输入层容易出现梯度消散的情况，导致模型难以优化。    运算效率 实验表明，SE模块在参数量上的增加带来的计算量增长微乎其微，但是性能却有所提升，当然这也取决于实际应用，如果因为SE模块导致参数量增加的掠夺，可以针对性的在适当的位置削减SE模块的数量，而精度几乎不受影响。"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
   
 
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Hzb&#39;s Study Blog
+      
+    </a>
+    <div class="flex-l items-center">
+      
 
- <div class="site-wrapper">
-
-
-
-<header class="main-header " style="background-image: url(http://example.org/images/user.jpg)">
-
-    <nav class="main-nav overlay clearfix">
-        
-            <a class="blog-logo" href="http://example.org/"><img src="http://example.org/images/user.png" alt="Blog Logo" /></a>
-        
-        
-    </nav>
-<div class="vertical">
-        <div class="main-header-content inner">
-            <h1 class="page-title">
-              <a class="btn-bootstrap-2" href="#content">Hzb&#39;s Study Blog</a>
-          </h1>
-          <h2 class="page-description">this is my description</h2>
-        </div>
+      
+      
+<div class="ananke-socials">
+  
 </div>
-    <a class="scroll-down icon-arrow-left" href="#content"><span class="hidden">Scroll Down</span></a>
-</header>
 
-  <main id="content" class="content" role="main">
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
 
 
-  <article class="post posts">
 
-    <header class="post-header">
-        <h1 class="post-title">SENet &amp; MobileNet</h1>
-        <section class="post-meta">
-        
-         
-        </section>
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        POSTS
+      </aside>
+      
+
+
+
+
+
+
+
+
+
+
+  <div id="sharing" class="mt3 ananke-socials">
+    
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">SENet &amp; MobileNet</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2022-09-02T22:27:28+08:00">September 2, 2022</time>
+      
+
+      
+      
     </header>
-
-    <section class="post-content">
-      <h2 id="senet">SENet</h2>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="senet">SENet</h2>
 <ul>
 <li>
 <h4 id="简介">简介</h4>
@@ -99,7 +167,7 @@
 </li>
 <li>
 <h4 id="网络结构">网络结构</h4>
-<img src="/images/senet1.jpg" alt="senet1" style="zoom: 67%;" />
+<p><img src="/images/senet1.jpg" alt="senet1" style="zoom: 67%;" /></p>
 </li>
 <li>
 <h4 id="原理">原理</h4>
@@ -109,12 +177,12 @@
 <li>
 <h4 id="squeeze">Squeeze</h4>
 <p>原始feature map的维度为H×W×C，其中H是高度（Height），W是宽度（width），C是通道数（channel）。Squeeze就是用全局平均池化（global average pooling）把H×W×C压缩为1×1×C。H×W压缩成一维后，相当于这一维参数获得了之前H×W全局的视野，感受区域更广。公式如下：</p>
-<img src="/images/senet2.jpg" alt="image-20220905093003811" style="zoom: 50%;" />
+<p><img src="/images/senet2.jpg" alt="image-20220905093003811" style="zoom: 50%;" /></p>
 </li>
 <li>
 <h4 id="excitation">Excitation</h4>
 <p>Sequeeze操作得到了全局描述特征，接下来需要另外一种运算来提取channel之间的关系。 用两个全连接层来学习通道间的相关性，第一个FC层起到降维的作用，然后采用ReLU激活。最后的全连接层恢复原始的维度。公式如下：</p>
-<img src="/images/senet3.jpg" alt="senet3" style="zoom:50%;" />
+<p><img src="/images/senet3.jpg" alt="senet3" style="zoom:50%;" /></p>
 </li>
 <li>
 <h4 id="reweight">Reweight</h4>
@@ -141,7 +209,7 @@
 </li>
 <li>
 <h4 id="结构融合">结构融合</h4>
-<img src="/images/senet4.jpg" alt="senet4" style="zoom:50%;" />
+<p><img src="/images/senet4.jpg" alt="senet4" style="zoom:50%;" /></p>
 <ul>
 <li>上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于：
 <ol>
@@ -186,7 +254,7 @@
 </li>
 <li>
 <p>原论文中对第一层没有用此卷积，深度可分离卷积中的每一个后面都跟 BN 和 RELU。其中，Relu6=min(max(0,x),6)。</p>
-<img src="/images/mobilenet1.png" alt="mobilenet1" style="zoom:50%;" />
+<p><img src="/images/mobilenet1.png" alt="mobilenet1" style="zoom:50%;" /></p>
 <pre tabindex="0"><code>ReLU6就是普通的ReLU但是限制最大输出值为6（对输出值做clip），这是为了在移动端设备float16的低精度的时候，也能有很好的数值分辨率，如果对ReLU的激活范围不加限制，输出范围为0到正无穷，如果激活值非常大，分布在一个很大的范围内，则低精度的float16无法很好地精确描述如此大范围的数值，带来精度损失。
 </code></pre></li>
 </ul>
@@ -241,13 +309,13 @@
 </li>
 <li>
 <p>MobileNet V2 building block 如下所示，若需要下采样，可在 DWise 时采用步长为 2 的卷积；小网络使用小的扩张系数（expansion factor），大网络使用大一点的扩张系数（expansion factor），推荐是5~10，论文中 t = 6t。</p>
-<img src="/images/mobilenet2.jpg" alt="mobilenet2" style="zoom: 50%;" />
+<p><img src="/images/mobilenet2.jpg" alt="mobilenet2" style="zoom: 50%;" /></p>
 </li>
 </ul>
 </li>
 <li>
 <h4 id="具体改进">具体改进</h4>
-<img src="/images/mobilenet3.png" alt="mobilenet3" style="zoom:50%;" />
+<p><img src="/images/mobilenet3.png" alt="mobilenet3" style="zoom:50%;" /></p>
 <ul>
 <li>V2 去掉了第二个 PW 的激活函数改为线性激活。
 论文作者称其为 Linear Bottleneck。原因如上所述是因为作者认为激活函数在高维空间能够有效的增加非线性，而在低维空间时则会破坏特征，不如线性的效果好。</li>
@@ -275,12 +343,12 @@
 <li>
 <p>引入SE结构</p>
 <p>在bottlenet结构中加入了SE结构，并且放在了depthwise filter之后，如下图。因为SE结构会消耗一定的时间，所以作者在含有SE的结构中，将expansion layer的channel变为原来的1/4,这样作者发现，即提高了精度，同时还没有增加时间消耗。并且SE结构放在了depthwise之后。</p>
-<img src="/images/mobilenet4.png" alt="image-20220912143433488" style="zoom:50%;" />
+<p><img src="/images/mobilenet4.png" alt="image-20220912143433488" style="zoom:50%;" /></p>
 </li>
 <li>
 <p>修改尾部结构</p>
 <p>在MobileNet V2中，avg pooling之前，存在一个1x1的卷积层，目的是提高特征图的维度，更有利于结构的预测，但是这其实带来了一定的计算量了，所以这里作者修改了，将其放在avg pooling的后面，首先利用avg pooling将特征图大小由7x7降到了1x1，降到1x1后，然后再利用1x1提高维度，这样就减少了7x7=49倍的计算量。并且为了进一步的降低计算量，作者直接去掉了前面纺锤型卷积的3x3以及1x1卷积，进一步减少了计算量，就变成了如下图第二行所示的结构，作者将其中的3x3以及1x1去掉后，精度并没有得到损失。这里降低了大约15ms的速度。</p>
-<img src="/images/mobilenet5.jpg" alt="mobilenet5" style="zoom:60%;" />
+<p><img src="/images/mobilenet5.jpg" alt="mobilenet5" style="zoom:60%;" /></p>
 </li>
 <li>
 <p>修改channel数量</p>
@@ -289,8 +357,8 @@
 <li>
 <p>非线性变换的改变</p>
 <p>使用h-swish替换swish，swish是谷歌自家的研究成果，这次在其基础上，为速度进行了优化。swish与h-swish公式如下所示，由于sigmoid的计算耗时较长，特别是在移动端，这些耗时就会比较明显，所以作者使用ReLU6(x+3)/6来近似替代sigmoid，观察下图可以发现，其实相差不大的。利用ReLU有几点好处：1.可以在任何软硬件平台进行计算，2.量化的时候，它消除了潜在的精度损失，使用h-swish替换swith，在量化模式下回提高大约15%的效率，另外，h-swish在深层网络中更加明显。使用h-swish@16可以提高大约0.2%的精度，但是时间延长了大约20%。</p>
-<img src="/images/mobilenet6.png" alt="mobilenet6" style="zoom:50%;" />
-<img src="/images/mobilenet7.png" alt="mobilenet7" style="zoom:50%;" />
+<p><img src="/images/mobilenet6.png" alt="mobilenet6" style="zoom:50%;" /></p>
+<p><img src="/images/mobilenet7.png" alt="mobilenet7" style="zoom:50%;" /></p>
 </li>
 </ul>
 </li>
@@ -333,67 +401,37 @@
 <p><a href="https://blog.csdn.net/Chunfengyanyulove/article/details/91358187">mobilenet系列之又一新成员&mdash;mobilenet-v3</a></p>
 </blockquote>
 <h1 id="thanks-for-reading"><em>Thanks for reading!</em></h1>
-
-    </section>
-
-
-  <footer class="post-footer">
-
-
-    
-    <figure class="author-image">
-
-        <a class="img" href="http://example.org/" style="background-image: url(http://example.org/images/user.png)"><span class="hidden">syui</span></a>
-    </figure>
-    
-
-    <section class="author">
-
-  <p>syui</p>
+<ul class="pa0">
   
-
-</section>
-
-
-    
-    <section class="share">
-      <h4>Share this posts</h4>
-      <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=SENet%20%26%20MobileNet&amp;url=http%3a%2f%2fexample.org%2fposts%2fsenet-mobilenet%2f"
-          onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-          <span class="hidden">Twitter</span>
-      </a>
-      <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fexample.org%2fposts%2fsenet-mobilenet%2f"
-          onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-          <span class="hidden">Facebook</span>
-      </a>
-      <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=http%3a%2f%2fexample.org%2fposts%2fsenet-mobilenet%2f"
-         onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
-          <span class="hidden">Google+</span>
-      </a>
-    </section>
-    
-
-    
-    
-    
-
-  </footer>
-</article>
-
-</main>
-    <footer class="site-footer clearfix">
-        <section class="copyright"><a href="">Hzb&#39;s Study Blog</a> </section>
-        
-        <section class="poweredby">Proudly generated by <a class="icon-hugo" href="https://gohugo.io">HUGO</a>, with <a class="icon-theme" href="https://github.com/syui/hugo-theme-air">hugo-theme-air</a> theme</section>
-        
-    </footer>
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
     </div>
-    <script type="text/javascript" src="http://example.org/js/jquery.js"></script>
-    <script type="text/javascript" src="http://example.org/js/jquery.fitvids.js"></script>
-    <script type="text/javascript" src="http://example.org/js/index.js"></script>
-    <script src="http://example.org/js/particles.min.js"></script>
-    <script src="http://example.org/js/particles.js"></script>  
 
-</body>
+    <aside class="w-30-l mt6-l">
+
+
+
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://example.org/" >
+    &copy;  Hzb's Study Blog 2022 
+  </a>
+    <div>
+<div class="ananke-socials">
+  
+</div>
+</div>
+  </div>
+</footer>
+
+  </body>
 </html>
-
