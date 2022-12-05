@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>ResNet &amp; DenseNet - Hzb&#39;s Study Blog</title><meta name="author" content="">
+<meta name="author-link" content="">
+<meta name="description" content="ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO" /><meta name="keywords" content='Hugo, FixIt' /><meta itemprop="name" content="ResNet &amp; DenseNet">
+<meta itemprop="description" content="ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO"><meta itemprop="datePublished" content="2022-08-26T10:54:08+08:00" />
+<meta itemprop="dateModified" content="2022-08-26T10:54:08+08:00" />
+<meta itemprop="wordCount" content="6627">
+<meta itemprop="keywords" content="" /><meta property="og:title" content="ResNet &amp; DenseNet" />
+<meta property="og:description" content="ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/posts/resnet&#43;ampamp&#43;densenet/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-08-26T10:54:08+08:00" />
+<meta property="article:modified_time" content="2022-08-26T10:54:08+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="ResNet &amp; DenseNet"/>
+<meta name="twitter:description" content="ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO"/>
+<meta name="application-name" content="FixIt">
+<meta name="apple-mobile-web-app-title" content="FixIt"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://example.org/posts/resnet&#43;ampamp&#43;densenet/" /><link rel="prev" href="http://example.org/posts/alexnet&#43;ampamp&#43;vgg&#43;ampamp&#43;googlenet/" /><link rel="next" href="http://example.org/posts/senet&#43;ampamp&#43;mobilenet/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "ResNet \u0026 DenseNet",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/example.org\/posts\/resnet\u002bampamp\u002bdensenet\/"
+    },"genre": "posts","wordcount":  6627 ,
+    "url": "http:\/\/example.org\/posts\/resnet\u002bampamp\u002bdensenet\/","datePublished": "2022-08-26T10:54:08+08:00","dateModified": "2022-08-26T10:54:08+08:00","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "作者"
+      },"description": ""
+  }
+  </script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><script>(window.localStorage?.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('data-theme', 'dark');</script><div class="wrapper"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="Hzb&#39;s Study Blog"><img
+    class="lazyload logo"
+    src="/svg/loading.min.svg"
+    data-src="/fixit.min.svg"
+    data-srcset="/fixit.min.svg, /fixit.min.svg 1.5x, /fixit.min.svg 2x"
+    data-sizes="auto"
+    alt="Hzb&#39;s Study Blog"
+    title="Hzb&#39;s Study Blog"/><span class="header-title-text">Hzb&#39;s Study Blog</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容 ..." id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="Hzb&#39;s Study Blog"><img
+    class="lazyload logo"
+    src="/svg/loading.min.svg"
+    data-src="/fixit.min.svg"
+    data-srcset="/fixit.min.svg, /fixit.min.svg 1.5x, /fixit.min.svg 2x"
+    data-sizes="auto"
+    alt="/fixit.min.svg"
+    title="/fixit.min.svg"/><span class="header-title-text">Hzb&#39;s Study Blog</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容 ..." id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/posts/"
+                  
+                  
+                ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/categories/"
+                  
+                  
+                ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/tags/"
+                  
+                  
+                ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container" data-page-style="normal"><aside class="toc" id="toc-auto"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside>
+
+  <aside class="aside-custom">
+    
+</aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX">
+        <span>ResNet &amp; DenseNet</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><span class="author"><img
+    class="lazyload avatar"
+    src="/svg/loading.min.svg"
+    data-src="/fixit.min.svg"
+    data-srcset="/fixit.min.svg, /fixit.min.svg 1.5x, /fixit.min.svg 2x"
+    data-sizes="auto"
+    alt="Anonymous"
+    title="Anonymous"/>&nbsp;Anonymous</span></span></div>
+      <div class="post-meta-line"><span title=2022-08-26&#32;10:54:08><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-08-26">2022-08-26</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 6627 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 14 分钟</span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>目录</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#resnet">ResNet</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#resnet-v2">ResNet V2</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#resnext">ResNeXt</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#densenet">DenseNet</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#citation">Citation</a></li>
+  </ul>
+</nav></div>
+      </div><div
+      class="content"
+      id="content"
+      
+      
+    ><h2 id="resnet">ResNet</h2>
+<ul>
+<li>
+<h4 id="简介">简介</h4>
+<p><a href="https://arxiv.org/pdf/1512.03385.pdf"target="_blank" rel="external nofollow noopener noreferrer">ResNet</a>网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名。</p>
+</li>
+<li>
+<h4 id="亮点">亮点</h4>
+<ul>
+<li>超深的网络结构（超过1000层）</li>
+<li>提出residual（残差结构）模块</li>
+<li>使用Batch Normalization加速训练（丢弃Dropout）</li>
+</ul>
+</li>
+<li>
+<h4 id="网络结构">网络结构</h4>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="/images/resnet7.png"
+    data-srcset="/images/resnet7.png, /images/resnet7.png 1.5x, /images/resnet7.png 2x"
+    data-sizes="auto"
+    alt="resnet7"
+    title="resnet7"/></p>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="/images/resnet8.jpg"
+    data-srcset="/images/resnet8.jpg, /images/resnet8.jpg 1.5x, /images/resnet8.jpg 2x"
+    data-sizes="auto"
+    alt="resnet8"
+    title="resnet8"/></p>
+</li>
+<li>
+<h4 id="为什么采用residual">为什么采用residual</h4>
+<ul>
+<li>
+<p>在ResNet提出之前，所有的神经网络都是通过卷积层和池化层的叠加组成的。人们认为卷积层和池化层的层数越多，获取到的图片特征信息越全，学习效果也就越好。但是在实际的试验中发现，随着卷积层和池化层的叠加，不但没有出现学习效果越来越好的情况，反而出现两种问题：</p>
+<ol>
+<li>
+<p>梯度消失和梯度爆炸。目前优化神经网络的方法都是基于BP，即根据损失函数计算的误差通过梯度反向传播的方式，指导深度网络权值的更新优化。其中将误差从末层往前传递的过程需要链式法则（Chain Rule）的帮助。而链式法则是一个连乘的形式，所以当层数越深的时候，梯度将以指数形式传播。梯度消失问题和梯度爆炸问题一般随着网络层数的增加会变得越来越明显。在根据损失函数计算的误差通过梯度反向传播的方式对深度网络权值进行更新时，得到的梯度值接近0或特别大，也就是梯度消失或爆炸。</p>
+</li>
+<li>
+<p>退化问题。随着层数的增加，反传回来的梯度之间的相关性会越来越差，最后接近白噪声，预测效果反而越来越差。如下图所示</p>
+<p><!-- raw HTML omitted --></p>
+</li>
+</ol>
+</li>
+<li>
+<p>为了解决梯度消失或梯度爆炸问题，ResNet论文提出通过数据的预处理以及在网络中使用BN（Batch Normalization）层来解决。</p>
+</li>
+<li>
+<p>为了解决深层网络中的退化问题，可以人为地让神经网络某些层跳过下一层神经元的连接，隔层相连，弱化每层之间的强联系。这种神经网络被称为残差网络 (ResNets)。ResNet论文提出了residual结构（残差结构）来减轻退化问题，下图是使用residual结构的卷积网络，可以看到随着网络的不断加深，效果并没有变差，而是变的更好了。</p>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="/images/resnet2.jpg"
+    data-srcset="/images/resnet2.jpg, /images/resnet2.jpg 1.5x, /images/resnet2.jpg 2x"
+    data-sizes="auto"
+    alt="resnet2"
+    title="resnet2"/></p>
+</li>
+</ul>
+</li>
+<li>
+<h4 id="residual结构">residual结构</h4>
+<ul>
+<li>
+<p>residual结构使用了一种shortcut的连接方式，也可理解为捷径。让特征矩阵隔层相加，注意F(X)和X形状要相同，所谓相加是特征矩阵相同位置上的数字进行相加。若某一较深的网络多出另一较浅网络的若干层有能力学习到恒等映射，那么这一较深网络训练得到的模型性能一定不会弱于该浅层网络。</p>
+<p><!-- raw HTML omitted --></p>
+</li>
+<li>
+<p>两种不同的residual：</p>
+<p><!-- raw HTML omitted --></p>
+<p>对于深层次网络，使用左边的block意味着有很大的计算量，因此右侧使用1x1卷积先将输入进行降维，然后再经过3x3卷积后，最后用1x1卷积进行升维，为了主分支上输出的特征矩阵和捷径分支上输出的特征矩阵形状相同，以便进行加法操作。（搭建深层次网络时，采用右侧的残差结构）</p>
+</li>
+</ul>
+</li>
+<li>
+<h4 id="降维时的shortcut">降维时的shortcut</h4>
+<p>观察ResNet18层网络，可以发现有些残差块的shortcut是实线的，而有些则是虚线的。这些虚线的shortcut上通过1×1的卷积核进行了维度处理（特征矩阵在长宽方下采样，深度方向调整成下一层残差结构所需要的channel）。</p>
+</li>
+<li>
+<h4 id="batch-normalization">Batch Normalization</h4>
+<ul>
+<li>
+<p>Batch Normalization是指批标准化处理，将一批数据的feature map满足均值为0，方差为1的分布规律。</p>
+</li>
+<li>
+<p>对图像进行标准化处理，这样能够加速网络的收敛，如下图所示，对于Conv1来说输入的就是满足某一分布的特征矩阵，但对于Conv2而言输入的feature map就不一定满足某一分布规律了（注意这里所说满足某一分布规律并不是指某一个feature map的数据要满足分布规律，理论上是指整个训练样本集所对应feature map的数据要满足分布规律）。而我们Batch Normalization的目的就是使我们的feature map满足均值为0，方差为1的分布规律。计算公式如下：</p>
+<p><!-- raw HTML omitted --></p>
+</li>
+<li>
+<p>假设feature1、feature2分别是由image1、image2经过一系列卷积池化后得到的特征矩阵，feature的channel为2，那么代表该batch的所有feature的channel1的数据，同理代表该batch的所有feature的channel2的数据。然后分别计算和的均值与方差，得到两个向量。然后在根据标准差计算公式分别计算每个channel的值（公式中的是一个很小的常量，防止分母为零的情况）。在我们训练网络的过程中，我们是通过一个batch一个batch的数据进行训练的，但是我们在预测过程中通常都是输入一张图片进行预测，此时batch size为1，如果在通过上述方法计算均值和方差就没有意义了。所以我们在训练过程中要去不断的计算每个batch的均值和方差，并使用移动平均(moving average)的方法记录统计的均值和方差，在训练完后我们可以近似认为所统计的均值和方差就等于整个训练集的均值和方差。然后在我们验证以及预测过程中，就使用统计得到的均值和方差进行标准化处理。如下图：</p>
+<p><!-- raw HTML omitted --></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="resnet-v2">ResNet V2</h2>
+<ul>
+<li>
+<h4 id="简介-1">简介</h4>
+<p><a href="https://arxiv.org/pdf/1603.05027.pdf"target="_blank" rel="external nofollow noopener noreferrer">ResNet V2</a> 的主要贡献在于通过理论分析和大量实验证明使用恒等映射（identity mapping）作为快捷连接（skip connection）对于残差块的重要性。同时，将BN/ReLu这些activation操作挪到了Conv（真正的weights filter操作）之前，提出预激活（Pre-activation）操作，并通过与后激活（Post-activation）操作做对比实验，表明对于多层网络，使用了预激活残差单元（Pre-activation residual unit）的resnet v2都取得了比 原版本resnet更好的结果。</p>
+</li>
+<li>
+<h4 id="亮点-1">亮点</h4>
+<p>提出了新的残差模块结构：</p>
+<ul>
+<li>
+<p>将激活函数移至旁路</p>
+</li>
+<li>
+<p>full pre-activation</p>
+</li>
+</ul>
+</li>
+<li>
+<h4 id="深度残差网络的分析">深度残差网络的分析</h4>
+<p>原先resnets的残差单元可表示为：</p>
+<p><!-- raw HTML omitted --></p>
+<p>如果函数f也是恒等映射，则公式可以合并为：</p>
+<p><!-- raw HTML omitted --></p>
+<p>那么任意深层的单元L与浅层单元l之间的关系可表示为：</p>
+<p><!-- raw HTML omitted --></p>
+<p>该公式有以下两个特性：</p>
+<ul>
+<li>深层单元的特征可以由浅层单元的特征和残差函数相加得到；</li>
+<li>任意深层单元的特征都可以由起始特征x0与先前所有残差函数相加得到，这与普通（plain）网络不同，普通网络的深层特征是由一系列的矩阵向量相乘得到。残差网络是连加，普通网络是连乘。</li>
+</ul>
+<p>该公式也带来了良好的反向传播特性，用ε表示损失函数，根据反向传播的链式传导规则，反向传播公式如下：</p>
+<p><!-- raw HTML omitted --></p>
+<p>从上述公式中可以看出，反向传播也是两条路径，其中之一直接将信息回传，另一条会经过所有的带权重层。另外可以注意到第二项的值在一个mini-batch中不可能一直是-1，也就是说回传的梯度不会消失，不论网络中的权值的值再小都不会发生梯度消失现象。</p>
+</li>
+<li>
+<h4 id="恒等映射的重要性">恒等映射的重要性</h4>
+<p>考虑恒等映射的重要性。假设将恒等映射改为
+$$
+h(x_l) = \lambda_l x_l
+$$
+则有：</p>
+<p><!-- raw HTML omitted --></p>
+<p>递归调用得：</p>
+<p><!-- raw HTML omitted --></p>
+<p>其中F表示将标量合并到残差函数中，反向传播公式如下：</p>
+<p><!-- raw HTML omitted --></p>
+<p>与之前的公式不同，上公式的第一个加法项由因子 ∏i=lL−1λi 进行调节。对于一个极深的网络( L极大)，考虑第一个连乘的项，如果所有的 λ 都大于1，那么这一项会指数级增大；如果所有 λ 都小于1，那么这一项会很小甚至消失，会阻断来自shortcut的反向传播信号，并迫使其流过权重层。本文通过实验证明这种方式会对模型优化造成困难。另外其他不同形式的变换映射也都会阻碍信号的有效传播，进而影响训练进程。</p>
+</li>
+<li>
+<h4 id="不同形式激活函数的效果">不同形式激活函数的效果</h4>
+<ul>
+<li>
+<p><strong>BN after addition</strong> 效果比基准差，BN 层移到相加操作后面会阻碍信号传播，一个明显的现象就是训练初期误差下降缓慢。</p>
+</li>
+<li>
+<p><strong>ReLU before addition</strong> 这样组合的话残差函数分支的输出就一直保持非负，这会影响到模型的表示能力，而实验结果也表明这种组合比基准差。</p>
+</li>
+<li>
+<p><strong>Post-activation or pre-activation</strong> 原来的设计中相加操作后面还有一个ReLU激活函数，这个激活函数会影响到残差单元的两个分支，现在将它移到残差函数分支上，快捷连接分支不再受到影响。具体操作如下图：</p>
+<p><!-- raw HTML omitted --></p>
+<p>根据激活函数与相加操作的位置关系，我们称之前的组合方式为“后激活（post-activation）”，现在新的组合方式称之为“预激活（pre-activation）”。预激活方式又可以分为两种：只将ReLU放在前面，或者将ReLU和BN都放到前面，实验结果显示full pre-activation的效果要更好。</p>
+</li>
+<li>
+<p>使用预激活有两个方面的<strong>优点</strong>：</p>
+<ol>
+<li>f变为恒等映射，使得网络更易于优化；</li>
+<li>使用BN作为预激活可以加强对模型的正则化。</li>
+</ol>
+</li>
+<li>
+<p><strong>Ease of optimization</strong> 这在训练1001层残差网络时尤为明显。使用原来设计的网络在起始阶段误差下降很慢，因为f是ReLU激活函数，当信号为负时会被截断，使模型无法很好地逼近期望函数；而使用预激活网络中的f是恒等映射，信号可以在不同单元直接直接传播。本文使用的1001层网络优化速度很快，并且得到了最低的误差。</p>
+</li>
+<li>
+<p>f为ReLU对浅层残差网络的影响并不大。本文认为是当网络经过一段时间的训练之后权值经过适当的调整，使得单元输出基本都是非负，此时f不再对信号进行截断。但是截断现象在超过1000层的网络中经常发生。</p>
+</li>
+<li>
+<p><strong>Reducing overfitting</strong> 使用了预激活的网络的训练误差稍高，但却得到更低的测试误差，本文推测这是BN层的正则化效果所致。在原始残差单元中，尽管BN对信号进行了标准化，但是它很快就被合并到捷径连接(shortcut)上，组合的信号并不是被标准化的。这个非标准化的信号又被用作下一个权重层的输入。与之相反，本文的预激活（pre-activation）版本的模型中，权重层的输入总是标准化的。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="resnext">ResNeXt</h2>
+<ul>
+<li>
+<h4 id="简介-2">简介</h4>
+<p><a href="https://arxiv.org/pdf/1611.05431.pdf"target="_blank" rel="external nofollow noopener noreferrer">ResNeXt</a>是ResNet和Inception的结合体，不同于Inception v4的是，ResNext不需要人工设计复杂的Inception结构细节，而是每一个分支都采用相同的拓扑结构。ResNeXt的本质是分组卷积（Group Convolution），通过变量基数（Cardinality）来控制组的数量。分组卷机是普通卷积和深度可分离卷积的一个折中方案，即每个分支产生的Feature Map的通道数为 n(n&gt;1) 。</p>
+</li>
+<li>
+<h4 id="神经网络标准范式">神经网络标准范式</h4>
+<p><strong>split-transform-merge</strong></p>
+<p><!-- raw HTML omitted --></p>
+<p>如上图所示，先将输入分配到多路，然后每一路进行转换，最后再把所有支路的结果融合。</p>
+</li>
+<li>
+<h4 id="基本结构">基本结构</h4>
+<p><!-- raw HTML omitted --></p>
+</li>
+<li>
+<h4 id="具体结构">具体结构</h4>
+<p><!-- raw HTML omitted --></p>
+<p>类似ResNet，作者选择了很简单的基本结构，每一组C个不同的分支都进行相同的简单变换，上面是ResNeXt-50（32x4d）的配置清单，32指进入网络的第一个ResNeXt基本结构的分组数量C（即基数）为32，4d表示depth即每一个分组的通道数为4（所以第一个基本结构输入通道数为128）。</p>
+<p>可以看到ResNet-50和ResNeXt-50（32x4d）拥有相同的参数，但是精度却更高。具体实现上，因为1x1卷积可以合并，就合并了，代码更简单，并且效率更高。</p>
+<p>得益于精心设计的复杂的网络结构，ResNet-Inception v2可能效果会更好一点，但是ResNeXt的网络结构更简单，可以防止对于特定数据集的过拟合。而且更简单的网络意味着在用于自己的任务的时候，自定义和修改起来更简单。</p>
+</li>
+<li>
+<h4 id="总结">总结</h4>
+<p>ResNeXt提出了一种介于普通卷积核深度可分离卷积的这种策略：分组卷积，他通过控制分组的数量（基数）来达到两种策略的平衡。分组卷积的思想是源自Inception，不同于Inception的需要人工设计每个分支，ResNeXt的每个分支的拓扑结构是相同的。最后再结合残差网络，得到的便是最终的ResNeXt。</p>
+<p>从上面的分析中我们可以看书ResNeXt的结构非常简单，但是其在ImageNet上取得了由于相同框架的残差网络，也算是Inception直接助攻了一把吧。</p>
+<p>ResNeXt确实比Inception V4的超参数更少，但是他直接废除了Inception的囊括不同感受野的特性仿佛不是很合理，在更多的环境中我们发现Inception V4的效果是优于ResNeXt的。类似结构的ResNeXt的运行速度应该是优于Inception V4的，因为ResNeXt的相同拓扑结构的分支的设计是更符合GPU的硬件设计原则。</p>
+</li>
+</ul>
+<h2 id="densenet">DenseNet</h2>
+<ul>
+<li>
+<h4 id="简介-3">简介</h4>
+<p><a href="https://arxiv.org/pdf/1608.06993.pdf"target="_blank" rel="external nofollow noopener noreferrer">DenseNet</a>模型的基本思路与ResNet一致，但是它建立的是前面所有层与后面层的密集连接。DenseNet脱离了加深网络层数(ResNet)和加宽网络结构(Inception)来提升网络性能的定式思维，从特征的角度考虑，通过特征重用和旁路(Bypass)设置，既大幅度减少了网络的参数量，又在一定程度上缓解了gradient vanishing问题的产生。这些特点让DenseNet在参数和计算成本更少的情形下实现比ResNet更优的性能，DenseNet也因此斩获CVPR 2017的最佳论文奖。</p>
+</li>
+<li>
+<h4 id="亮点-2">亮点</h4>
+<ul>
+<li>由于密集连接方式，DenseNet提升了梯度的反向传播，使得网络更容易训练。由于每层可以直达最后的误差信号，实现了隐式的“deep supervision”。</li>
+<li>参数更小且计算更高效，这有点违反直觉，由于DenseNet是通过concat特征来实现短路连接，实现了特征重用，并且采用较小的growth rate，每个层所独有的特征图是比较小的。</li>
+<li>由于特征复用，最后的分类器使用了低级特征。</li>
+</ul>
+</li>
+<li>
+<h4 id="设计理念">设计理念</h4>
+<p>相比ResNet，DenseNet提出了一个更激进的密集连接机制：即互相连接所有的层，具体来说就是每个层都会接受其前面所有层作为其额外的输入。下图1为ResNet网络的连接机制，作为对比，下图2为DenseNet的密集连接机制。可以看到，ResNet是每个层与前面的某层（一般是2~3层）短路连接在一起，连接方式是通过元素级相加。而在DenseNet中，每个层都会与前面所有层在channel维度上连接（concat）在一起（这里各个层的特征图大小是相同的），并作为下一层的输入。对于一个L层的网络，DenseNet共包含L(L+1)/2个连接，相比ResNet，这是一种密集连接。而DenseNet是直接concat来自不同层的特征图，这可以实现特征重用，提升效率，这一特点是DenseNet与ResNet最主要的区别。</p>
+<p><!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted --></p>
+</li>
+<li>
+<h4 id="网络结构-1">网络结构</h4>
+<p><!-- raw HTML omitted --></p>
+<p>假设输入为一个图片 X0 , 经过一个L层的神经网络，其中第i层的非线性变换记为 Hi ()，Hi ()可以是多种函数操作的累加如BN、ReLU、Pooling或Conv等。第i层的特征输出记作 Xi。</p>
+<p>传统卷积前馈神经网络将第i层的输出Xi作为i+1层的输入，可以写作Xi = Hi ( Xi−1 )。ResNet增加了旁路连接，可以写作Xl = Xl ( Xl−1 )+ Xl−1。</p>
+<p>ResNet的一个最主要的优势便是梯度可以流经恒等函数来到达靠前的层，但恒等映射和非线性变换输出的叠加方式是相加，这在一定程度上破坏了网络中的信息流。</p>
+<p>为了进一步优化信息流的传播，DenseNet提出了上图的网络结构。如图所示，第i层的输入不仅与i-1层的输出相关，还有所有之前层的输出有关，记作:</p>
+<p>Xl = Hl ([ X0 , X1 ,…, Xl−1 ])，</p>
+<p>其中[]代表concatenation(拼接)，既将 X0 到 Xl−1 层的所有输出feature map按Channel组合在一起。这里所用到的非线性变换H为BN+ReLU+ Conv(3×3)的组合。</p>
+</li>
+<li>
+<h4 id="denseblocktransition">DenseBlock+Transition</h4>
+<p>CNN网络一般要经过Pooling或者stride&gt;1的Conv来降低特征图的大小，而DenseNet的密集连接方式需要特征图大小保持一致。为了解决这个问题，DenseNet网络中使用DenseBlock+Transition的结构。</p>
+<ul>
+<li>DenseBlock是包含很多层的模块，每个层的特征图大小相同，层与层之间采用密集连接方式。</li>
+<li>Transition模块是连接两个相邻的DenseBlock，并且通过Pooling使特征图大小降低。</li>
+</ul>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="/images/densenet4.jpg"
+    data-srcset="/images/densenet4.jpg, /images/densenet4.jpg 1.5x, /images/densenet4.jpg 2x"
+    data-sizes="auto"
+    alt="densenet4"
+    title="densenet4"/></p>
+</li>
+<li>
+<h4 id="总结-1">总结</h4>
+<ul>
+<li>
+<p>一些较早层提取出的特征仍可能被较深层直接使用。</p>
+</li>
+<li>
+<p>即使是Transition layer也会使用到之前Denseblock中所有层的特征。</p>
+</li>
+<li>
+<p>第2-3个Denseblock中的层对之前Transition layer利用率很低,说明transition layer输出大量冗余特征.这也为DenseNet-BC提供了证据支持,既Compression的必要性。</p>
+</li>
+<li>
+<p>最后的分类层虽然使用了之前Denseblock中的多层信息,但更偏向于使用最后几个feature map的特征,说明在网络的最后几层,某些high-level的特征可能被产生。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="citation">Citation</h2>
+<blockquote>
+<p>北信科视觉感知研讨课程（陈露元同学分享）</p>
+<p><a href="https://blog.csdn.net/qq_45649076/article/details/120494328"target="_blank" rel="external nofollow noopener noreferrer">ResNet详解</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/31852747"target="_blank" rel="external nofollow noopener noreferrer">你必须要知道CNN模型：ResNet</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/410444216"target="_blank" rel="external nofollow noopener noreferrer">Backbone论文-ResNet v2 解读</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/32913695"target="_blank" rel="external nofollow noopener noreferrer">深度学习——分类之ResNeXt</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/51075096"target="_blank" rel="external nofollow noopener noreferrer">ResNeXt详解</a></p>
+<p><a href="https://blog.csdn.net/qq_44766883/article/details/112011420"target="_blank" rel="external nofollow noopener noreferrer">详解DenseNet(密集连接的卷积网络)</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/43057737"target="_blank" rel="external nofollow noopener noreferrer">DenseNet详解</a></p>
+</blockquote>
+<h1 id="thanks-for-reading"><em>Thanks for reading!</em></h1>
+</div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title=2022-08-26&#32;10:54:08>更新于 2022-08-26&nbsp;</span>
+      </div><div class="post-info-license">
+          <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
+        </div></div>
+    <div class="post-info-line">
+      <div class="post-info-md"></div>
+      <div class="post-info-share">
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://example.org/posts/resnet&#43;ampamp&#43;densenet/" data-title="ResNet &amp; DenseNet"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://example.org/posts/resnet&#43;ampamp&#43;densenet/"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://example.org/posts/resnet&#43;ampamp&#43;densenet/" data-title="ResNet &amp; DenseNet"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="post-info-more">
+    <section class="post-tags"></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div>
+
+  <div class="post-nav"><a href="/posts/alexnet&#43;ampamp&#43;vgg&#43;ampamp&#43;googlenet/" class="prev" rel="prev" title="AlexNet &amp; VGG &amp; GoogLeNet"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>AlexNet &amp; VGG &amp; GoogLeNet</a>
+      <a href="/posts/senet&#43;ampamp&#43;mobilenet/" class="next" rel="next" title="SENet &amp; MobileNet">SENet &amp; MobileNet<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.88.0">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.2.16"><img class="fixit-icon" src="/fixit.min.svg" alt="FixIt logo" />&nbsp;FixIt</a>
+        </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2021 - 2022</span><span class="author" itemprop="copyrightHolder">
+              <a href="/"></a></span><span class="license footer-divider"><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div><div class="footer-line statistics"></div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
+        </div></div><div id="mask"></div><noscript>
+    <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/lunr/lunr.min.js" defer></script><script src="/lib/lunr/lunr.stemmer.support.min.js" defer></script><script src="/lib/lunr/lunr.zh.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script src="/js/theme.min.js" defer></script></body>
+</html>

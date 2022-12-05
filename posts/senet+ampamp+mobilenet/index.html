@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>SENet &amp; MobileNet - Hzb&#39;s Study Blog</title><meta name="author" content="">
+<meta name="author-link" content="">
+<meta name="description" content="SENet 简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在" /><meta name="keywords" content='Hugo, FixIt' /><meta itemprop="name" content="SENet &amp; MobileNet">
+<meta itemprop="description" content="SENet 简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在"><meta itemprop="datePublished" content="2022-09-02T22:27:28+08:00" />
+<meta itemprop="dateModified" content="2022-09-02T22:27:28+08:00" />
+<meta itemprop="wordCount" content="5416">
+<meta itemprop="keywords" content="" /><meta property="og:title" content="SENet &amp; MobileNet" />
+<meta property="og:description" content="SENet 简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/posts/senet&#43;ampamp&#43;mobilenet/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-09-02T22:27:28+08:00" />
+<meta property="article:modified_time" content="2022-09-02T22:27:28+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="SENet &amp; MobileNet"/>
+<meta name="twitter:description" content="SENet 简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在"/>
+<meta name="application-name" content="FixIt">
+<meta name="apple-mobile-web-app-title" content="FixIt"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://example.org/posts/senet&#43;ampamp&#43;mobilenet/" /><link rel="prev" href="http://example.org/posts/resnet&#43;ampamp&#43;densenet/" /><link rel="next" href="http://example.org/posts/shufflenet&#43;ampamp&#43;efficientnet/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "SENet \u0026 MobileNet",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/example.org\/posts\/senet\u002bampamp\u002bmobilenet\/"
+    },"genre": "posts","wordcount":  5416 ,
+    "url": "http:\/\/example.org\/posts\/senet\u002bampamp\u002bmobilenet\/","datePublished": "2022-09-02T22:27:28+08:00","dateModified": "2022-09-02T22:27:28+08:00","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "作者"
+      },"description": ""
+  }
+  </script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><script>(window.localStorage?.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('data-theme', 'dark');</script><div class="wrapper"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="Hzb&#39;s Study Blog"><img
+    class="lazyload logo"
+    src="/svg/loading.min.svg"
+    data-src="/fixit.min.svg"
+    data-srcset="/fixit.min.svg, /fixit.min.svg 1.5x, /fixit.min.svg 2x"
+    data-sizes="auto"
+    alt="Hzb&#39;s Study Blog"
+    title="Hzb&#39;s Study Blog"/><span class="header-title-text">Hzb&#39;s Study Blog</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容 ..." id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="Hzb&#39;s Study Blog"><img
+    class="lazyload logo"
+    src="/svg/loading.min.svg"
+    data-src="/fixit.min.svg"
+    data-srcset="/fixit.min.svg, /fixit.min.svg 1.5x, /fixit.min.svg 2x"
+    data-sizes="auto"
+    alt="/fixit.min.svg"
+    title="/fixit.min.svg"/><span class="header-title-text">Hzb&#39;s Study Blog</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容 ..." id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/posts/"
+                  
+                  
+                ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/categories/"
+                  
+                  
+                ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/tags/"
+                  
+                  
+                ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container" data-page-style="normal"><aside class="toc" id="toc-auto"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside>
+
+  <aside class="aside-custom">
+    
+</aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX">
+        <span>SENet &amp; MobileNet</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><span class="author"><img
+    class="lazyload avatar"
+    src="/svg/loading.min.svg"
+    data-src="/fixit.min.svg"
+    data-srcset="/fixit.min.svg, /fixit.min.svg 1.5x, /fixit.min.svg 2x"
+    data-sizes="auto"
+    alt="Anonymous"
+    title="Anonymous"/>&nbsp;Anonymous</span></span></div>
+      <div class="post-meta-line"><span title=2022-09-02&#32;22:27:28><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-09-02">2022-09-02</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 5416 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 11 分钟</span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>目录</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#senet">SENet</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#mobilenet">MobileNet</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#mobilenet-v2">MobileNet V2</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#mobilenet-v3">MobileNet V3</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#summary">Summary</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#citation">Citation</a></li>
+  </ul>
+</nav></div>
+      </div><div
+      class="content"
+      id="content"
+      
+      
+    ><h2 id="senet">SENet</h2>
+<ul>
+<li>
+<h4 id="简介">简介</h4>
+<p><a href="https://openaccess.thecvf.com/content_cvpr_2018/papers/Hu_Squeeze-and-Excitation_Networks_CVPR_2018_paper.pdf"target="_blank" rel="external nofollow noopener noreferrer">SENet</a>是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在深度学习领域，已经有很多成果通过在空间维度上对网络的性能进行了提升。而SENet反其道而行之，通过对通道关系进行建模来提升网络的性能。SENet较早的将注意力机制引入CNN中，使用了模块化设计。</p>
+</li>
+<li>
+<h4 id="亮点">亮点</h4>
+<p>引入通道注意力机制，关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。</p>
+</li>
+<li>
+<h4 id="网络结构">网络结构</h4>
+<p><!-- raw HTML omitted --></p>
+</li>
+<li>
+<h4 id="原理">原理</h4>
+<p>SENet网络的创新点在于关注channel之间的关系，希望模型可以自动学习到不同channel特征的重要程度。为此，SENet提出了Squeeze-and-Excitation (SE)模块，SE模块首先对卷积得到的特征图进行Squeeze操作，得到channel级的全局特征，然后对全局特征进行Excitation操作，学习各个channel间的关系，也得到不同channel的权重，最后乘以原来的特征图得到最终特征。</p>
+<p>本质上，SE模块是在channel维度上做attention或者gating操作，这种注意力机制让模型可以更加关注信息量最大的channel特征，而抑制那些不重要的channel特征。另外一点是SE模块是通用的，这意味着其可以嵌入到现有的网络架构中。</p>
+</li>
+<li>
+<h4 id="squeeze">Squeeze</h4>
+<p>原始feature map的维度为H×W×C，其中H是高度（Height），W是宽度（width），C是通道数（channel）。Squeeze就是用全局平均池化（global average pooling）把H×W×C压缩为1×1×C。H×W压缩成一维后，相当于这一维参数获得了之前H×W全局的视野，感受区域更广。公式如下：</p>
+<p><!-- raw HTML omitted --></p>
+</li>
+<li>
+<h4 id="excitation">Excitation</h4>
+<p>Sequeeze操作得到了全局描述特征，接下来需要另外一种运算来提取channel之间的关系。 用两个全连接层来学习通道间的相关性，第一个FC层起到降维的作用，然后采用ReLU激活。最后的全连接层恢复原始的维度。公式如下：</p>
+<p><!-- raw HTML omitted --></p>
+</li>
+<li>
+<h4 id="reweight">Reweight</h4>
+<p>将Excitation的输出权重作为经过特征选择后的每个特征通道的重要性，然后通过乘法逐通道加权到先前的特征上，完成在通道维度上的对原始特征的重标定。</p>
+</li>
+<li>
+<h4 id="全局平均池化">全局平均池化</h4>
+<ul>
+<li>
+<p>思想：对于输出的每一个通道的特征图的所有像素计算一个平均值，经过全局平均池化之后就得到一个 维度=类别数的特征向量，然后直接输入到softmax层。</p>
+</li>
+<li>
+<p>作用：代替全连接层，可接受任意尺寸的图像。</p>
+</li>
+<li>
+<p>优点：</p>
+<ol>
+<li>可以更好的将类别与最后一个卷积层的特征图对应起来（每一个通道对应一种类别，这样每一张特征图都可以看成是该类别对应的类别置信图）；</li>
+<li>降低参数量，全局平均池化层没有参数，可防止在该层过拟合；</li>
+<li>整合了全局空间信息，对于输入图片的spatial translation更加鲁棒。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<h4 id="结构融合">结构融合</h4>
+<p><!-- raw HTML omitted --></p>
+<ul>
+<li>上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于：
+<ol>
+<li>具有更多的非线性，可以更好地拟合通道间复杂的相关性；</li>
+<li>减少了参数量和计算量。</li>
+</ol>
+</li>
+<li>下图是SE模块嵌入到ResNet的示例。操作过程基本和SE-Inception一样，只不过是在Addition前对分支上Residual的特征进行了特征重标定。如果对Addition后主支上的特征进行重标定，由于在主干上存在0~1的scale操作，在网络较深BP优化时就会在靠近输入层容易出现梯度消散的情况，导致模型难以优化。</li>
+</ul>
+</li>
+<li>
+<h4 id="运算效率">运算效率</h4>
+<p>实验表明，SE模块在参数量上的增加带来的计算量增长微乎其微，但是性能却有所提升，当然这也取决于实际应用，如果因为SE模块导致参数量增加的掠夺，可以针对性的在适当的位置削减SE模块的数量，而精度几乎不受影响。</p>
+<p>以ResNet-50和SE-ResNet-50对比举例来说，SE-ResNet-50相对于ResNet-50有着10%模型参数的增长。额外的模型参数都存在于Bottleneck设计的两个Fully Connected中，由于ResNet结构中最后一个stage的特征通道数目为2048，导致模型参数有着较大的增长，实验发现移除掉最后一个stage中3个build block上的SE设定，可以将10%参数量的增长减少到2%。此时模型的精度几乎无损失。</p>
+</li>
+</ul>
+<h2 id="mobilenet">MobileNet</h2>
+<ul>
+<li>
+<h4 id="简介-1">简介</h4>
+<p><a href="https://arxiv.org/pdf/1704.04861v1.pdf"target="_blank" rel="external nofollow noopener noreferrer">MobileNet V1</a>是由google2016年提出，2017年发布的文章。其主要创新点在于深度可分离卷积，而整个网络实际上也是深度可分离模块的堆叠。它基于流线型架构，使用深度可分离卷积来构建轻量级深度神经网络，用于移动和嵌入式视觉应用。该网络引入了两个简单的全局超参数——宽度乘数和分辨率乘数，可以有效地在延迟和准确性之间进行权衡。</p>
+</li>
+<li>
+<h4 id="亮点-1">亮点</h4>
+<ul>
+<li>深度可分离卷积的使用</li>
+<li>Global Average Pooling 的使用</li>
+<li>用CONV/s2（步进2的卷积）代替MaxPool+CONV</li>
+</ul>
+</li>
+<li>
+<h4 id="深度可分离卷积的使用">深度可分离卷积的使用</h4>
+<ul>
+<li>
+<p>在进行 depthwise 卷积时只使用了一种维度为in_channels的卷积核进行特征提取（没有进行特征组合）。采用 depth-wise convolution 会有一个问题，就是导致 信息流通不畅 ，即输出的 feature map 仅包含输入的 feature map 的一部分，在这里，MobileNet 采用了 point-wise(1*1) convolution 帮助信息在通道之间流通。</p>
+</li>
+<li>
+<p>在进行 pointwise 卷积时只使用了output_channels 种 维度为in_channels 1*1 的卷积核进行特征组合，普通卷积不同 depth 层的权重是按照 1:1:1…:1的比例进行相加的，而在这里不同 depth 层的权重是按照不同比例(可学习的参数) 进行相加的。</p>
+</li>
+<li>
+<p>参数数量由原来的p1 = F*F*in_channels*output_channels 变为了p2 = F*F*in_channels*1 + 1*1*in_channels*output_channels，减小为原来的p2/p1 = 1/output_channels + 1/F*F，其中 F 为卷积核的尺寸，若 F = 3，参数量大约会减少到原来的 1/8-1/9 。</p>
+</li>
+<li>
+<p>原论文中对第一层没有用此卷积，深度可分离卷积中的每一个后面都跟 BN 和 RELU。其中，Relu6=min(max(0,x),6)。</p>
+<p><!-- raw HTML omitted --></p>
+<pre tabindex="0"><code>ReLU6就是普通的ReLU但是限制最大输出值为6（对输出值做clip），这是为了在移动端设备float16的低精度的时候，也能有很好的数值分辨率，如果对ReLU的激活范围不加限制，输出范围为0到正无穷，如果激活值非常大，分布在一个很大的范围内，则低精度的float16无法很好地精确描述如此大范围的数值，带来精度损失。
+</code></pre></li>
+</ul>
+</li>
+<li>
+<h4 id="两个超参数">两个超参数</h4>
+<ul>
+<li>
+<p>Width Multiplier(α): Thinner Models
+所有层的通道数（channel） 乘以 α 参数，模型大小近似下降到原来的 α^2 倍，计算量下降到原来的 α^2倍，α ∈ ( 0 , 1 ] with typical settings of 1, 0.75, 0.5 and 0.25，降低模型的宽度。</p>
+</li>
+<li>
+<p>Resolution Multiplier(ρ \rhoρ): Reduced Representation
+输入层的 分辨率（resolution） 乘以 ρ 参数，等价于所有层的分辨率乘 ρ ，模型大小不变，计算量下降到原来的 ρ^2 倍，ρ ∈ ( 0 , 1 ]，降低输入图像的分辨率。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="mobilenet-v2">MobileNet V2</h2>
+<ul>
+<li>
+<h4 id="简介-2">简介</h4>
+<p><a href="https://arxiv.org/pdf/1801.04381.pdf"target="_blank" rel="external nofollow noopener noreferrer">MobileNet V2</a>基于倒置残差结构(inverted residual structure)，原本的残差结构的主分支是有三个卷积，两个逐点卷积通道数较多，而倒置的残差结构刚好相反，中间的卷积通道数（依旧使用深度分离卷积结构）较多，旁边的较小。此外，发现去除主分支中的非线性变换是有效的，这可以保持模型表现力。论文在多个数据集上做了对比实验，验证了该架构的有效性。</p>
+</li>
+<li>
+<h4 id="mobilenet-v1缺点">MobileNet V1缺点</h4>
+<ul>
+<li>
+<p>结构问题</p>
+<p>V1结构过于简单，没有复用图像特征，即没有concat/eltwise+ 等操作进行特征融合，而后续的一系列的ResNet，DenseNet等结构已经证明复用图像特征的有效性。</p>
+</li>
+<li>
+<p>逐深度卷积问题：</p>
+<ol>
+<li>在处理低维数据（比如逐深度的卷积）时，relu函数会造成信息的丢失。</li>
+<li>DW 卷积由于本身的计算特性决定它自己没有改变通道数的能力，上一层给它多少通道，它就只能输出多少通道。所以如果上一层给的通道数本身很少的话，DW 也只能很委屈的在低维空间提特征，因此效果不够好。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<h4 id="主要改进点">主要改进点</h4>
+<ul>
+<li>
+<p>引入倒残差（Inverted Residuals）结构，先升维再降维，增强梯度的传播，显著减少推理期间所需的内存占用。</p>
+</li>
+<li>
+<p>去掉 Narrow layer（low dimension or depth） 后的 ReLU，保留特征多样性，增强网络的表达能力（Linear Bottlenecks）。</p>
+</li>
+<li>
+<p>网络为全卷积的，使得模型可以适应不同尺寸的图像；使用 RELU6（最高输出为 6）激活函数，使得模型在低精度计算下具有更强的鲁棒性。</p>
+</li>
+<li>
+<p>MobileNet V2 building block 如下所示，若需要下采样，可在 DWise 时采用步长为 2 的卷积；小网络使用小的扩张系数（expansion factor），大网络使用大一点的扩张系数（expansion factor），推荐是5~10，论文中 t = 6t。</p>
+<p><!-- raw HTML omitted --></p>
+</li>
+</ul>
+</li>
+<li>
+<h4 id="具体改进">具体改进</h4>
+<p><!-- raw HTML omitted --></p>
+<ul>
+<li>V2 去掉了第二个 PW 的激活函数改为线性激活。
+论文作者称其为 Linear Bottleneck。原因如上所述是因为作者认为激活函数在高维空间能够有效的增加非线性，而在低维空间时则会破坏特征，不如线性的效果好。</li>
+<li>V2 在 DW 卷积之前新加了一个 PW 卷积。
+给每个 DW 之前都配备了一个 PW，专门用来升维，定义升维系数 t=6 ，这样不管输入通道数 Cin 是多是少，经过第一个 PW 升维之后，DW 都是在相对的更高维 ( t.Cin ) 进行更好的特征提取。</li>
+</ul>
+</li>
+</ul>
+<h2 id="mobilenet-v3">MobileNet V3</h2>
+<ul>
+<li>
+<h4 id="简介-3">简介</h4>
+<p><a href="https://arxiv.org/pdf/1905.02244.pdf"target="_blank" rel="external nofollow noopener noreferrer">MobileNet V3</a>是Google继MobileNetV2之后的又一力作，作为MobileNet系列的新成员，自然效果会提升，本文的一个亮点在于，网络的设计利用了NAS（network architecture search）算法以及NetAdapt algorithm算法。并且，本文还介绍了一些提升网络效果的trick，这些trick也提升了不少的精度以及速度。</p>
+</li>
+<li>
+<h4 id="亮点-2">亮点</h4>
+<ul>
+<li>互补搜索技术组合：由资源受限的NAS执行模块级搜索，NetAdapt执行局部搜索。</li>
+<li>网络结构改进：将最后一步的平均池化层前移并移除最后一个卷积层，引入h-swish激活函数。</li>
+</ul>
+</li>
+<li>
+<h4 id="具体改进措施">具体改进措施</h4>
+<ul>
+<li>
+<p>引入SE结构</p>
+<p>在bottlenet结构中加入了SE结构，并且放在了depthwise filter之后，如下图。因为SE结构会消耗一定的时间，所以作者在含有SE的结构中，将expansion layer的channel变为原来的1/4,这样作者发现，即提高了精度，同时还没有增加时间消耗。并且SE结构放在了depthwise之后。</p>
+<p><!-- raw HTML omitted --></p>
+</li>
+<li>
+<p>修改尾部结构</p>
+<p>在MobileNet V2中，avg pooling之前，存在一个1x1的卷积层，目的是提高特征图的维度，更有利于结构的预测，但是这其实带来了一定的计算量了，所以这里作者修改了，将其放在avg pooling的后面，首先利用avg pooling将特征图大小由7x7降到了1x1，降到1x1后，然后再利用1x1提高维度，这样就减少了7x7=49倍的计算量。并且为了进一步的降低计算量，作者直接去掉了前面纺锤型卷积的3x3以及1x1卷积，进一步减少了计算量，就变成了如下图第二行所示的结构，作者将其中的3x3以及1x1去掉后，精度并没有得到损失。这里降低了大约15ms的速度。</p>
+<p><!-- raw HTML omitted --></p>
+</li>
+<li>
+<p>修改channel数量</p>
+<p>修改头部卷积核channel数量，MobileNet V2中使用的是32 x 3 x 3，作者发现，其实32可以再降低一点，所以这里作者改成了16，在保证了精度的前提下，降低了3ms的速度。</p>
+</li>
+<li>
+<p>非线性变换的改变</p>
+<p>使用h-swish替换swish，swish是谷歌自家的研究成果，这次在其基础上，为速度进行了优化。swish与h-swish公式如下所示，由于sigmoid的计算耗时较长，特别是在移动端，这些耗时就会比较明显，所以作者使用ReLU6(x+3)/6来近似替代sigmoid，观察下图可以发现，其实相差不大的。利用ReLU有几点好处：1.可以在任何软硬件平台进行计算，2.量化的时候，它消除了潜在的精度损失，使用h-swish替换swith，在量化模式下回提高大约15%的效率，另外，h-swish在深层网络中更加明显。使用h-swish@16可以提高大约0.2%的精度，但是时间延长了大约20%。</p>
+<p><!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted --></p>
+</li>
+</ul>
+</li>
+<li>
+<h4 id="设计方法">设计方法</h4>
+<p>先使用NAS算法，优化每一个block，得到大体的网络结构，然后使用NetAdapt 算法来确定每个filter的channel的数量。</p>
+<p>这里由于small model的精度以及耗时影响相对较大，mobilenet v3 large和mobilenet v3 small是分别使用NAS设计的。</p>
+<p>NAS之后，可以使用NetAdapt算法设计每个layer，过程如下：</p>
+<ol>
+<li>先用NAS找到一个可用的结构A。</li>
+<li>在A的基础上生成一系类的候选结构，并且这些候选结构消耗在一点点减少，其实就是穷举子结构。
+对于每个候选结构，使用前一个模型进行初始化，（前一个模型没有的参数随机初始化就行），finetune T个epoch，得到一个大致的精度。</li>
+<li>在这些候选结构中，找到最好的。</li>
+<li>反复迭代，知道目标时间到达，找到最合适的结果。</li>
+</ol>
+</li>
+</ul>
+<h2 id="summary">Summary</h2>
+<ul>
+<li>
+<h4 id="mobilenetv1--vgg的标准卷积换成深度可分离卷积">MobileNetV1 = VGG的标准卷积换成深度可分离卷积</h4>
+</li>
+<li>
+<h4 id="mobilenetv2--v1--inverted-residuals--shortcut">MobileNetV2 = V1 + Inverted residuals + shortcut</h4>
+</li>
+<li>
+<h4 id="mobilenetv3--v2--se-net--h-swish">MobileNetV3 = V2 + SE-NET + h-swish</h4>
+</li>
+</ul>
+<h2 id="citation">Citation</h2>
+<blockquote>
+<p>北信科视觉感知研讨课程（张若琪师兄分享）</p>
+<p><a href="https://github.com/hujie-frank/SENet"target="_blank" rel="external nofollow noopener noreferrer">SENet源码</a></p>
+<p><a href="https://blog.csdn.net/gaoxueyi551/article/details/120233959"target="_blank" rel="external nofollow noopener noreferrer">SENet概览</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/347236731"target="_blank" rel="external nofollow noopener noreferrer">论文解读《SENet》</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/345183296"target="_blank" rel="external nofollow noopener noreferrer">一文带你深入全局平均池化</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/394975928"target="_blank" rel="external nofollow noopener noreferrer">轻量级网络-Mobilenet系列(v1,v2,v3)</a></p>
+<p><a href="https://blog.csdn.net/mzpmzk/article/details/82976871"target="_blank" rel="external nofollow noopener noreferrer">MobileNetV1 &amp; MobileNetV2 简介</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/402766063"target="_blank" rel="external nofollow noopener noreferrer">轻量化网络——MobileNet</a></p>
+<p><a href="https://blog.csdn.net/Chunfengyanyulove/article/details/91358187"target="_blank" rel="external nofollow noopener noreferrer">mobilenet系列之又一新成员&mdash;mobilenet-v3</a></p>
+</blockquote>
+<h1 id="thanks-for-reading"><em>Thanks for reading!</em></h1>
+</div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title=2022-09-02&#32;22:27:28>更新于 2022-09-02&nbsp;</span>
+      </div><div class="post-info-license">
+          <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
+        </div></div>
+    <div class="post-info-line">
+      <div class="post-info-md"></div>
+      <div class="post-info-share">
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://example.org/posts/senet&#43;ampamp&#43;mobilenet/" data-title="SENet &amp; MobileNet"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://example.org/posts/senet&#43;ampamp&#43;mobilenet/"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://example.org/posts/senet&#43;ampamp&#43;mobilenet/" data-title="SENet &amp; MobileNet"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="post-info-more">
+    <section class="post-tags"></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div>
+
+  <div class="post-nav"><a href="/posts/resnet&#43;ampamp&#43;densenet/" class="prev" rel="prev" title="ResNet &amp; DenseNet"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>ResNet &amp; DenseNet</a>
+      <a href="/posts/shufflenet&#43;ampamp&#43;efficientnet/" class="next" rel="next" title="ShuffleNet &amp; EfficientNet">ShuffleNet &amp; EfficientNet<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.88.0">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.2.16"><img class="fixit-icon" src="/fixit.min.svg" alt="FixIt logo" />&nbsp;FixIt</a>
+        </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2021 - 2022</span><span class="author" itemprop="copyrightHolder">
+              <a href="/"></a></span><span class="license footer-divider"><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div><div class="footer-line statistics"></div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
+        </div></div><div id="mask"></div><noscript>
+    <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/lunr/lunr.min.js" defer></script><script src="/lib/lunr/lunr.stemmer.support.min.js" defer></script><script src="/lib/lunr/lunr.zh.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script src="/js/theme.min.js" defer></script></body>
+</html>

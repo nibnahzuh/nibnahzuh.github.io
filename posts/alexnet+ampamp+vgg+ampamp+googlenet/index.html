@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>AlexNet &amp; VGG &amp; GoogLeNet - Hzb&#39;s Study Blog</title><meta name="author" content="">
+<meta name="author-link" content="">
+<meta name="description" content="AlexNet 简介 AlexNet是2012年ISLVRC 2012（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，分类准确率由传统的 70%&#43;" /><meta name="keywords" content='Hugo, FixIt' /><meta itemprop="name" content="AlexNet &amp; VGG &amp; GoogLeNet">
+<meta itemprop="description" content="AlexNet 简介 AlexNet是2012年ISLVRC 2012（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，分类准确率由传统的 70%&#43;"><meta itemprop="datePublished" content="2022-08-20T18:00:30+08:00" />
+<meta itemprop="dateModified" content="2022-08-20T18:00:30+08:00" />
+<meta itemprop="wordCount" content="4426">
+<meta itemprop="keywords" content="" /><meta property="og:title" content="AlexNet &amp; VGG &amp; GoogLeNet" />
+<meta property="og:description" content="AlexNet 简介 AlexNet是2012年ISLVRC 2012（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，分类准确率由传统的 70%&#43;" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/posts/alexnet&#43;ampamp&#43;vgg&#43;ampamp&#43;googlenet/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-08-20T18:00:30+08:00" />
+<meta property="article:modified_time" content="2022-08-20T18:00:30+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="AlexNet &amp; VGG &amp; GoogLeNet"/>
+<meta name="twitter:description" content="AlexNet 简介 AlexNet是2012年ISLVRC 2012（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，分类准确率由传统的 70%&#43;"/>
+<meta name="application-name" content="FixIt">
+<meta name="apple-mobile-web-app-title" content="FixIt"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://example.org/posts/alexnet&#43;ampamp&#43;vgg&#43;ampamp&#43;googlenet/" /><link rel="prev" href="http://example.org/posts/%E6%96%B0%E4%B8%80%E4%BB%A3%E8%A7%86%E8%A7%89%E6%84%9F%E7%9F%A5%E7%BB%BC%E8%BF%B0/" /><link rel="next" href="http://example.org/posts/resnet&#43;ampamp&#43;densenet/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "AlexNet \u0026 VGG \u0026 GoogLeNet",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/example.org\/posts\/alexnet\u002bampamp\u002bvgg\u002bampamp\u002bgooglenet\/"
+    },"genre": "posts","wordcount":  4426 ,
+    "url": "http:\/\/example.org\/posts\/alexnet\u002bampamp\u002bvgg\u002bampamp\u002bgooglenet\/","datePublished": "2022-08-20T18:00:30+08:00","dateModified": "2022-08-20T18:00:30+08:00","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "作者"
+      },"description": ""
+  }
+  </script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><script>(window.localStorage?.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('data-theme', 'dark');</script><div class="wrapper"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="Hzb&#39;s Study Blog"><img
+    class="lazyload logo"
+    src="/svg/loading.min.svg"
+    data-src="/fixit.min.svg"
+    data-srcset="/fixit.min.svg, /fixit.min.svg 1.5x, /fixit.min.svg 2x"
+    data-sizes="auto"
+    alt="Hzb&#39;s Study Blog"
+    title="Hzb&#39;s Study Blog"/><span class="header-title-text">Hzb&#39;s Study Blog</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容 ..." id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="Hzb&#39;s Study Blog"><img
+    class="lazyload logo"
+    src="/svg/loading.min.svg"
+    data-src="/fixit.min.svg"
+    data-srcset="/fixit.min.svg, /fixit.min.svg 1.5x, /fixit.min.svg 2x"
+    data-sizes="auto"
+    alt="/fixit.min.svg"
+    title="/fixit.min.svg"/><span class="header-title-text">Hzb&#39;s Study Blog</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容 ..." id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/posts/"
+                  
+                  
+                ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/categories/"
+                  
+                  
+                ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/tags/"
+                  
+                  
+                ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container" data-page-style="normal"><aside class="toc" id="toc-auto"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside>
+
+  <aside class="aside-custom">
+    
+</aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX">
+        <span>AlexNet &amp; VGG &amp; GoogLeNet</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><span class="author"><img
+    class="lazyload avatar"
+    src="/svg/loading.min.svg"
+    data-src="/fixit.min.svg"
+    data-srcset="/fixit.min.svg, /fixit.min.svg 1.5x, /fixit.min.svg 2x"
+    data-sizes="auto"
+    alt="Anonymous"
+    title="Anonymous"/>&nbsp;Anonymous</span></span></div>
+      <div class="post-meta-line"><span title=2022-08-20&#32;18:00:30><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-08-20">2022-08-20</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 4426 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 9 分钟</span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>目录</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#alexnet">AlexNet</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#vgg">VGG</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#googlenet">GoogLeNet</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#self-thinking">Self-thinking</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#citation">Citation</a></li>
+  </ul>
+</nav></div>
+      </div><div
+      class="content"
+      id="content"
+      
+      
+    ><h2 id="alexnet">AlexNet</h2>
+<ul>
+<li>
+<h4 id="简介">简介</h4>
+<p><a href="http://www.cs.toronto.edu/~fritz/absps/imagenet.pdf"target="_blank" rel="external nofollow noopener noreferrer">AlexNet</a>是2012年ISLVRC 2012（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，分类准确率由传统的 70%+提升到 80%+。由Hinton和他的学生Alex Krizhevsky设计。也是在那年之后，深度学习开始迅速发展。</p>
+</li>
+<li>
+<h4 id="亮点">亮点</h4>
+<ul>
+<li>首次使用GPU进行模型训练。</li>
+<li>使用了ReLU激活函数，而不是传统的Sigmoid激活函数以及Tanh激活函数。主要原因是ReLU函数在进行梯度下降的计算过程中能显著加快训练过程，也就是非饱和的线性的激活函数要快于sigmoid和tanh等饱和的非线性激活函数的收敛速度（在这篇论文中并没有谈及ReLU函数对于梯度消失问题的解决，只是从收敛速度上论述的）。</li>
+<li>使用了LRN局部响应归一化（Local Response Normalization，LRN）。AlexNet中提出局部响应归一化层（LRN）,是跟在激活或池化之后的一种为了提高准确度的技术方法。LRN的主要思想就是对局部神经元的神经活动创建竞争机制，使得其中响应比较大的值变得相对更大，并抑制其他反馈更小的神经元，从而也在一定程度上增强了泛化能力。</li>
+<li>在全连接层的前两层中使用了Dropout随机失活神经元操作，以减少过拟合。</li>
+</ul>
+</li>
+<li>
+<h4 id="模型架构">模型架构</h4>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="/images/alexnet.png"
+    data-srcset="/images/alexnet.png, /images/alexnet.png 1.5x, /images/alexnet.png 2x"
+    data-sizes="auto"
+    alt="alexnet"
+    title="alexnet"/></p>
+</li>
+<li>
+<h4 id="relu激活函数">ReLU激活函数</h4>
+<p>针对sigmoid梯度饱和导致训练收敛慢的问题，在AlexNet中引入了ReLU。ReLU是一个分段线性函数，小于等于0则输出为0；大于0的则恒等输出。相比于sigmoid，ReLU有以下有特点：</p>
+<ul>
+<li>计算开销小。sigmoid的正向传播有指数运算，倒数运算，而ReLu是线性输出；反向传播中，sigmoid有指数运算，而ReLU有输出的部分，导数始终为1。</li>
+<li>梯度饱和问题。</li>
+<li>稀疏性。ReLU会使一部跟神经元的输出为0，这样造就了网络的稀疏性，并且减少了参数的相互依存关系，缓解了过拟合问题的发生。</li>
+</ul>
+</li>
+<li>
+<h4 id="dropout">Dropout</h4>
+<ul>
+<li>
+<p>过拟合的根本原因是特征维度过多，模型过于复杂，参数过多，训练数据过少，噪声过多，导致模型完美拟合训练集，但缺乏泛化能力，对新数据的测试集预测结果差。</p>
+</li>
+<li>
+<p>Dropout的使用有效地缓解了模型复杂度提升导致的过拟合。Dropout通过修改神经网络本身结构来实现，对于某一层的神经元，通过定义的概率将神经元置为0，这个神经元就不参与前向和后向传播，就如同在网络中被删除了一样，同时保持输入层与输出层神经元的个数不变，然后按原有的学习方法进行参数更新。在下一次迭代中，又重新随机删除一些神经元（置为0），直至训练结束。</p>
+</li>
+<li>
+<p>Dropout应该算是AlexNet中一个很大的创新，现在神经网络中的必备结构之一。Dropout也可以看成是一种模型组合，每次生成的网络结构都不一样，通过组合多个模型的方式能够有效地减少过拟合，Dropout只需要两倍的训练时间即可实现模型组合（类似取平均）的效果，非常高效。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="vgg">VGG</h2>
+<ul>
+<li>
+<h4 id="简介-1">简介</h4>
+<p><a href="https://arxiv.org/abs/1409.1556"target="_blank" rel="external nofollow noopener noreferrer">VGG</a>是由牛津大学视觉几何小组（Visual Geometry Group, VGG）提出的一种深层卷积网络结构，赢得了 2014 年 ILSVRC 分类任务的亚军（冠军由 GoogLeNet 夺得）和定位任务的冠军。VGG可以看成是加深版本的AlexNet，都是conv layer + FC layer。该网络是在ILSVRC 2014上的相关工作，主要工作是证明了增加网络的深度能够在一定程度上影响网络最终的性能。</p>
+</li>
+<li>
+<h4 id="亮点-1">亮点</h4>
+<ul>
+<li>证明了增加网络的深度能够在一定程度上影响网络最终的性能。</li>
+<li>小卷积核和小池化核，卷积核全部替换为3*3（极少用了1*1），相比AlexNet的3*3池化核，VGG全部为2*2的池化核。</li>
+<li>层数更深特征图更宽，由于卷积核专注于扩大通道数、池化专注于缩小宽和高，使得模型架构上更深更宽的同时，计算量的增加放缓。</li>
+<li>全连接层换成卷积层，网络测试阶段将训练阶段的三个全连接替换为三个卷积，测试重用训练时的参数，使得测试得到的全卷积网络因为没有全连接的限制，因而可以接收任意宽或高为的输入。</li>
+</ul>
+</li>
+<li>
+<h4 id="模型架构-1">模型架构</h4>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="/images/VGG.jpg"
+    data-srcset="/images/VGG.jpg, /images/VGG.jpg 1.5x, /images/VGG.jpg 2x"
+    data-sizes="auto"
+    alt="VGG"
+    title="VGG"/></p>
+</li>
+<li>
+<h4 id="网络特点">网络特点</h4>
+<ul>
+<li>
+<p>两个3x3的卷积堆叠获得的感受野大小，相当一个5x5的卷积；而3个3x3卷积的堆叠获取到的感受野相当于一个7x7的卷积。好处如下：</p>
+<ol>
+<li>多层卷积引入了多次非线性变换，可以增加网络的非线性表达能力。</li>
+<li>两层3*3卷积核的参数量比一层5*5卷积核的参数量更少，可以看作对网络做了相应的正则化。</li>
+</ol>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="/images/33.png"
+    data-srcset="/images/33.png, /images/33.png 1.5x, /images/33.png 2x"
+    data-sizes="auto"
+    alt="33"
+    title="33"/></p>
+</li>
+<li>
+<p>网络测试阶段将训练阶段的三个全连接替换为三个卷积，使得测试阶段对输入图片尺寸没有限制。使用全连接层和卷积层的区别：</p>
+<p>​		全连接层：通道数相同的情况下，特征图大小一样，才能保证与全连接层中的神经元数目相同。</p>
+<p>​		卷积层：通道数目来决定最终的分类输出数目，不需要特征图大小相同。</p>
+<p><img
+    class="lazyload"
+    src="/svg/loading.min.svg"
+    data-src="/images/conv.jpg"
+    data-srcset="/images/conv.jpg, /images/conv.jpg 1.5x, /images/conv.jpg 2x"
+    data-sizes="auto"
+    alt="conv"
+    title="conv"/></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="googlenet">GoogLeNet</h2>
+<ul>
+<li>
+<h4 id="简介-2">简介</h4>
+<p><a href="https://arxiv.org/pdf/1409.4842.pdf"target="_blank" rel="external nofollow noopener noreferrer">GoogLeNet</a>是2014年Christian Szegedy提出的一种全新的深度学习结构，在这之前的AlexNet、VGG等结构都是通过增大网络的深度来获得更好的训练效果，但层数的增加会带来很多负作用，比如过拟合、梯度消失、梯度爆炸等。inception的提出则从另一种角度来提升训练结果：更高效的利用计算资源，在相同的计算量下能提取到更多的特征，从而提升训练结果。</p>
+</li>
+<li>
+<h4 id="前代网络缺陷">前代网络缺陷</h4>
+<p>​	LeNet，AlexNet，VGG这些串联网络通过增大网络的深度来获得更好的训练效果，主要存在以下缺陷：</p>
+<ul>
+<li>提取的特征图尺度单一。串联网络中，每一层级的卷积核都是固定尺寸的，只能提取固定尺度的特征。基于这种尺度单一的特征图构建的模型鲁棒性不强，泛化能力差。</li>
+<li>参数量巨大，且难以将梯度传递到网络顶层。虽然多层小卷积核堆叠取得大卷积核能够减少参数量，但杯水车薪，网络越深也越容易发生梯度消失，使得网络难以训练。</li>
+</ul>
+</li>
+<li>
+<h4 id="解决方案及亮点">解决方案及亮点</h4>
+<ul>
+<li>使用1x1的卷积来进行升降维。1×1卷积核的重要作用：降维或升维、跨通道信息交融、减少参数量、增加模型深度并提高非线性表达能力。</li>
+<li>与直觉相一致，即视觉信息应该在不同的尺度上进行处理再聚合。</li>
+<li>引入稀疏特性、将全连接层换成稀疏连接，利用稀疏矩阵分解成密集矩阵计算的原理来加快收敛速度：
+<ol>
+<li>空间（spatial）维度，只对图像的某一部分进行卷积，而不是对整个图像进行卷积。</li>
+<li>特征（feature）维度，在多个尺寸上进行卷积再聚合，把相关性强的特征聚集到一起，每一种尺寸的卷积只输出256个特征中的一部分。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<h4 id="各版本inception改进">各版本inception改进</h4>
+<ul>
+<li>
+<p><strong>inception-v1</strong></p>
+<ol>
+<li>将多尺度的卷积层、池化层提取的特征图拼接输入下一层，提升模型多尺度特征提取能力；</li>
+<li>利用1*1卷积对输入通道降维，减少模型参数量，并引入更多的非线性，提升模型泛化能力。</li>
+</ol>
+</li>
+<li>
+<p><strong>inception-v2</strong></p>
+<ol>
+<li>将Inception-v1中的大尺寸卷积核替换为多个小尺寸卷积核的堆叠，减少模型参数量，增加网络深度，提升模型拟合复杂分布的能力；</li>
+<li>如果在训练模型时，每一批次的训练样本分布差别较大，那么网络的每一层都要重新去适应学习新的数据分布，这非常影响网络的训练速度，因此Inception-v2对卷积层进行了BatchNormalizatioin，有效地加速了网络训练过程，也能够消除梯度弥散；</li>
+<li>引入了辅助分类器，即在靠近输出层的层级上引入旁路分类器，来解决梯度无法反向传递非常深的问题，辅助分类器只在训练时使能，测试时不开启辅助分类器；</li>
+<li>结合了对称卷积与非对称卷积，增加了网络宽度。</li>
+</ol>
+</li>
+<li>
+<p><strong>inception-v3</strong></p>
+<p>inception-v3的改进基于以下几点优化思路：</p>
+<ol>
+<li>避免特征表示瓶颈。尤其在网络前端，要避免严重压缩导致的瓶颈：特征表示尺寸应该从输入到输出端温和地减少，避免特征信息大量丢失。</li>
+<li>高维信息更适合在网络的局部处理。在卷积网络中逐步增加非线性激活函数响应可以解耦更多的特征，加速网络训练。</li>
+<li>空间聚合可以通过低维嵌入，不会导致网络表示能力的下降。在进行大尺寸卷积之前，在空间聚合前先对输入信息进行降维处理，可以加速训练。</li>
+<li>平衡好网路的深度和宽度。通过平衡网络每层滤波器的个数和网络的层数可以使网络达到最佳性能。并行增加网络的深度和宽度时，模型性能提升最大。</li>
+</ol>
+<p>改进点如下：</p>
+<ol>
+<li>优化算法使用RMSProp替代SGD。</li>
+<li>使用Label Smoothing Regularization方法。LSR是一种通过在输出y中加入噪声，对模型进行约束，降低模型过拟合的方法。</li>
+<li>将大尺寸卷积核替换成小尺寸卷积核。</li>
+<li>对辅助分类器中的全连接层进行BatchNormalization。</li>
+</ol>
+</li>
+<li>
+<p><strong>inception-v4</strong></p>
+<p>Inception-v4基本沿袭了Inception-v2/v3的设计，它的各个模块在结构上更加统一。</p>
+</li>
+<li>
+<p><strong>inception-ResNet</strong></p>
+<p>Inception-ResNet借鉴了何凯明的残差连接思想，将Inception模块与残差连接进行结合。残差连接是指浅层特征通过另外一条支路直接加到高层特征中，达到特征复用的目的，可以有效避免深层网络的梯度弥散问题。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="self-thinking">Self-thinking</h2>
+<ul>
+<li>
+<h4 id="提高深度神经网络性能方法">提高深度神经网络性能方法</h4>
+<p>增加网络大小，包括深度和宽度，这是最直接的办法，也是最简单最安全的办法，尤其是当给定大量带标签的训练数据时。但是缺点明显：增加网络中训练的参数（导致过拟合），增加计算量。</p>
+</li>
+<li>
+<h4 id="上述问题的解决方案">上述问题的解决方案</h4>
+<p>从全连接层或卷积层完全转变到稀疏连接的结构。Arora等人的开创性工作表明如果数据集的概率分布可以用一个大的、非常稀疏的深度神经网络来表示，那么可以通过分析最后一层激活函数的相关统计量（均值方差等）和聚合有着高度相关输出的神经元来逐层生成最优的网络拓扑，这与赫布原理相仿——神经元一起发射且连接在一起。</p>
+</li>
+<li>
+<h4 id="inception系列引发的思考好的深度网络设计原则">Inception系列引发的思考（好的深度网络设计原则）</h4>
+<ul>
+<li>逐层构造网络。如果数据集的概率分布能够被一个神经网络所表达，那么构造这个网络的最佳方法是逐层构筑网络，即将上一层高度相关的节点连接在一起。几乎所有效果好的深度网络都具有这一点，不管AlexNet，VGG堆叠多个卷积，googLeNet堆叠多个inception模块，还是ResNet堆叠多个resblock。</li>
+<li>稀疏的结构。人脑的神经元连接就是稀疏的，因此大型神经网络的合理连接方式也应该是稀疏的。稀疏的结构对于大型神经网络至关重要，可以减轻计算量并减少过拟合。 卷积操作（局部连接，权值共享）本身就是一种稀疏的结构，相比于全连接网络结构是很稀疏的。</li>
+<li>符合Hebbian原理。Cells that fire together, wire together. 一起发射的神经元会连在一起。 相关性高的节点应该被连接而在一起。</li>
+</ul>
+<p>而inception中 1×1的卷积恰好可以融合以上三者。一层可能会有多个卷积核，在同一个位置但在不同通道的卷积核输出结果相关性极高。一个1×1的卷积核可以很自然的把这些相关性很高，在同一个空间位置，但不同通道的特征结合起来。而其它尺寸的卷积核（3×3，5×5）可以保证特征的多样性，因此也可以适量使用。</p>
+</li>
+<li>
+<h4 id="总结">总结</h4>
+<ul>
+<li>运用赫布原理和多尺度并行处理：从FC层转变到稀疏结构。</li>
+<li>Inception模块的集成：使用1×1卷积核进行降维再用5×5卷积核升维。一个googlenet里包含九个Inceptionv1模块。</li>
+<li>全局平均池化替代FC：减少参数量。做迁移学习更方便，用在弱监督学习和半监督学习中非常的可靠。</li>
+</ul>
+</li>
+</ul>
+<h2 id="citation">Citation</h2>
+<blockquote>
+<p>北信科视觉感知研讨课程（高丹阳师姐分享）</p>
+<p><a href="https://blog.csdn.net/Katrina_ALi/article/details/102854403"target="_blank" rel="external nofollow noopener noreferrer">AlexNet论文阅读总结及代码</a></p>
+<p><a href="https://blog.csdn.net/DreamBro/article/details/121068023"target="_blank" rel="external nofollow noopener noreferrer">VGG网络详解</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/41423739"target="_blank" rel="external nofollow noopener noreferrer">一文读懂VGG网络</a></p>
+<p><a href="https://blog.csdn.net/qq_40635082/article/details/123106503"target="_blank" rel="external nofollow noopener noreferrer">GoogLeNet论文翻译及解读</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/478197016"target="_blank" rel="external nofollow noopener noreferrer">深度学习-GoogLeNet</a></p>
+</blockquote>
+<h1 id="thanks-for-reading"><em>Thanks for reading!</em></h1>
+</div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title=2022-08-20&#32;18:00:30>更新于 2022-08-20&nbsp;</span>
+      </div><div class="post-info-license">
+          <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
+        </div></div>
+    <div class="post-info-line">
+      <div class="post-info-md"></div>
+      <div class="post-info-share">
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://example.org/posts/alexnet&#43;ampamp&#43;vgg&#43;ampamp&#43;googlenet/" data-title="AlexNet &amp; VGG &amp; GoogLeNet"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://example.org/posts/alexnet&#43;ampamp&#43;vgg&#43;ampamp&#43;googlenet/"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://example.org/posts/alexnet&#43;ampamp&#43;vgg&#43;ampamp&#43;googlenet/" data-title="AlexNet &amp; VGG &amp; GoogLeNet"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="post-info-more">
+    <section class="post-tags"></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div>
+
+  <div class="post-nav"><a href="/posts/%E6%96%B0%E4%B8%80%E4%BB%A3%E8%A7%86%E8%A7%89%E6%84%9F%E7%9F%A5%E7%BB%BC%E8%BF%B0/" class="prev" rel="prev" title="新一代视觉感知综述"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>新一代视觉感知综述</a>
+      <a href="/posts/resnet&#43;ampamp&#43;densenet/" class="next" rel="next" title="ResNet &amp; DenseNet">ResNet &amp; DenseNet<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.88.0">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.2.16"><img class="fixit-icon" src="/fixit.min.svg" alt="FixIt logo" />&nbsp;FixIt</a>
+        </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2021 - 2022</span><span class="author" itemprop="copyrightHolder">
+              <a href="/"></a></span><span class="license footer-divider"><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div><div class="footer-line statistics"></div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
+        </div></div><div id="mask"></div><noscript>
+    <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/lunr/lunr.min.js" defer></script><script src="/lib/lunr/lunr.stemmer.support.min.js" defer></script><script src="/lib/lunr/lunr.zh.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script src="/js/theme.min.js" defer></script></body>
+</html>

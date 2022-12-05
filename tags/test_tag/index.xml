@@ -5,10 +5,10 @@
     <description>test_tag - 标签 - Hzb&#39;s Study Blog</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 20 Nov 2022 11:23:46 &#43;0800</lastBuildDate><atom:link href="http://example.org/tags/test_tag/" rel="self" type="application/rss+xml" /><item>
   <title>Self-Supervised PreTrain</title>
-  <link>http://example.org/posts/self-supervised-pretrain/</link>
+  <link>http://example.org/posts/self-supervised&#43;pretrain/</link>
   <pubDate>Sun, 20 Nov 2022 11:23:46 &#43;0800</pubDate>
   <author>huzhanbin</author>
-  <guid>http://example.org/posts/self-supervised-pretrain/</guid>
+  <guid>http://example.org/posts/self-supervised&#43;pretrain/</guid>
   <description><![CDATA[Self-Supervised PreTrain Pretext task Pretext task也叫surrogate task，也称作代理任务。 Pretext可以理解为是一种为达到特定训练任务而设计的间接任务。比如，我]]></description>
 </item>
 <item>

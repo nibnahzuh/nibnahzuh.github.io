@@ -5,10 +5,10 @@
     <description>所有文章 | Hzb&#39;s Study Blog</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 20 Nov 2022 11:23:46 &#43;0800</lastBuildDate><atom:link href="http://example.org/posts/" rel="self" type="application/rss+xml" /><item>
   <title>Self-Supervised PreTrain</title>
-  <link>http://example.org/posts/self-supervised-pretrain/</link>
+  <link>http://example.org/posts/self-supervised&#43;pretrain/</link>
   <pubDate>Sun, 20 Nov 2022 11:23:46 &#43;0800</pubDate>
   <author>huzhanbin</author>
-  <guid>http://example.org/posts/self-supervised-pretrain/</guid>
+  <guid>http://example.org/posts/self-supervised&#43;pretrain/</guid>
   <description><![CDATA[Self-Supervised PreTrain Pretext task Pretext task也叫surrogate task，也称作代理任务。 Pretext可以理解为是一种为达到特定训练任务而设计的间接任务。比如，我]]></description>
 </item>
 <item>
@@ -21,66 +21,66 @@
 </item>
 <item>
   <title>FCN &amp; U-Net</title>
-  <link>http://example.org/posts/fcn-u-net/</link>
+  <link>http://example.org/posts/fcn&#43;ampamp&#43;u-net/</link>
   <pubDate>Thu, 27 Oct 2022 19:16:59 &#43;0800</pubDate>
   <author>作者</author>
-  <guid>http://example.org/posts/fcn-u-net/</guid>
+  <guid>http://example.org/posts/fcn&#43;ampamp&#43;u-net/</guid>
   <description><![CDATA[FCN 简介 FCN（Fully Convolutional Networks，全卷积网络）是Jonathan Long等人于2015年在Fully Convolutional Networks for Semantic Segmentatio]]></description>
 </item>
 <item>
   <title>RetinaNet &amp; FCOS</title>
-  <link>http://example.org/posts/retinanet-fcos/</link>
+  <link>http://example.org/posts/retinanet&#43;ampamp&#43;fcos/</link>
   <pubDate>Thu, 27 Oct 2022 10:13:28 &#43;0800</pubDate>
   <author>作者</author>
-  <guid>http://example.org/posts/retinanet-fcos/</guid>
+  <guid>http://example.org/posts/retinanet&#43;ampamp&#43;fcos/</guid>
   <description><![CDATA[RetinaNet 简介 RetinaNet 是 Tsung-Yi Lin 和 Kaiming He（四作） 于 2018 年发表的论文 Focal Loss for Dense Object Detection。深入分析了极度不平衡的正负（前景背景）样本比例导致 one-stage 检测器精度低]]></description>
 </item>
 <item>
   <title>FPN &amp; SSD &amp; YOLO</title>
-  <link>http://example.org/posts/fpn-ssd-yolo/</link>
+  <link>http://example.org/posts/fpn&#43;ampamp&#43;ssd&#43;ampamp&#43;yolo/</link>
   <pubDate>Wed, 26 Oct 2022 15:42:33 &#43;0800</pubDate>
   <author>作者</author>
-  <guid>http://example.org/posts/fpn-ssd-yolo/</guid>
+  <guid>http://example.org/posts/fpn&#43;ampamp&#43;ssd&#43;ampamp&#43;yolo/</guid>
   <description><![CDATA[FPN 提出原因 卷积网络中，深层网络容易响应语义特征，浅层网络容易响应图像特征。然而，在目标检测中往往因为卷积网络的这个特征带来了不少麻烦：高层网]]></description>
 </item>
 <item>
   <title>Rcnn &amp; Fast-Rcnn &amp; Faster-Rcnn</title>
-  <link>http://example.org/posts/rcnn-fast-rcnn-faster-rcnn/</link>
+  <link>http://example.org/posts/rcnn&#43;ampamp&#43;fast-rcnn&#43;ampamp&#43;faster-rcnn/</link>
   <pubDate>Wed, 21 Sep 2022 16:55:23 &#43;0800</pubDate>
   <author>作者</author>
-  <guid>http://example.org/posts/rcnn-fast-rcnn-faster-rcnn/</guid>
+  <guid>http://example.org/posts/rcnn&#43;ampamp&#43;fast-rcnn&#43;ampamp&#43;faster-rcnn/</guid>
   <description><![CDATA[RCNN 简介 R-CNN的全称是Region-CNN，是第一个成功将深度学习应用到目标检测上的算法。R-CNN基于卷积神经网络，线性回归，和支持向量]]></description>
 </item>
 <item>
   <title>ShuffleNet &amp; EfficientNet</title>
-  <link>http://example.org/posts/shufflenet-efficientnet/</link>
+  <link>http://example.org/posts/shufflenet&#43;ampamp&#43;efficientnet/</link>
   <pubDate>Mon, 12 Sep 2022 15:05:52 &#43;0800</pubDate>
   <author>作者</author>
-  <guid>http://example.org/posts/shufflenet-efficientnet/</guid>
+  <guid>http://example.org/posts/shufflenet&#43;ampamp&#43;efficientnet/</guid>
   <description><![CDATA[ShuffleNet 简介 ShuffleNet是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。]]></description>
 </item>
 <item>
   <title>SENet &amp; MobileNet</title>
-  <link>http://example.org/posts/senet-mobilenet/</link>
+  <link>http://example.org/posts/senet&#43;ampamp&#43;mobilenet/</link>
   <pubDate>Fri, 02 Sep 2022 22:27:28 &#43;0800</pubDate>
   <author>作者</author>
-  <guid>http://example.org/posts/senet-mobilenet/</guid>
+  <guid>http://example.org/posts/senet&#43;ampamp&#43;mobilenet/</guid>
   <description><![CDATA[SENet 简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在]]></description>
 </item>
 <item>
   <title>ResNet &amp; DenseNet</title>
-  <link>http://example.org/posts/resnet-densenet/</link>
+  <link>http://example.org/posts/resnet&#43;ampamp&#43;densenet/</link>
   <pubDate>Fri, 26 Aug 2022 10:54:08 &#43;0800</pubDate>
   <author>作者</author>
-  <guid>http://example.org/posts/resnet-densenet/</guid>
+  <guid>http://example.org/posts/resnet&#43;ampamp&#43;densenet/</guid>
   <description><![CDATA[ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO]]></description>
 </item>
 <item>
   <title>AlexNet &amp; VGG &amp; GoogLeNet</title>
-  <link>http://example.org/posts/alexnet-vgg-googlenet/</link>
+  <link>http://example.org/posts/alexnet&#43;ampamp&#43;vgg&#43;ampamp&#43;googlenet/</link>
   <pubDate>Sat, 20 Aug 2022 18:00:30 &#43;0800</pubDate>
   <author>作者</author>
-  <guid>http://example.org/posts/alexnet-vgg-googlenet/</guid>
+  <guid>http://example.org/posts/alexnet&#43;ampamp&#43;vgg&#43;ampamp&#43;googlenet/</guid>
   <description><![CDATA[AlexNet 简介 AlexNet是2012年ISLVRC 2012（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，分类准确率由传统的 70%+]]></description>
 </item>
 </channel>
