@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Hzb&#39;s Study Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 27 Oct 2022 19:16:59 +0800</lastBuildDate><atom:link href="http://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 28 Oct 2022 14:52:12 +0800</lastBuildDate><atom:link href="http://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PSPNet</title>
+      <link>http://example.org/posts/pspnet-deeplab/</link>
+      <pubDate>Fri, 28 Oct 2022 14:52:12 +0800</pubDate>
+      
+      <guid>http://example.org/posts/pspnet-deeplab/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>FCN &amp; U-Net</title>
       <link>http://example.org/posts/fcn-u-net/</link>

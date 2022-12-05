@@ -6,7 +6,16 @@
     <description>Recent content on Hzb&#39;s Study Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 27 Oct 2022 19:16:59 +0800</lastBuildDate><atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 28 Oct 2022 14:52:12 +0800</lastBuildDate><atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PSPNet</title>
+      <link>http://example.org/posts/pspnet-deeplab/</link>
+      <pubDate>Fri, 28 Oct 2022 14:52:12 +0800</pubDate>
+      
+      <guid>http://example.org/posts/pspnet-deeplab/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>FCN &amp; U-Net</title>
       <link>http://example.org/posts/fcn-u-net/</link>
@@ -222,6 +231,26 @@ GoogLeNet 简介 GoogLeNet是2014年Christian Szegedy提出的一种全新的深
 图像滤波：在尽量保留图像细节特征的条件下对目标图像的噪声进行抑制，是图像处理中不可缺少的操作，其处理效果的好坏将直接影响到后续图像处理和分析的有效性和可靠性。
 canny边缘检测算法：
 用高斯滤波器对图像进行平滑处理； 利用一阶偏导算子找到图像灰度沿水平方向和垂直方向的偏导数，并求出梯度的幅值和方位； 非极大值抑制，找到局部梯度最大值； 用双阈值算法检测和链接边缘，凡大于高阈值T1的一定是边缘，凡小于低阈值T2的一定不是边缘，若既大于低阈值又小于高阈值，则要看这个像素的邻接像素中是否有大于高阈值的边缘像素，若有则是边缘，否则不是。 Feature Extraction (特征提取) Bag of Words, BoW (词袋模型) 现代篇 CNN (卷积神经网络) Vision Transformer (视觉自注意力网络) 前沿篇 XAI (可解释性AI) Contrastive Pretraining (对比预训练） Multimodal Fusion (多模态融合） </description>
+    </item>
+    
+    <item>
+      <title>sample</title>
+      <link>http://example.org/post/test/</link>
+      <pubDate>Sun, 01 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/post/test/</guid>
+      <description>Hugo is the world&amp;rsquo;s fastest static website engine. It&amp;rsquo;s written in Go (aka Golang) and developed by bep, spf13 and friends.
+Below you will find some of the most common and helpful pages from our documentation.
+https://gohugo.io/documentation/</description>
+    </item>
+    
+    <item>
+      <title>test post</title>
+      <link>http://example.org/post/test/</link>
+      <pubDate>Fri, 01 Jan 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://example.org/post/test/</guid>
+      <description>echo &amp;#34;hello world !!&amp;#34; </description>
     </item>
     
   </channel>

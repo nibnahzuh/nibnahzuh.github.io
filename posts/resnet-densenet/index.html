@@ -1,213 +1,93 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    
-    <title>ResNet &amp; DenseNet | Hzb&#39;s Study Blog</title>
-    <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="description" content="ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名。
-亮点 超深的网络结构（超过1000层） 提出residual（残差结构）模块 使用Batch Normalization加速训练（丢弃Dropout） 网络结构 为什么采用residual 在ResNet提出之前，所有的神经网络都是通过卷积层和池化层的叠加组成的。人们认为卷积层和池化层的层数越多，获取到的图片特征信息越全，学习效果也就越好。但是在实际的试验中发现，随着卷积层和池化层的叠加，不但没有出现学习效果越来越好的情况，反而出现两种问题：
-梯度消失和梯度爆炸。目前优化神经网络的方法都是基于BP，即根据损失函数计算的误差通过梯度反向传播的方式，指导深度网络权值的更新优化。其中将误差从末层往前传递的过程需要链式法则（Chain Rule）的帮助。而链式法则是一个连乘的形式，所以当层数越深的时候，梯度将以指数形式传播。梯度消失问题和梯度爆炸问题一般随着网络层数的增加会变得越来越明显。在根据损失函数计算的误差通过梯度反向传播的方式对深度网络权值进行更新时，得到的梯度值接近0或特别大，也就是梯度消失或爆炸。
-退化问题。随着层数的增加，反传回来的梯度之间的相关性会越来越差，最后接近白噪声，预测效果反而越来越差。如下图所示
-为了解决梯度消失或梯度爆炸问题，ResNet论文提出通过数据的预处理以及在网络中使用BN（Batch Normalization）层来解决。
-为了解决深层网络中的退化问题，可以人为地让神经网络某些层跳过下一层神经元的连接，隔层相连，弱化每层之间的强联系。这种神经网络被称为残差网络 (ResNets)。ResNet论文提出了residual结构（残差结构）来减轻退化问题，下图是使用residual结构的卷积网络，可以看到随着网络的不断加深，效果并没有变差，而是变的更好了。
-residual结构 residual结构使用了一种shortcut的连接方式，也可理解为捷径。让特征矩阵隔层相加，注意F(X)和X形状要相同，所谓相加是特征矩阵相同位置上的数字进行相加。若某一较深的网络多出另一较浅网络的若干层有能力学习到恒等映射，那么这一较深网络训练得到的模型性能一定不会弱于该浅层网络。
-两种不同的residual：
-对于深层次网络，使用左边的block意味着有很大的计算量，因此右侧使用1x1卷积先将输入进行降维，然后再经过3x3卷积后，最后用1x1卷积进行升维，为了主分支上输出的特征矩阵和捷径分支上输出的特征矩阵形状相同，以便进行加法操作。（搭建深层次网络时，采用右侧的残差结构）
-降维时的shortcut 观察ResNet18层网络，可以发现有些残差块的shortcut是实线的，而有些则是虚线的。这些虚线的shortcut上通过1×1的卷积核进行了维度处理（特征矩阵在长宽方下采样，深度方向调整成下一层残差结构所需要的channel）。
-Batch Normalization Batch Normalization是指批标准化处理，将一批数据的feature map满足均值为0，方差为1的分布规律。
-对图像进行标准化处理，这样能够加速网络的收敛，如下图所示，对于Conv1来说输入的就是满足某一分布的特征矩阵，但对于Conv2而言输入的feature map就不一定满足某一分布规律了（注意这里所说满足某一分布规律并不是指某一个feature map的数据要满足分布规律，理论上是指整个训练样本集所对应feature map的数据要满足分布规律）。而我们Batch Normalization的目的就是使我们的feature map满足均值为0，方差为1的分布规律。计算公式如下：
-假设feature1、feature2分别是由image1、image2经过一系列卷积池化后得到的特征矩阵，feature的channel为2，那么代表该batch的所有feature的channel1的数据，同理代表该batch的所有feature的channel2的数据。然后分别计算和的均值与方差，得到两个向量。然后在根据标准差计算公式分别计算每个channel的值（公式中的是一个很小的常量，防止分母为零的情况）。在我们训练网络的过程中，我们是通过一个batch一个batch的数据进行训练的，但是我们在预测过程中通常都是输入一张图片进行预测，此时batch size为1，如果在通过上述方法计算均值和方差就没有意义了。所以我们在训练过程中要去不断的计算每个batch的均值和方差，并使用移动平均(moving average)的方法记录统计的均值和方差，在训练完后我们可以近似认为所统计的均值和方差就等于整个训练集的均值和方差。然后在我们验证以及预测过程中，就使用统计得到的均值和方差进行标准化处理。如下图：
-ResNet V2 简介 ResNet V2 的主要贡献在于通过理论分析和大量实验证明使用恒等映射（identity mapping）作为快捷连接（skip connection）对于残差块的重要性。同时，将BN/ReLu这些activation操作挪到了Conv（真正的weights filter操作）之前，提出预激活（Pre-activation）操作，并通过与后激活（Post-activation）操作做对比实验，表明对于多层网络，使用了预激活残差单元（Pre-activation residual unit）的resnet v2都取得了比 原版本resnet更好的结果。
-亮点 提出了新的残差模块结构：
-将激活函数移至旁路
-full pre-activation
-深度残差网络的分析 原先resnets的残差单元可表示为：
-如果函数f也是恒等映射，则公式可以合并为：
-那么任意深层的单元L与浅层单元l之间的关系可表示为：
-该公式有以下两个特性：
-深层单元的特征可以由浅层单元的特征和残差函数相加得到； 任意深层单元的特征都可以由起始特征x0与先前所有残差函数相加得到，这与普通（plain）网络不同，普通网络的深层特征是由一系列的矩阵向量相乘得到。残差网络是连加，普通网络是连乘。 该公式也带来了良好的反向传播特性，用ε表示损失函数，根据反向传播的链式传导规则，反向传播公式如下：
-从上述公式中可以看出，反向传播也是两条路径，其中之一直接将信息回传，另一条会经过所有的带权重层。另外可以注意到第二项的值在一个mini-batch中不可能一直是-1，也就是说回传的梯度不会消失，不论网络中的权值的值再小都不会发生梯度消失现象。
-恒等映射的重要性 考虑恒等映射的重要性。假设将恒等映射改为 $$ h(x_l) = \lambda_l x_l $$ 则有：">
-    <meta name="generator" content="Hugo 0.101.0" />
-    
-    
-    
-    
-      <meta name="robots" content="noindex, nofollow">
-    
 
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  	<meta property="og:title" content=" ResNet &amp; DenseNet &middot;  Hzb&#39;s Study Blog" />
+  	<meta property="og:site_name" content="Hzb&#39;s Study Blog" />
+  	<meta property="og:url" content="http://example.org/posts/resnet-densenet/" />
     
-<link rel="stylesheet" href="/ananke/css/main.min.css" >
+    
+  	<meta property="og:type" content="article" />
 
-
+    <meta property="og:article:published_time" content="2022-08-26T10:54:08&#43;08:00" />
 
     
     
+
+  <title>
+     ResNet &amp; DenseNet &middot;  Hzb&#39;s Study Blog
+  </title>
+
+    <meta name="description" content="this is my description" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="http://example.org/images/favicon.ico">
+	  <link rel="apple-touch-icon" href="http://example.org/images/apple-touch-icon.png" />
+    
+    <link rel="stylesheet" type="text/css" href="http://example.org/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata" />
+
+
     
       
-
+          <link href="http://example.org/index.xml" rel="alternate" type="application/rss+xml" title="Hzb&#39;s Study Blog" />
+      
+      
     
+    <meta name="generator" content="Hugo 0.107.0">
 
-    
-    
-    <meta property="og:title" content="ResNet &amp; DenseNet" />
-<meta property="og:description" content="ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名。
-亮点 超深的网络结构（超过1000层） 提出residual（残差结构）模块 使用Batch Normalization加速训练（丢弃Dropout） 网络结构 为什么采用residual 在ResNet提出之前，所有的神经网络都是通过卷积层和池化层的叠加组成的。人们认为卷积层和池化层的层数越多，获取到的图片特征信息越全，学习效果也就越好。但是在实际的试验中发现，随着卷积层和池化层的叠加，不但没有出现学习效果越来越好的情况，反而出现两种问题：
-梯度消失和梯度爆炸。目前优化神经网络的方法都是基于BP，即根据损失函数计算的误差通过梯度反向传播的方式，指导深度网络权值的更新优化。其中将误差从末层往前传递的过程需要链式法则（Chain Rule）的帮助。而链式法则是一个连乘的形式，所以当层数越深的时候，梯度将以指数形式传播。梯度消失问题和梯度爆炸问题一般随着网络层数的增加会变得越来越明显。在根据损失函数计算的误差通过梯度反向传播的方式对深度网络权值进行更新时，得到的梯度值接近0或特别大，也就是梯度消失或爆炸。
-退化问题。随着层数的增加，反传回来的梯度之间的相关性会越来越差，最后接近白噪声，预测效果反而越来越差。如下图所示
-为了解决梯度消失或梯度爆炸问题，ResNet论文提出通过数据的预处理以及在网络中使用BN（Batch Normalization）层来解决。
-为了解决深层网络中的退化问题，可以人为地让神经网络某些层跳过下一层神经元的连接，隔层相连，弱化每层之间的强联系。这种神经网络被称为残差网络 (ResNets)。ResNet论文提出了residual结构（残差结构）来减轻退化问题，下图是使用residual结构的卷积网络，可以看到随着网络的不断加深，效果并没有变差，而是变的更好了。
-residual结构 residual结构使用了一种shortcut的连接方式，也可理解为捷径。让特征矩阵隔层相加，注意F(X)和X形状要相同，所谓相加是特征矩阵相同位置上的数字进行相加。若某一较深的网络多出另一较浅网络的若干层有能力学习到恒等映射，那么这一较深网络训练得到的模型性能一定不会弱于该浅层网络。
-两种不同的residual：
-对于深层次网络，使用左边的block意味着有很大的计算量，因此右侧使用1x1卷积先将输入进行降维，然后再经过3x3卷积后，最后用1x1卷积进行升维，为了主分支上输出的特征矩阵和捷径分支上输出的特征矩阵形状相同，以便进行加法操作。（搭建深层次网络时，采用右侧的残差结构）
-降维时的shortcut 观察ResNet18层网络，可以发现有些残差块的shortcut是实线的，而有些则是虚线的。这些虚线的shortcut上通过1×1的卷积核进行了维度处理（特征矩阵在长宽方下采样，深度方向调整成下一层残差结构所需要的channel）。
-Batch Normalization Batch Normalization是指批标准化处理，将一批数据的feature map满足均值为0，方差为1的分布规律。
-对图像进行标准化处理，这样能够加速网络的收敛，如下图所示，对于Conv1来说输入的就是满足某一分布的特征矩阵，但对于Conv2而言输入的feature map就不一定满足某一分布规律了（注意这里所说满足某一分布规律并不是指某一个feature map的数据要满足分布规律，理论上是指整个训练样本集所对应feature map的数据要满足分布规律）。而我们Batch Normalization的目的就是使我们的feature map满足均值为0，方差为1的分布规律。计算公式如下：
-假设feature1、feature2分别是由image1、image2经过一系列卷积池化后得到的特征矩阵，feature的channel为2，那么代表该batch的所有feature的channel1的数据，同理代表该batch的所有feature的channel2的数据。然后分别计算和的均值与方差，得到两个向量。然后在根据标准差计算公式分别计算每个channel的值（公式中的是一个很小的常量，防止分母为零的情况）。在我们训练网络的过程中，我们是通过一个batch一个batch的数据进行训练的，但是我们在预测过程中通常都是输入一张图片进行预测，此时batch size为1，如果在通过上述方法计算均值和方差就没有意义了。所以我们在训练过程中要去不断的计算每个batch的均值和方差，并使用移动平均(moving average)的方法记录统计的均值和方差，在训练完后我们可以近似认为所统计的均值和方差就等于整个训练集的均值和方差。然后在我们验证以及预测过程中，就使用统计得到的均值和方差进行标准化处理。如下图：
-ResNet V2 简介 ResNet V2 的主要贡献在于通过理论分析和大量实验证明使用恒等映射（identity mapping）作为快捷连接（skip connection）对于残差块的重要性。同时，将BN/ReLu这些activation操作挪到了Conv（真正的weights filter操作）之前，提出预激活（Pre-activation）操作，并通过与后激活（Post-activation）操作做对比实验，表明对于多层网络，使用了预激活残差单元（Pre-activation residual unit）的resnet v2都取得了比 原版本resnet更好的结果。
-亮点 提出了新的残差模块结构：
-将激活函数移至旁路
-full pre-activation
-深度残差网络的分析 原先resnets的残差单元可表示为：
-如果函数f也是恒等映射，则公式可以合并为：
-那么任意深层的单元L与浅层单元l之间的关系可表示为：
-该公式有以下两个特性：
-深层单元的特征可以由浅层单元的特征和残差函数相加得到； 任意深层单元的特征都可以由起始特征x0与先前所有残差函数相加得到，这与普通（plain）网络不同，普通网络的深层特征是由一系列的矩阵向量相乘得到。残差网络是连加，普通网络是连乘。 该公式也带来了良好的反向传播特性，用ε表示损失函数，根据反向传播的链式传导规则，反向传播公式如下：
-从上述公式中可以看出，反向传播也是两条路径，其中之一直接将信息回传，另一条会经过所有的带权重层。另外可以注意到第二项的值在一个mini-batch中不可能一直是-1，也就是说回传的梯度不会消失，不论网络中的权值的值再小都不会发生梯度消失现象。
-恒等映射的重要性 考虑恒等映射的重要性。假设将恒等映射改为 $$ h(x_l) = \lambda_l x_l $$ 则有：" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://example.org/posts/resnet-densenet/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2022-08-26T10:54:08+08:00" />
-<meta property="article:modified_time" content="2022-08-26T10:54:08+08:00" />
+    <link rel="canonical" href="http://example.org/posts/resnet-densenet/" />
 
-<meta itemprop="name" content="ResNet &amp; DenseNet">
-<meta itemprop="description" content="ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名。
-亮点 超深的网络结构（超过1000层） 提出residual（残差结构）模块 使用Batch Normalization加速训练（丢弃Dropout） 网络结构 为什么采用residual 在ResNet提出之前，所有的神经网络都是通过卷积层和池化层的叠加组成的。人们认为卷积层和池化层的层数越多，获取到的图片特征信息越全，学习效果也就越好。但是在实际的试验中发现，随着卷积层和池化层的叠加，不但没有出现学习效果越来越好的情况，反而出现两种问题：
-梯度消失和梯度爆炸。目前优化神经网络的方法都是基于BP，即根据损失函数计算的误差通过梯度反向传播的方式，指导深度网络权值的更新优化。其中将误差从末层往前传递的过程需要链式法则（Chain Rule）的帮助。而链式法则是一个连乘的形式，所以当层数越深的时候，梯度将以指数形式传播。梯度消失问题和梯度爆炸问题一般随着网络层数的增加会变得越来越明显。在根据损失函数计算的误差通过梯度反向传播的方式对深度网络权值进行更新时，得到的梯度值接近0或特别大，也就是梯度消失或爆炸。
-退化问题。随着层数的增加，反传回来的梯度之间的相关性会越来越差，最后接近白噪声，预测效果反而越来越差。如下图所示
-为了解决梯度消失或梯度爆炸问题，ResNet论文提出通过数据的预处理以及在网络中使用BN（Batch Normalization）层来解决。
-为了解决深层网络中的退化问题，可以人为地让神经网络某些层跳过下一层神经元的连接，隔层相连，弱化每层之间的强联系。这种神经网络被称为残差网络 (ResNets)。ResNet论文提出了residual结构（残差结构）来减轻退化问题，下图是使用residual结构的卷积网络，可以看到随着网络的不断加深，效果并没有变差，而是变的更好了。
-residual结构 residual结构使用了一种shortcut的连接方式，也可理解为捷径。让特征矩阵隔层相加，注意F(X)和X形状要相同，所谓相加是特征矩阵相同位置上的数字进行相加。若某一较深的网络多出另一较浅网络的若干层有能力学习到恒等映射，那么这一较深网络训练得到的模型性能一定不会弱于该浅层网络。
-两种不同的residual：
-对于深层次网络，使用左边的block意味着有很大的计算量，因此右侧使用1x1卷积先将输入进行降维，然后再经过3x3卷积后，最后用1x1卷积进行升维，为了主分支上输出的特征矩阵和捷径分支上输出的特征矩阵形状相同，以便进行加法操作。（搭建深层次网络时，采用右侧的残差结构）
-降维时的shortcut 观察ResNet18层网络，可以发现有些残差块的shortcut是实线的，而有些则是虚线的。这些虚线的shortcut上通过1×1的卷积核进行了维度处理（特征矩阵在长宽方下采样，深度方向调整成下一层残差结构所需要的channel）。
-Batch Normalization Batch Normalization是指批标准化处理，将一批数据的feature map满足均值为0，方差为1的分布规律。
-对图像进行标准化处理，这样能够加速网络的收敛，如下图所示，对于Conv1来说输入的就是满足某一分布的特征矩阵，但对于Conv2而言输入的feature map就不一定满足某一分布规律了（注意这里所说满足某一分布规律并不是指某一个feature map的数据要满足分布规律，理论上是指整个训练样本集所对应feature map的数据要满足分布规律）。而我们Batch Normalization的目的就是使我们的feature map满足均值为0，方差为1的分布规律。计算公式如下：
-假设feature1、feature2分别是由image1、image2经过一系列卷积池化后得到的特征矩阵，feature的channel为2，那么代表该batch的所有feature的channel1的数据，同理代表该batch的所有feature的channel2的数据。然后分别计算和的均值与方差，得到两个向量。然后在根据标准差计算公式分别计算每个channel的值（公式中的是一个很小的常量，防止分母为零的情况）。在我们训练网络的过程中，我们是通过一个batch一个batch的数据进行训练的，但是我们在预测过程中通常都是输入一张图片进行预测，此时batch size为1，如果在通过上述方法计算均值和方差就没有意义了。所以我们在训练过程中要去不断的计算每个batch的均值和方差，并使用移动平均(moving average)的方法记录统计的均值和方差，在训练完后我们可以近似认为所统计的均值和方差就等于整个训练集的均值和方差。然后在我们验证以及预测过程中，就使用统计得到的均值和方差进行标准化处理。如下图：
-ResNet V2 简介 ResNet V2 的主要贡献在于通过理论分析和大量实验证明使用恒等映射（identity mapping）作为快捷连接（skip connection）对于残差块的重要性。同时，将BN/ReLu这些activation操作挪到了Conv（真正的weights filter操作）之前，提出预激活（Pre-activation）操作，并通过与后激活（Post-activation）操作做对比实验，表明对于多层网络，使用了预激活残差单元（Pre-activation residual unit）的resnet v2都取得了比 原版本resnet更好的结果。
-亮点 提出了新的残差模块结构：
-将激活函数移至旁路
-full pre-activation
-深度残差网络的分析 原先resnets的残差单元可表示为：
-如果函数f也是恒等映射，则公式可以合并为：
-那么任意深层的单元L与浅层单元l之间的关系可表示为：
-该公式有以下两个特性：
-深层单元的特征可以由浅层单元的特征和残差函数相加得到； 任意深层单元的特征都可以由起始特征x0与先前所有残差函数相加得到，这与普通（plain）网络不同，普通网络的深层特征是由一系列的矩阵向量相乘得到。残差网络是连加，普通网络是连乘。 该公式也带来了良好的反向传播特性，用ε表示损失函数，根据反向传播的链式传导规则，反向传播公式如下：
-从上述公式中可以看出，反向传播也是两条路径，其中之一直接将信息回传，另一条会经过所有的带权重层。另外可以注意到第二项的值在一个mini-batch中不可能一直是-1，也就是说回传的梯度不会消失，不论网络中的权值的值再小都不会发生梯度消失现象。
-恒等映射的重要性 考虑恒等映射的重要性。假设将恒等映射改为 $$ h(x_l) = \lambda_l x_l $$ 则有："><meta itemprop="datePublished" content="2022-08-26T10:54:08+08:00" />
-<meta itemprop="dateModified" content="2022-08-26T10:54:08+08:00" />
-<meta itemprop="wordCount" content="216">
-<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="ResNet &amp; DenseNet"/>
-<meta name="twitter:description" content="ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO数据集中目标检测第一名，图像分割第一名。
-亮点 超深的网络结构（超过1000层） 提出residual（残差结构）模块 使用Batch Normalization加速训练（丢弃Dropout） 网络结构 为什么采用residual 在ResNet提出之前，所有的神经网络都是通过卷积层和池化层的叠加组成的。人们认为卷积层和池化层的层数越多，获取到的图片特征信息越全，学习效果也就越好。但是在实际的试验中发现，随着卷积层和池化层的叠加，不但没有出现学习效果越来越好的情况，反而出现两种问题：
-梯度消失和梯度爆炸。目前优化神经网络的方法都是基于BP，即根据损失函数计算的误差通过梯度反向传播的方式，指导深度网络权值的更新优化。其中将误差从末层往前传递的过程需要链式法则（Chain Rule）的帮助。而链式法则是一个连乘的形式，所以当层数越深的时候，梯度将以指数形式传播。梯度消失问题和梯度爆炸问题一般随着网络层数的增加会变得越来越明显。在根据损失函数计算的误差通过梯度反向传播的方式对深度网络权值进行更新时，得到的梯度值接近0或特别大，也就是梯度消失或爆炸。
-退化问题。随着层数的增加，反传回来的梯度之间的相关性会越来越差，最后接近白噪声，预测效果反而越来越差。如下图所示
-为了解决梯度消失或梯度爆炸问题，ResNet论文提出通过数据的预处理以及在网络中使用BN（Batch Normalization）层来解决。
-为了解决深层网络中的退化问题，可以人为地让神经网络某些层跳过下一层神经元的连接，隔层相连，弱化每层之间的强联系。这种神经网络被称为残差网络 (ResNets)。ResNet论文提出了residual结构（残差结构）来减轻退化问题，下图是使用residual结构的卷积网络，可以看到随着网络的不断加深，效果并没有变差，而是变的更好了。
-residual结构 residual结构使用了一种shortcut的连接方式，也可理解为捷径。让特征矩阵隔层相加，注意F(X)和X形状要相同，所谓相加是特征矩阵相同位置上的数字进行相加。若某一较深的网络多出另一较浅网络的若干层有能力学习到恒等映射，那么这一较深网络训练得到的模型性能一定不会弱于该浅层网络。
-两种不同的residual：
-对于深层次网络，使用左边的block意味着有很大的计算量，因此右侧使用1x1卷积先将输入进行降维，然后再经过3x3卷积后，最后用1x1卷积进行升维，为了主分支上输出的特征矩阵和捷径分支上输出的特征矩阵形状相同，以便进行加法操作。（搭建深层次网络时，采用右侧的残差结构）
-降维时的shortcut 观察ResNet18层网络，可以发现有些残差块的shortcut是实线的，而有些则是虚线的。这些虚线的shortcut上通过1×1的卷积核进行了维度处理（特征矩阵在长宽方下采样，深度方向调整成下一层残差结构所需要的channel）。
-Batch Normalization Batch Normalization是指批标准化处理，将一批数据的feature map满足均值为0，方差为1的分布规律。
-对图像进行标准化处理，这样能够加速网络的收敛，如下图所示，对于Conv1来说输入的就是满足某一分布的特征矩阵，但对于Conv2而言输入的feature map就不一定满足某一分布规律了（注意这里所说满足某一分布规律并不是指某一个feature map的数据要满足分布规律，理论上是指整个训练样本集所对应feature map的数据要满足分布规律）。而我们Batch Normalization的目的就是使我们的feature map满足均值为0，方差为1的分布规律。计算公式如下：
-假设feature1、feature2分别是由image1、image2经过一系列卷积池化后得到的特征矩阵，feature的channel为2，那么代表该batch的所有feature的channel1的数据，同理代表该batch的所有feature的channel2的数据。然后分别计算和的均值与方差，得到两个向量。然后在根据标准差计算公式分别计算每个channel的值（公式中的是一个很小的常量，防止分母为零的情况）。在我们训练网络的过程中，我们是通过一个batch一个batch的数据进行训练的，但是我们在预测过程中通常都是输入一张图片进行预测，此时batch size为1，如果在通过上述方法计算均值和方差就没有意义了。所以我们在训练过程中要去不断的计算每个batch的均值和方差，并使用移动平均(moving average)的方法记录统计的均值和方差，在训练完后我们可以近似认为所统计的均值和方差就等于整个训练集的均值和方差。然后在我们验证以及预测过程中，就使用统计得到的均值和方差进行标准化处理。如下图：
-ResNet V2 简介 ResNet V2 的主要贡献在于通过理论分析和大量实验证明使用恒等映射（identity mapping）作为快捷连接（skip connection）对于残差块的重要性。同时，将BN/ReLu这些activation操作挪到了Conv（真正的weights filter操作）之前，提出预激活（Pre-activation）操作，并通过与后激活（Post-activation）操作做对比实验，表明对于多层网络，使用了预激活残差单元（Pre-activation residual unit）的resnet v2都取得了比 原版本resnet更好的结果。
-亮点 提出了新的残差模块结构：
-将激活函数移至旁路
-full pre-activation
-深度残差网络的分析 原先resnets的残差单元可表示为：
-如果函数f也是恒等映射，则公式可以合并为：
-那么任意深层的单元L与浅层单元l之间的关系可表示为：
-该公式有以下两个特性：
-深层单元的特征可以由浅层单元的特征和残差函数相加得到； 任意深层单元的特征都可以由起始特征x0与先前所有残差函数相加得到，这与普通（plain）网络不同，普通网络的深层特征是由一系列的矩阵向量相乘得到。残差网络是连加，普通网络是连乘。 该公式也带来了良好的反向传播特性，用ε表示损失函数，根据反向传播的链式传导规则，反向传播公式如下：
-从上述公式中可以看出，反向传播也是两条路径，其中之一直接将信息回传，另一条会经过所有的带权重层。另外可以注意到第二项的值在一个mini-batch中不可能一直是-1，也就是说回传的梯度不会消失，不论网络中的权值的值再小都不会发生梯度消失现象。
-恒等映射的重要性 考虑恒等映射的重要性。假设将恒等映射改为 $$ h(x_l) = \lambda_l x_l $$ 则有："/>
-
-	
-  </head>
-
-  <body class="ma0 avenir bg-near-white">
-
-    
-   
+     
+</head>
+<body class="nav-closed">
+<div id="particles-js"></div>
   
 
-  <header>
-    <div class="bg-black">
-      <nav class="pv3 ph3 ph4-ns" role="navigation">
-  <div class="flex-l justify-between items-center center">
-    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
-      
-        Hzb&#39;s Study Blog
-      
-    </a>
-    <div class="flex-l items-center">
-      
 
-      
-      
-<div class="ananke-socials">
-  
+ <div class="site-wrapper">
+
+
+
+<header class="main-header " style="background-image: url(http://example.org/images/user.jpg)">
+
+    <nav class="main-nav overlay clearfix">
+        
+            <a class="blog-logo" href="http://example.org/"><img src="http://example.org/images/user.png" alt="Blog Logo" /></a>
+        
+        
+    </nav>
+<div class="vertical">
+        <div class="main-header-content inner">
+            <h1 class="page-title">
+              <a class="btn-bootstrap-2" href="#content">Hzb&#39;s Study Blog</a>
+          </h1>
+          <h2 class="page-description">this is my description</h2>
+        </div>
 </div>
+    <a class="scroll-down icon-arrow-left" href="#content"><span class="hidden">Scroll Down</span></a>
+</header>
 
-    </div>
-  </div>
-</nav>
-
-    </div>
-  </header>
+  <main id="content" class="content" role="main">
 
 
+  <article class="post posts">
 
-    <main class="pb7" role="main">
-      
-  
-  <article class="flex-l flex-wrap justify-between mw8 center ph3">
-    <header class="mt4 w-100">
-      <aside class="instapaper_ignoref b helvetica tracked">
-          
-        POSTS
-      </aside>
-      
-
-
-
-
-
-
-
-
-
-
-  <div id="sharing" class="mt3 ananke-socials">
-    
-  </div>
-
-
-      <h1 class="f1 athelas mt3 mb1">ResNet &amp; DenseNet</h1>
-      
-      
-      
-      <time class="f6 mv4 dib tracked" datetime="2022-08-26T10:54:08+08:00">August 26, 2022</time>
-      
-
-      
-      
+    <header class="post-header">
+        <h1 class="post-title">ResNet &amp; DenseNet</h1>
+        <section class="post-meta">
+        
+         
+        </section>
     </header>
-    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="resnet">ResNet</h2>
+
+    <section class="post-content">
+      <h2 id="resnet">ResNet</h2>
 <ul>
 <li>
 <h4 id="简介">简介</h4>
@@ -466,37 +346,67 @@ $$
 <p><a href="https://zhuanlan.zhihu.com/p/43057737">DenseNet详解</a></p>
 </blockquote>
 <h1 id="thanks-for-reading"><em>Thanks for reading!</em></h1>
-<ul class="pa0">
+
+    </section>
+
+
+  <footer class="post-footer">
+
+
+    
+    <figure class="author-image">
+
+        <a class="img" href="http://example.org/" style="background-image: url(http://example.org/images/user.png)"><span class="hidden">syui</span></a>
+    </figure>
+    
+
+    <section class="author">
+
+  <p>syui</p>
   
-</ul>
-<div class="mt6 instapaper_ignoref">
-      
-      
-      </div>
+
+</section>
+
+
+    
+    <section class="share">
+      <h4>Share this posts</h4>
+      <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=ResNet%20%26%20DenseNet&amp;url=http%3a%2f%2fexample.org%2fposts%2fresnet-densenet%2f"
+          onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+          <span class="hidden">Twitter</span>
+      </a>
+      <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fexample.org%2fposts%2fresnet-densenet%2f"
+          onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+          <span class="hidden">Facebook</span>
+      </a>
+      <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=http%3a%2f%2fexample.org%2fposts%2fresnet-densenet%2f"
+         onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+          <span class="hidden">Google+</span>
+      </a>
+    </section>
+    
+
+    
+    
+    
+
+  </footer>
+</article>
+
+</main>
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="">Hzb&#39;s Study Blog</a> </section>
+        
+        <section class="poweredby">Proudly generated by <a class="icon-hugo" href="https://gohugo.io">HUGO</a>, with <a class="icon-theme" href="https://github.com/syui/hugo-theme-air">hugo-theme-air</a> theme</section>
+        
+    </footer>
     </div>
+    <script type="text/javascript" src="http://example.org/js/jquery.js"></script>
+    <script type="text/javascript" src="http://example.org/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="http://example.org/js/index.js"></script>
+    <script src="http://example.org/js/particles.min.js"></script>
+    <script src="http://example.org/js/particles.js"></script>  
 
-    <aside class="w-30-l mt6-l">
-
-
-
-
-</aside>
-
-  </article>
-
-    </main>
-    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
-  <div class="flex justify-between">
-  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://example.org/" >
-    &copy;  Hzb's Study Blog 2022 
-  </a>
-    <div>
-<div class="ananke-socials">
-  
-</div>
-</div>
-  </div>
-</footer>
-
-  </body>
+</body>
 </html>
+

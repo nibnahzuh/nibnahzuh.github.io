@@ -1,185 +1,93 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    
-    <title>RetinaNet &amp; FCOS | Hzb&#39;s Study Blog</title>
-    <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="description" content="RetinaNet 简介 RetinaNet 是 Tsung-Yi Lin 和 Kaiming He（四作） 于 2018 年发表的论文 Focal Loss for Dense Object Detection。深入分析了极度不平衡的正负（前景背景）样本比例导致 one-stage 检测器精度低于 two-stage 检测器，基于上述分析，提出了一种简单但是非常实用的 Focal Loss 焦点损失函数，并且 Loss 设计思想可以推广到其他领域，同时针对目标检测领域特定问题，设计了 RetinaNet 网络，结合 Focal Loss 使得 one-stage 检测器在精度上能够达到乃至超过 two-stage 检测器。
-网络结构 RetinaNet的特征提取网络选择了残差网络ResNet，特征融合这块选择了FPN（特征金字塔网络），以特征金字塔不同的尺寸特征图作为输入，搭建三个用于分类和框回归的子网络。分类网络输出的特征图尺寸为（W,H,KA)，其中W、H为特征图宽高，KA为特征图通道，存放A个anchor各自的类别信息（K为类别数）。
-历史问题 在One stage中，detector直接在类别不平衡（负样本很多，正样本很少）中进行分类和回归，直接输出bbox和类别，原有的交叉熵损失无法处理这种不平衡，导致训练不充分，精度低，但是却提升了检测速度。
-在Two stage中，FPN网络已经过滤了一部分的背景bbox，因此在fast r-cnn中正负样本比例较均衡，因此准确率较高。
-针对所有的负样本，数量过多，主导了损失函数，不利于模型收敛。
-针对单个负样本，大多数负样本不包含任何物体，属于易分样本，且易分样本数量很多，训练时对应背景类的预测得分会很高，那么单个样本的loss就很小，反向计算时梯度小，造成易分负样本对loss的收敛作用有限。
-主要贡献 提出Focal Loss：解决one-stage算法中，样本不平衡和难易样本的问题。
-样本不平衡：保证在损失函数中，正样本与负样本的贡献（比重）均衡。
-难易样本：希望模型更关注难分样本，难分样本在loss中的比重更大。
-Focal Loss 二分类交叉熵损失函数：
-解决正负样本不均：加上一个权重α（范围[0,1]）
-解决难易样本不均：引入因子γ(≥0)，将高置信度的样本的损失权重降低
-Focal Loss
-展开后为
-优缺点分析 优点：提升准确率，降低了正负样本和难易样本不均衡带来的影响；
-缺点：Focal Loss易受噪声干扰，对图像标注的准确性要求非常高，一旦有标错的样本，就会被focal loss当做困难样本，从而影响学习效果。
-FCOS 简介 FCOS 发表于ICCV 2019，是一阶段anchor free目标检测算法，其主要的卖点为无锚。通过回归特征图上每个位置距离目标框的上下左右距离来实现目标检测。如果一个位置落在了多个目标框内，文中的方法是通过多尺度&#43;回归幅度限制的方法来缓解这个问题。为了解决目标框数量过多的问题，文中提出了center-ness的方法，为每个位置学习一个center-ness分数，最后乘以预测类别分数作为非极大抑制的输入参数来解决这个问题。">
-    <meta name="generator" content="Hugo 0.101.0" />
-    
-    
-    
-    
-      <meta name="robots" content="noindex, nofollow">
-    
 
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  	<meta property="og:title" content=" RetinaNet &amp; FCOS &middot;  Hzb&#39;s Study Blog" />
+  	<meta property="og:site_name" content="Hzb&#39;s Study Blog" />
+  	<meta property="og:url" content="http://example.org/posts/retinanet-fcos/" />
     
-<link rel="stylesheet" href="/ananke/css/main.min.css" >
+    
+  	<meta property="og:type" content="article" />
 
-
+    <meta property="og:article:published_time" content="2022-10-27T10:13:28&#43;08:00" />
 
     
     
+
+  <title>
+     RetinaNet &amp; FCOS &middot;  Hzb&#39;s Study Blog
+  </title>
+
+    <meta name="description" content="this is my description" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="http://example.org/images/favicon.ico">
+	  <link rel="apple-touch-icon" href="http://example.org/images/apple-touch-icon.png" />
+    
+    <link rel="stylesheet" type="text/css" href="http://example.org/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata" />
+
+
     
       
-
+          <link href="http://example.org/index.xml" rel="alternate" type="application/rss+xml" title="Hzb&#39;s Study Blog" />
+      
+      
     
+    <meta name="generator" content="Hugo 0.107.0">
 
-    
-    
-    <meta property="og:title" content="RetinaNet &amp; FCOS" />
-<meta property="og:description" content="RetinaNet 简介 RetinaNet 是 Tsung-Yi Lin 和 Kaiming He（四作） 于 2018 年发表的论文 Focal Loss for Dense Object Detection。深入分析了极度不平衡的正负（前景背景）样本比例导致 one-stage 检测器精度低于 two-stage 检测器，基于上述分析，提出了一种简单但是非常实用的 Focal Loss 焦点损失函数，并且 Loss 设计思想可以推广到其他领域，同时针对目标检测领域特定问题，设计了 RetinaNet 网络，结合 Focal Loss 使得 one-stage 检测器在精度上能够达到乃至超过 two-stage 检测器。
-网络结构 RetinaNet的特征提取网络选择了残差网络ResNet，特征融合这块选择了FPN（特征金字塔网络），以特征金字塔不同的尺寸特征图作为输入，搭建三个用于分类和框回归的子网络。分类网络输出的特征图尺寸为（W,H,KA)，其中W、H为特征图宽高，KA为特征图通道，存放A个anchor各自的类别信息（K为类别数）。
-历史问题 在One stage中，detector直接在类别不平衡（负样本很多，正样本很少）中进行分类和回归，直接输出bbox和类别，原有的交叉熵损失无法处理这种不平衡，导致训练不充分，精度低，但是却提升了检测速度。
-在Two stage中，FPN网络已经过滤了一部分的背景bbox，因此在fast r-cnn中正负样本比例较均衡，因此准确率较高。
-针对所有的负样本，数量过多，主导了损失函数，不利于模型收敛。
-针对单个负样本，大多数负样本不包含任何物体，属于易分样本，且易分样本数量很多，训练时对应背景类的预测得分会很高，那么单个样本的loss就很小，反向计算时梯度小，造成易分负样本对loss的收敛作用有限。
-主要贡献 提出Focal Loss：解决one-stage算法中，样本不平衡和难易样本的问题。
-样本不平衡：保证在损失函数中，正样本与负样本的贡献（比重）均衡。
-难易样本：希望模型更关注难分样本，难分样本在loss中的比重更大。
-Focal Loss 二分类交叉熵损失函数：
-解决正负样本不均：加上一个权重α（范围[0,1]）
-解决难易样本不均：引入因子γ(≥0)，将高置信度的样本的损失权重降低
-Focal Loss
-展开后为
-优缺点分析 优点：提升准确率，降低了正负样本和难易样本不均衡带来的影响；
-缺点：Focal Loss易受噪声干扰，对图像标注的准确性要求非常高，一旦有标错的样本，就会被focal loss当做困难样本，从而影响学习效果。
-FCOS 简介 FCOS 发表于ICCV 2019，是一阶段anchor free目标检测算法，其主要的卖点为无锚。通过回归特征图上每个位置距离目标框的上下左右距离来实现目标检测。如果一个位置落在了多个目标框内，文中的方法是通过多尺度&#43;回归幅度限制的方法来缓解这个问题。为了解决目标框数量过多的问题，文中提出了center-ness的方法，为每个位置学习一个center-ness分数，最后乘以预测类别分数作为非极大抑制的输入参数来解决这个问题。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="http://example.org/posts/retinanet-fcos/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2022-10-27T10:13:28+08:00" />
-<meta property="article:modified_time" content="2022-10-27T10:13:28+08:00" />
+    <link rel="canonical" href="http://example.org/posts/retinanet-fcos/" />
 
-<meta itemprop="name" content="RetinaNet &amp; FCOS">
-<meta itemprop="description" content="RetinaNet 简介 RetinaNet 是 Tsung-Yi Lin 和 Kaiming He（四作） 于 2018 年发表的论文 Focal Loss for Dense Object Detection。深入分析了极度不平衡的正负（前景背景）样本比例导致 one-stage 检测器精度低于 two-stage 检测器，基于上述分析，提出了一种简单但是非常实用的 Focal Loss 焦点损失函数，并且 Loss 设计思想可以推广到其他领域，同时针对目标检测领域特定问题，设计了 RetinaNet 网络，结合 Focal Loss 使得 one-stage 检测器在精度上能够达到乃至超过 two-stage 检测器。
-网络结构 RetinaNet的特征提取网络选择了残差网络ResNet，特征融合这块选择了FPN（特征金字塔网络），以特征金字塔不同的尺寸特征图作为输入，搭建三个用于分类和框回归的子网络。分类网络输出的特征图尺寸为（W,H,KA)，其中W、H为特征图宽高，KA为特征图通道，存放A个anchor各自的类别信息（K为类别数）。
-历史问题 在One stage中，detector直接在类别不平衡（负样本很多，正样本很少）中进行分类和回归，直接输出bbox和类别，原有的交叉熵损失无法处理这种不平衡，导致训练不充分，精度低，但是却提升了检测速度。
-在Two stage中，FPN网络已经过滤了一部分的背景bbox，因此在fast r-cnn中正负样本比例较均衡，因此准确率较高。
-针对所有的负样本，数量过多，主导了损失函数，不利于模型收敛。
-针对单个负样本，大多数负样本不包含任何物体，属于易分样本，且易分样本数量很多，训练时对应背景类的预测得分会很高，那么单个样本的loss就很小，反向计算时梯度小，造成易分负样本对loss的收敛作用有限。
-主要贡献 提出Focal Loss：解决one-stage算法中，样本不平衡和难易样本的问题。
-样本不平衡：保证在损失函数中，正样本与负样本的贡献（比重）均衡。
-难易样本：希望模型更关注难分样本，难分样本在loss中的比重更大。
-Focal Loss 二分类交叉熵损失函数：
-解决正负样本不均：加上一个权重α（范围[0,1]）
-解决难易样本不均：引入因子γ(≥0)，将高置信度的样本的损失权重降低
-Focal Loss
-展开后为
-优缺点分析 优点：提升准确率，降低了正负样本和难易样本不均衡带来的影响；
-缺点：Focal Loss易受噪声干扰，对图像标注的准确性要求非常高，一旦有标错的样本，就会被focal loss当做困难样本，从而影响学习效果。
-FCOS 简介 FCOS 发表于ICCV 2019，是一阶段anchor free目标检测算法，其主要的卖点为无锚。通过回归特征图上每个位置距离目标框的上下左右距离来实现目标检测。如果一个位置落在了多个目标框内，文中的方法是通过多尺度&#43;回归幅度限制的方法来缓解这个问题。为了解决目标框数量过多的问题，文中提出了center-ness的方法，为每个位置学习一个center-ness分数，最后乘以预测类别分数作为非极大抑制的输入参数来解决这个问题。"><meta itemprop="datePublished" content="2022-10-27T10:13:28+08:00" />
-<meta itemprop="dateModified" content="2022-10-27T10:13:28+08:00" />
-<meta itemprop="wordCount" content="115">
-<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="RetinaNet &amp; FCOS"/>
-<meta name="twitter:description" content="RetinaNet 简介 RetinaNet 是 Tsung-Yi Lin 和 Kaiming He（四作） 于 2018 年发表的论文 Focal Loss for Dense Object Detection。深入分析了极度不平衡的正负（前景背景）样本比例导致 one-stage 检测器精度低于 two-stage 检测器，基于上述分析，提出了一种简单但是非常实用的 Focal Loss 焦点损失函数，并且 Loss 设计思想可以推广到其他领域，同时针对目标检测领域特定问题，设计了 RetinaNet 网络，结合 Focal Loss 使得 one-stage 检测器在精度上能够达到乃至超过 two-stage 检测器。
-网络结构 RetinaNet的特征提取网络选择了残差网络ResNet，特征融合这块选择了FPN（特征金字塔网络），以特征金字塔不同的尺寸特征图作为输入，搭建三个用于分类和框回归的子网络。分类网络输出的特征图尺寸为（W,H,KA)，其中W、H为特征图宽高，KA为特征图通道，存放A个anchor各自的类别信息（K为类别数）。
-历史问题 在One stage中，detector直接在类别不平衡（负样本很多，正样本很少）中进行分类和回归，直接输出bbox和类别，原有的交叉熵损失无法处理这种不平衡，导致训练不充分，精度低，但是却提升了检测速度。
-在Two stage中，FPN网络已经过滤了一部分的背景bbox，因此在fast r-cnn中正负样本比例较均衡，因此准确率较高。
-针对所有的负样本，数量过多，主导了损失函数，不利于模型收敛。
-针对单个负样本，大多数负样本不包含任何物体，属于易分样本，且易分样本数量很多，训练时对应背景类的预测得分会很高，那么单个样本的loss就很小，反向计算时梯度小，造成易分负样本对loss的收敛作用有限。
-主要贡献 提出Focal Loss：解决one-stage算法中，样本不平衡和难易样本的问题。
-样本不平衡：保证在损失函数中，正样本与负样本的贡献（比重）均衡。
-难易样本：希望模型更关注难分样本，难分样本在loss中的比重更大。
-Focal Loss 二分类交叉熵损失函数：
-解决正负样本不均：加上一个权重α（范围[0,1]）
-解决难易样本不均：引入因子γ(≥0)，将高置信度的样本的损失权重降低
-Focal Loss
-展开后为
-优缺点分析 优点：提升准确率，降低了正负样本和难易样本不均衡带来的影响；
-缺点：Focal Loss易受噪声干扰，对图像标注的准确性要求非常高，一旦有标错的样本，就会被focal loss当做困难样本，从而影响学习效果。
-FCOS 简介 FCOS 发表于ICCV 2019，是一阶段anchor free目标检测算法，其主要的卖点为无锚。通过回归特征图上每个位置距离目标框的上下左右距离来实现目标检测。如果一个位置落在了多个目标框内，文中的方法是通过多尺度&#43;回归幅度限制的方法来缓解这个问题。为了解决目标框数量过多的问题，文中提出了center-ness的方法，为每个位置学习一个center-ness分数，最后乘以预测类别分数作为非极大抑制的输入参数来解决这个问题。"/>
-
-	
-  </head>
-
-  <body class="ma0 avenir bg-near-white">
-
-    
-   
+     
+</head>
+<body class="nav-closed">
+<div id="particles-js"></div>
   
 
-  <header>
-    <div class="bg-black">
-      <nav class="pv3 ph3 ph4-ns" role="navigation">
-  <div class="flex-l justify-between items-center center">
-    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
-      
-        Hzb&#39;s Study Blog
-      
-    </a>
-    <div class="flex-l items-center">
-      
 
-      
-      
-<div class="ananke-socials">
-  
+ <div class="site-wrapper">
+
+
+
+<header class="main-header " style="background-image: url(http://example.org/images/user.jpg)">
+
+    <nav class="main-nav overlay clearfix">
+        
+            <a class="blog-logo" href="http://example.org/"><img src="http://example.org/images/user.png" alt="Blog Logo" /></a>
+        
+        
+    </nav>
+<div class="vertical">
+        <div class="main-header-content inner">
+            <h1 class="page-title">
+              <a class="btn-bootstrap-2" href="#content">Hzb&#39;s Study Blog</a>
+          </h1>
+          <h2 class="page-description">this is my description</h2>
+        </div>
 </div>
+    <a class="scroll-down icon-arrow-left" href="#content"><span class="hidden">Scroll Down</span></a>
+</header>
 
-    </div>
-  </div>
-</nav>
-
-    </div>
-  </header>
+  <main id="content" class="content" role="main">
 
 
+  <article class="post posts">
 
-    <main class="pb7" role="main">
-      
-  
-  <article class="flex-l flex-wrap justify-between mw8 center ph3">
-    <header class="mt4 w-100">
-      <aside class="instapaper_ignoref b helvetica tracked">
-          
-        POSTS
-      </aside>
-      
-
-
-
-
-
-
-
-
-
-
-  <div id="sharing" class="mt3 ananke-socials">
-    
-  </div>
-
-
-      <h1 class="f1 athelas mt3 mb1">RetinaNet &amp; FCOS</h1>
-      
-      
-      
-      <time class="f6 mv4 dib tracked" datetime="2022-10-27T10:13:28+08:00">October 27, 2022</time>
-      
-
-      
-      
+    <header class="post-header">
+        <h1 class="post-title">RetinaNet &amp; FCOS</h1>
+        <section class="post-meta">
+        
+         
+        </section>
     </header>
-    <div class="nested-copy-line-height lh-copy serif f4 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="retinanet">RetinaNet</h2>
+
+    <section class="post-content">
+      <h2 id="retinanet">RetinaNet</h2>
 <ul>
 <li>
 <h4 id="简介">简介</h4>
@@ -316,37 +224,67 @@ FCOS 简介 FCOS 发表于ICCV 2019，是一阶段anchor free目标检测算法�
 <p><a href="https://blog.csdn.net/weixin_45377629/article/details/124844405">FCOS理论知识讲解</a></p>
 </blockquote>
 <h1 id="thanks-for-reading"><em>Thanks for reading!</em></h1>
-<ul class="pa0">
+
+    </section>
+
+
+  <footer class="post-footer">
+
+
+    
+    <figure class="author-image">
+
+        <a class="img" href="http://example.org/" style="background-image: url(http://example.org/images/user.png)"><span class="hidden">syui</span></a>
+    </figure>
+    
+
+    <section class="author">
+
+  <p>syui</p>
   
-</ul>
-<div class="mt6 instapaper_ignoref">
-      
-      
-      </div>
+
+</section>
+
+
+    
+    <section class="share">
+      <h4>Share this posts</h4>
+      <a class="icon-twitter" style="font-size: 1.4em" href="https://twitter.com/share?text=RetinaNet%20%26%20FCOS&amp;url=http%3a%2f%2fexample.org%2fposts%2fretinanet-fcos%2f"
+          onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+          <span class="hidden">Twitter</span>
+      </a>
+      <a class="icon-facebook" style="font-size: 1.4em" href="https://www.facebook.com/sharer/sharer.php?u=http%3a%2f%2fexample.org%2fposts%2fretinanet-fcos%2f"
+          onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+          <span class="hidden">Facebook</span>
+      </a>
+      <a class="icon-google-plus" style="font-size: 1.4em" href="https://plus.google.com/share?url=http%3a%2f%2fexample.org%2fposts%2fretinanet-fcos%2f"
+         onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+          <span class="hidden">Google+</span>
+      </a>
+    </section>
+    
+
+    
+    
+    
+
+  </footer>
+</article>
+
+</main>
+    <footer class="site-footer clearfix">
+        <section class="copyright"><a href="">Hzb&#39;s Study Blog</a> </section>
+        
+        <section class="poweredby">Proudly generated by <a class="icon-hugo" href="https://gohugo.io">HUGO</a>, with <a class="icon-theme" href="https://github.com/syui/hugo-theme-air">hugo-theme-air</a> theme</section>
+        
+    </footer>
     </div>
+    <script type="text/javascript" src="http://example.org/js/jquery.js"></script>
+    <script type="text/javascript" src="http://example.org/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="http://example.org/js/index.js"></script>
+    <script src="http://example.org/js/particles.min.js"></script>
+    <script src="http://example.org/js/particles.js"></script>  
 
-    <aside class="w-30-l mt6-l">
-
-
-
-
-</aside>
-
-  </article>
-
-    </main>
-    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
-  <div class="flex justify-between">
-  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="http://example.org/" >
-    &copy;  Hzb's Study Blog 2022 
-  </a>
-    <div>
-<div class="ananke-socials">
-  
-</div>
-</div>
-  </div>
-</footer>
-
-  </body>
+</body>
 </html>
+
