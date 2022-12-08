@@ -3,9 +3,17 @@
     <title>Hzb&#39;s Study Blog</title>
     <link>http://example.org/</link>
     <description>Hzb&#39;s Study Blog</description>
-    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 20 Nov 2022 11:23:46 &#43;0800</lastBuildDate>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 07 Dec 2022 10:52:12 &#43;0800</lastBuildDate>
       <atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
     <item>
+  <title>3D Human Pose Estimation</title>
+  <link>http://example.org/posts/hpe/</link>
+  <pubDate>Wed, 07 Dec 2022 10:52:12 &#43;0800</pubDate>
+  <author>huzhanbin</author>
+  <guid>http://example.org/posts/hpe/</guid>
+  <description><![CDATA[description]]></description>
+</item>
+<item>
   <title>Self-Supervised PreTrain</title>
   <link>http://example.org/posts/self-supervised&#43;pretrain/</link>
   <pubDate>Sun, 20 Nov 2022 11:23:46 &#43;0800</pubDate>
@@ -76,14 +84,6 @@
   <author>作者</author>
   <guid>http://example.org/posts/resnet&#43;ampamp&#43;densenet/</guid>
   <description><![CDATA[ResNet 简介 ResNet网络在 2015年由微软实验室中的何凯明等人提出，斩获当年ImageNet竞赛中分类任务第一名，目标检测第一名。获得COCO]]></description>
-</item>
-<item>
-  <title>AlexNet &amp; VGG &amp; GoogLeNet</title>
-  <link>http://example.org/posts/alexnet&#43;ampamp&#43;vgg&#43;ampamp&#43;googlenet/</link>
-  <pubDate>Sat, 20 Aug 2022 18:00:30 &#43;0800</pubDate>
-  <author>作者</author>
-  <guid>http://example.org/posts/alexnet&#43;ampamp&#43;vgg&#43;ampamp&#43;googlenet/</guid>
-  <description><![CDATA[AlexNet 简介 AlexNet是2012年ISLVRC 2012（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，分类准确率由传统的 70%+]]></description>
 </item>
 </channel>
 </rss>

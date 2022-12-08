@@ -7,7 +7,7 @@
     <meta name="robots" content="noodp" />
     <title>FPN &amp; SSD &amp; YOLO - Hzb&#39;s Study Blog</title><meta name="author" content="">
 <meta name="author-link" content="">
-<meta name="description" content="FPN 提出原因 卷积网络中，深层网络容易响应语义特征，浅层网络容易响应图像特征。然而，在目标检测中往往因为卷积网络的这个特征带来了不少麻烦：高层网" /><meta name="keywords" content='Hugo, FixIt' /><meta itemprop="name" content="FPN &amp; SSD &amp; YOLO">
+<meta name="description" content="FPN 提出原因 卷积网络中，深层网络容易响应语义特征，浅层网络容易响应图像特征。然而，在目标检测中往往因为卷积网络的这个特征带来了不少麻烦：高层网" /><meta name="keywords" content='Hugo, HuZhanbin' /><meta itemprop="name" content="FPN &amp; SSD &amp; YOLO">
 <meta itemprop="description" content="FPN 提出原因 卷积网络中，深层网络容易响应语义特征，浅层网络容易响应图像特征。然而，在目标检测中往往因为卷积网络的这个特征带来了不少麻烦：高层网"><meta itemprop="datePublished" content="2022-10-26T15:42:33+08:00" />
 <meta itemprop="dateModified" content="2022-10-26T15:42:33+08:00" />
 <meta itemprop="wordCount" content="3444">
@@ -172,7 +172,11 @@
     data-sizes="auto"
     alt="Anonymous"
     title="Anonymous"/>&nbsp;Anonymous</span></span></div>
-      <div class="post-meta-line"><span title=2022-10-26&#32;15:42:33><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-10-26">2022-10-26</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 3444 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 7 分钟</span>&nbsp;</div>
+      <div class="post-meta-line"><span title=2022-10-26&#32;15:42:33><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-10-26">2022-10-26</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 3444 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 7 分钟</span>&nbsp;<span class="comment-visitors" data-flag-title="FPN &amp; SSD &amp; YOLO">
+              <i class="fa-regular fa-eye fa-fw" aria-hidden="true"></i>&nbsp;<span id="/posts/fpn&#43;ampamp&#43;ssd&#43;ampamp&#43;yolo/" class="artalk-visitor-count">-</span>&nbsp;次阅读
+            </span>&nbsp;<span class="comment-count" data-flag-title="FPN &amp; SSD &amp; YOLO">
+              <i class="fa-regular fa-comments fa-fw" aria-hidden="true"></i>&nbsp;<span data-xid="/posts/fpn&#43;ampamp&#43;ssd&#43;ampamp&#43;yolo/" class="artalk-comment-count">-</span>&nbsp;条评论
+            </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
           <span>目录</span>
@@ -214,7 +218,7 @@
 <p>运用金字塔的思想可以提高算法的性能，但是需要大量的运算和内存。因此特征金字塔要在速度和准确率之间进行权衡，通过它获得更加鲁棒的语义信息。</p>
 <p>图像中存在不同大小的目标，而不同的目标具有不同的特征，所以需要特征金字塔来利用浅层的特征将简单的目标区分开，利用深层的特征将复杂的目标区分开。即利用大的特征图区分简单目标，利用小的特征图区分复杂目标。</p>
 <h4 id="具体思路">具体思路</h4>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/fpn1.png" alt="fpn1" style="zoom: 50%;" /></p>
 <ul>
 <li>
 <p>图（a）：</p>
@@ -240,7 +244,7 @@
 </li>
 </ul>
 <h4 id="整体过程">整体过程</h4>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/fpn2.jpg" alt="fpn2" style="zoom: 80%;" /></p>
 <ol>
 <li>自下而上：先把预处理好的图片送进预训练的网络，如ResNet，构建自下而上的网络，对应上图左侧金字塔。</li>
 <li>自上而下：左侧顶层直接复制到右侧顶层，对右侧顶层进行上采样操作（就是2 * up），再用1 * 1卷积对左侧次顶层进行降维处理，然后将两者对应元素相加（这里就是高低层特征的一个汇总），后续以此类推，如此构成自上而下网络。</li>
@@ -286,7 +290,7 @@ SSD借鉴faster rcnn中ancho理念，每个单元设置尺度或者长宽比不�
 <h4 id="模型结构">模型结构</h4>
 <p>SSD的模型框架主要由三部分组成，以SSD300为例，有VGG-Base Extra-Layers，Pred-Layers。</p>
 <p>VGG-Base作为基础框架用来提取图像的feature，Extra-Layers对VGG的feature做进一步处理，增加模型对图像的感受野，使得extra-layers得到的特征图承载更多抽象信息。待预测的特征图由六种特征图组成，6中特征图最终通过pred-layer得到预测框的坐标，置信度，类别信息。</p>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/ssd1.png" alt="ssd1" style="zoom: 67%;" /></p>
 <h2 id="yolo">YOLO</h2>
 <h4 id="简介-1">简介</h4>
 <p>YOLO在2016年被提出，发表于CVPR。YOLO的全称是you only look once，指只需要浏览一次就可以识别出图中的物体的类别和位置。因为只需要看一次，YOLO被称为Region-free方法，相比于Region-based方法，YOLO不需要提前找到可能存在目标的Region。</p>
@@ -339,14 +343,16 @@ SSD借鉴faster rcnn中ancho理念，每个单元设置尺度或者长宽比不�
   <div class="post-nav"><a href="/posts/rcnn&#43;ampamp&#43;fast-rcnn&#43;ampamp&#43;faster-rcnn/" class="prev" rel="prev" title="Rcnn &amp; Fast-Rcnn &amp; Faster-Rcnn"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>Rcnn &amp; Fast-Rcnn &amp; Faster-Rcnn</a>
       <a href="/posts/retinanet&#43;ampamp&#43;fcos/" class="next" rel="next" title="RetinaNet &amp; FCOS">RetinaNet &amp; FCOS<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
-</article></main><footer class="footer">
+<div id="comments"><div id="artalk" class="comment"></div><noscript>
+        Please enable JavaScript to view the comments powered by <a href="https://github.com/ArtalkJS/Artalk" rel="external nofollow noopener noreferrer">Artalk</a>.
+      </noscript></div></article></main><footer class="footer">
     <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.88.0">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.2.16"><img class="fixit-icon" src="/fixit.min.svg" alt="FixIt logo" />&nbsp;FixIt</a>
         </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
             <span itemprop="copyrightYear">2021 - 2022</span><span class="author" itemprop="copyrightHolder">
               <a href="/"></a></span><span class="license footer-divider"><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div><div class="footer-line statistics"></div></div>
   </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
-        </div></div><div id="mask"></div><noscript>
+        </div><div class="fixed-button view-comments d-none" role="button" aria-label="查看评论"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><noscript>
     <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
   </noscript>
-</div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/lunr/lunr.min.js" defer></script><script src="/lib/lunr/lunr.stemmer.support.min.js" defer></script><script src="/lib/lunr/lunr.zh.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script src="/js/theme.min.js" defer></script></body>
+</div><link rel="stylesheet" href="/lib/artalk/Artalk.min.min.css"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/artalk/Artalk.min.js"></script><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"artalk":{"countEl":"artalk-comment-count","editorTravel":true,"el":"#artalk","flatMode":"auto","gravatar":{"default":"","mirror":"www.gravatar.com"},"locale":"zh-CN","maxNesting":3,"pageKey":"http://example.org/posts/fpn+ampamp+ssd+ampamp+yolo/","pageTitle":"FPN \u0026 SSD \u0026 YOLO","pvEl":"artalk-visitor-count","server":"https://yourdomain/api/","site":"默认站点"},"enable":true},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"15QOX0ZJ6W","algoliaIndex":"blog","algoliaSearchKey":"dcebd0d15f3842a9ed34474f2a312c92","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30,"type":"algolia"}};</script><script src="/js/theme.min.js" defer></script></body>
 </html>

@@ -7,7 +7,7 @@
     <meta name="robots" content="noodp" />
     <title>SENet &amp; MobileNet - Hzb&#39;s Study Blog</title><meta name="author" content="">
 <meta name="author-link" content="">
-<meta name="description" content="SENet 简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在" /><meta name="keywords" content='Hugo, FixIt' /><meta itemprop="name" content="SENet &amp; MobileNet">
+<meta name="description" content="SENet 简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在" /><meta name="keywords" content='Hugo, HuZhanbin' /><meta itemprop="name" content="SENet &amp; MobileNet">
 <meta itemprop="description" content="SENet 简介 SENet是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在"><meta itemprop="datePublished" content="2022-09-02T22:27:28+08:00" />
 <meta itemprop="dateModified" content="2022-09-02T22:27:28+08:00" />
 <meta itemprop="wordCount" content="5416">
@@ -172,7 +172,11 @@
     data-sizes="auto"
     alt="Anonymous"
     title="Anonymous"/>&nbsp;Anonymous</span></span></div>
-      <div class="post-meta-line"><span title=2022-09-02&#32;22:27:28><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-09-02">2022-09-02</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 5416 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 11 分钟</span>&nbsp;</div>
+      <div class="post-meta-line"><span title=2022-09-02&#32;22:27:28><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-09-02">2022-09-02</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 5416 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 11 分钟</span>&nbsp;<span class="comment-visitors" data-flag-title="SENet &amp; MobileNet">
+              <i class="fa-regular fa-eye fa-fw" aria-hidden="true"></i>&nbsp;<span id="/posts/senet&#43;ampamp&#43;mobilenet/" class="artalk-visitor-count">-</span>&nbsp;次阅读
+            </span>&nbsp;<span class="comment-count" data-flag-title="SENet &amp; MobileNet">
+              <i class="fa-regular fa-comments fa-fw" aria-hidden="true"></i>&nbsp;<span data-xid="/posts/senet&#43;ampamp&#43;mobilenet/" class="artalk-comment-count">-</span>&nbsp;条评论
+            </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
           <span>目录</span>
@@ -225,7 +229,7 @@
 </li>
 <li>
 <h4 id="网络结构">网络结构</h4>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/senet1.jpg" alt="senet1" style="zoom: 67%;" /></p>
 </li>
 <li>
 <h4 id="原理">原理</h4>
@@ -235,12 +239,12 @@
 <li>
 <h4 id="squeeze">Squeeze</h4>
 <p>原始feature map的维度为H×W×C，其中H是高度（Height），W是宽度（width），C是通道数（channel）。Squeeze就是用全局平均池化（global average pooling）把H×W×C压缩为1×1×C。H×W压缩成一维后，相当于这一维参数获得了之前H×W全局的视野，感受区域更广。公式如下：</p>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/senet2.jpg" alt="image-20220905093003811" style="zoom: 50%;" /></p>
 </li>
 <li>
 <h4 id="excitation">Excitation</h4>
 <p>Sequeeze操作得到了全局描述特征，接下来需要另外一种运算来提取channel之间的关系。 用两个全连接层来学习通道间的相关性，第一个FC层起到降维的作用，然后采用ReLU激活。最后的全连接层恢复原始的维度。公式如下：</p>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/senet3.jpg" alt="senet3" style="zoom:50%;" /></p>
 </li>
 <li>
 <h4 id="reweight">Reweight</h4>
@@ -267,7 +271,7 @@
 </li>
 <li>
 <h4 id="结构融合">结构融合</h4>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/senet4.jpg" alt="senet4" style="zoom:50%;" /></p>
 <ul>
 <li>上图是将SE模块嵌入到Inception结构的示例。方框旁边的维度代表该层的输出。这里使用Alobal Average Pooling作为Squeeze操作。紧接着两个Fully Connected层组成一个Bottleneck结构去建模通道间的相关性，并输出和输入特征同样数目的权重。首先将特征维度降低到输入的1/16，然后经过ReLu激活后再通过一个Fully Connected层升回到原来的维度。这样做相比直接用一个Fully Connected层的好处在于：
 <ol>
@@ -312,7 +316,7 @@
 </li>
 <li>
 <p>原论文中对第一层没有用此卷积，深度可分离卷积中的每一个后面都跟 BN 和 RELU。其中，Relu6=min(max(0,x),6)。</p>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/mobilenet1.png" alt="mobilenet1" style="zoom:50%;" /></p>
 <pre tabindex="0"><code>ReLU6就是普通的ReLU但是限制最大输出值为6（对输出值做clip），这是为了在移动端设备float16的低精度的时候，也能有很好的数值分辨率，如果对ReLU的激活范围不加限制，输出范围为0到正无穷，如果激活值非常大，分布在一个很大的范围内，则低精度的float16无法很好地精确描述如此大范围的数值，带来精度损失。
 </code></pre></li>
 </ul>
@@ -367,13 +371,13 @@
 </li>
 <li>
 <p>MobileNet V2 building block 如下所示，若需要下采样，可在 DWise 时采用步长为 2 的卷积；小网络使用小的扩张系数（expansion factor），大网络使用大一点的扩张系数（expansion factor），推荐是5~10，论文中 t = 6t。</p>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/mobilenet2.jpg" alt="mobilenet2" style="zoom: 50%;" /></p>
 </li>
 </ul>
 </li>
 <li>
 <h4 id="具体改进">具体改进</h4>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/mobilenet3.png" alt="mobilenet3" style="zoom:50%;" /></p>
 <ul>
 <li>V2 去掉了第二个 PW 的激活函数改为线性激活。
 论文作者称其为 Linear Bottleneck。原因如上所述是因为作者认为激活函数在高维空间能够有效的增加非线性，而在低维空间时则会破坏特征，不如线性的效果好。</li>
@@ -401,12 +405,12 @@
 <li>
 <p>引入SE结构</p>
 <p>在bottlenet结构中加入了SE结构，并且放在了depthwise filter之后，如下图。因为SE结构会消耗一定的时间，所以作者在含有SE的结构中，将expansion layer的channel变为原来的1/4,这样作者发现，即提高了精度，同时还没有增加时间消耗。并且SE结构放在了depthwise之后。</p>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/mobilenet4.png" alt="image-20220912143433488" style="zoom:50%;" /></p>
 </li>
 <li>
 <p>修改尾部结构</p>
 <p>在MobileNet V2中，avg pooling之前，存在一个1x1的卷积层，目的是提高特征图的维度，更有利于结构的预测，但是这其实带来了一定的计算量了，所以这里作者修改了，将其放在avg pooling的后面，首先利用avg pooling将特征图大小由7x7降到了1x1，降到1x1后，然后再利用1x1提高维度，这样就减少了7x7=49倍的计算量。并且为了进一步的降低计算量，作者直接去掉了前面纺锤型卷积的3x3以及1x1卷积，进一步减少了计算量，就变成了如下图第二行所示的结构，作者将其中的3x3以及1x1去掉后，精度并没有得到损失。这里降低了大约15ms的速度。</p>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/mobilenet5.jpg" alt="mobilenet5" style="zoom:60%;" /></p>
 </li>
 <li>
 <p>修改channel数量</p>
@@ -415,8 +419,8 @@
 <li>
 <p>非线性变换的改变</p>
 <p>使用h-swish替换swish，swish是谷歌自家的研究成果，这次在其基础上，为速度进行了优化。swish与h-swish公式如下所示，由于sigmoid的计算耗时较长，特别是在移动端，这些耗时就会比较明显，所以作者使用ReLU6(x+3)/6来近似替代sigmoid，观察下图可以发现，其实相差不大的。利用ReLU有几点好处：1.可以在任何软硬件平台进行计算，2.量化的时候，它消除了潜在的精度损失，使用h-swish替换swith，在量化模式下回提高大约15%的效率，另外，h-swish在深层网络中更加明显。使用h-swish@16可以提高大约0.2%的精度，但是时间延长了大约20%。</p>
-<p><!-- raw HTML omitted --></p>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/mobilenet6.png" alt="mobilenet6" style="zoom:50%;" /></p>
+<p><img src="/images/mobilenet7.png" alt="mobilenet7" style="zoom:50%;" /></p>
 </li>
 </ul>
 </li>
@@ -488,14 +492,16 @@
   <div class="post-nav"><a href="/posts/resnet&#43;ampamp&#43;densenet/" class="prev" rel="prev" title="ResNet &amp; DenseNet"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>ResNet &amp; DenseNet</a>
       <a href="/posts/shufflenet&#43;ampamp&#43;efficientnet/" class="next" rel="next" title="ShuffleNet &amp; EfficientNet">ShuffleNet &amp; EfficientNet<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
-</article></main><footer class="footer">
+<div id="comments"><div id="artalk" class="comment"></div><noscript>
+        Please enable JavaScript to view the comments powered by <a href="https://github.com/ArtalkJS/Artalk" rel="external nofollow noopener noreferrer">Artalk</a>.
+      </noscript></div></article></main><footer class="footer">
     <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.88.0">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.2.16"><img class="fixit-icon" src="/fixit.min.svg" alt="FixIt logo" />&nbsp;FixIt</a>
         </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
             <span itemprop="copyrightYear">2021 - 2022</span><span class="author" itemprop="copyrightHolder">
               <a href="/"></a></span><span class="license footer-divider"><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div><div class="footer-line statistics"></div></div>
   </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
-        </div></div><div id="mask"></div><noscript>
+        </div><div class="fixed-button view-comments d-none" role="button" aria-label="查看评论"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><noscript>
     <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
   </noscript>
-</div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/lunr/lunr.min.js" defer></script><script src="/lib/lunr/lunr.stemmer.support.min.js" defer></script><script src="/lib/lunr/lunr.zh.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script src="/js/theme.min.js" defer></script></body>
+</div><link rel="stylesheet" href="/lib/artalk/Artalk.min.min.css"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/artalk/Artalk.min.js"></script><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"artalk":{"countEl":"artalk-comment-count","editorTravel":true,"el":"#artalk","flatMode":"auto","gravatar":{"default":"","mirror":"www.gravatar.com"},"locale":"zh-CN","maxNesting":3,"pageKey":"http://example.org/posts/senet+ampamp+mobilenet/","pageTitle":"SENet \u0026 MobileNet","pvEl":"artalk-visitor-count","server":"https://yourdomain/api/","site":"默认站点"},"enable":true},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"15QOX0ZJ6W","algoliaIndex":"blog","algoliaSearchKey":"dcebd0d15f3842a9ed34474f2a312c92","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30,"type":"algolia"}};</script><script src="/js/theme.min.js" defer></script></body>
 </html>

@@ -7,7 +7,7 @@
     <meta name="robots" content="noodp" />
     <title>ShuffleNet &amp; EfficientNet - Hzb&#39;s Study Blog</title><meta name="author" content="">
 <meta name="author-link" content="">
-<meta name="description" content="ShuffleNet 简介 ShuffleNet是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。" /><meta name="keywords" content='Hugo, FixIt' /><meta itemprop="name" content="ShuffleNet &amp; EfficientNet">
+<meta name="description" content="ShuffleNet 简介 ShuffleNet是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。" /><meta name="keywords" content='Hugo, HuZhanbin' /><meta itemprop="name" content="ShuffleNet &amp; EfficientNet">
 <meta itemprop="description" content="ShuffleNet 简介 ShuffleNet是旷视科技提出的一种计算高效的CNN模型，其和MobileNet和SqueezeNet等一样主要是想应用在移动端。"><meta itemprop="datePublished" content="2022-09-12T15:05:52+08:00" />
 <meta itemprop="dateModified" content="2022-09-12T15:05:52+08:00" />
 <meta itemprop="wordCount" content="2903">
@@ -172,7 +172,11 @@
     data-sizes="auto"
     alt="Anonymous"
     title="Anonymous"/>&nbsp;Anonymous</span></span></div>
-      <div class="post-meta-line"><span title=2022-09-12&#32;15:05:52><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-09-12">2022-09-12</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 2903 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 6 分钟</span>&nbsp;</div>
+      <div class="post-meta-line"><span title=2022-09-12&#32;15:05:52><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-09-12">2022-09-12</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 2903 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 6 分钟</span>&nbsp;<span class="comment-visitors" data-flag-title="ShuffleNet &amp; EfficientNet">
+              <i class="fa-regular fa-eye fa-fw" aria-hidden="true"></i>&nbsp;<span id="/posts/shufflenet&#43;ampamp&#43;efficientnet/" class="artalk-visitor-count">-</span>&nbsp;次阅读
+            </span>&nbsp;<span class="comment-count" data-flag-title="ShuffleNet &amp; EfficientNet">
+              <i class="fa-regular fa-comments fa-fw" aria-hidden="true"></i>&nbsp;<span data-xid="/posts/shufflenet&#43;ampamp&#43;efficientnet/" class="artalk-comment-count">-</span>&nbsp;条评论
+            </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
           <span>目录</span>
@@ -250,7 +254,7 @@
 <li>
 <h4 id="网络结构">网络结构</h4>
 <p>基于shufflenet unit模块，整体的ShuffleNet网络结构图如下图所示：</p>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/shufflenet3.jpg" alt="shufflenet3" style="zoom: 67%;" /></p>
 <p>上图为一个图像分类任务，输入为224x224的图像，输出1000个概率，同时作者将分组数分别设置为1到5，以此探索不同的分组数对网络性能的影响，其中一般以g=3作为网络的基准版本。</p>
 <p>与传统的神经网络相比，ShuffleNet网络结构最大的区别在于拥有三个shufflenet unit模块，分别对应三个Stage，它们将输入特征图的尺寸减半，通道数加倍，除了升级版的shufflenet unit模块，网络的其他超参数与ResNet保持一致。</p>
 </li>
@@ -287,7 +291,7 @@
 <p>复合缩放方法的第一步是执行网格搜索，以找到在固定资源约束下基线网络的不同缩放维度之间的关系。这决定了上面提到的每个维度的适当比例系数。 然后应用这些系数扩大基线网络，以达到期望的模型大小或资源要求。</p>
 </li>
 </ul>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/efficientnet1.png" alt="efficientnet1" style="zoom: 67%;" /></p>
 <ul>
 <li>与传统的缩放方法（上图a-d）相比，这种复合缩放方法（上图e）不断提高模型的精度和效率，可用于扩展现有的模型，如 mobileet (+ 1.4% 的图像集精度)和 ResNet (+ 0.7%)。</li>
 </ul>
@@ -295,7 +299,7 @@
 <li>
 <h4 id="网络结构-1">网络结构</h4>
 <p>作者指明，由于模型缩放不会改变基线网络中的层，但是拥有一个良好的基线网络也是至关重要的。作者使用现有的基础网络来评估该缩放方法，但是为了更好地证明该缩放方法的有效性，作者还开发了一种新的mobile-size baseline，称为 EfficientNet，EfficientNet-B0的网络结构如下 (类似于 MobileNetV2 和 MnasNet)：</p>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/efficientnet2.png" alt="efficientnet2" style="zoom: 67%;" /></p>
 </li>
 </ul>
 <h2 id="citation">Citation</h2>
@@ -336,14 +340,16 @@
   <div class="post-nav"><a href="/posts/senet&#43;ampamp&#43;mobilenet/" class="prev" rel="prev" title="SENet &amp; MobileNet"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>SENet &amp; MobileNet</a>
       <a href="/posts/rcnn&#43;ampamp&#43;fast-rcnn&#43;ampamp&#43;faster-rcnn/" class="next" rel="next" title="Rcnn &amp; Fast-Rcnn &amp; Faster-Rcnn">Rcnn &amp; Fast-Rcnn &amp; Faster-Rcnn<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
-</article></main><footer class="footer">
+<div id="comments"><div id="artalk" class="comment"></div><noscript>
+        Please enable JavaScript to view the comments powered by <a href="https://github.com/ArtalkJS/Artalk" rel="external nofollow noopener noreferrer">Artalk</a>.
+      </noscript></div></article></main><footer class="footer">
     <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.88.0">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.2.16"><img class="fixit-icon" src="/fixit.min.svg" alt="FixIt logo" />&nbsp;FixIt</a>
         </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
             <span itemprop="copyrightYear">2021 - 2022</span><span class="author" itemprop="copyrightHolder">
               <a href="/"></a></span><span class="license footer-divider"><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div><div class="footer-line statistics"></div></div>
   </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
-        </div></div><div id="mask"></div><noscript>
+        </div><div class="fixed-button view-comments d-none" role="button" aria-label="查看评论"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><noscript>
     <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
   </noscript>
-</div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/lunr/lunr.min.js" defer></script><script src="/lib/lunr/lunr.stemmer.support.min.js" defer></script><script src="/lib/lunr/lunr.zh.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script src="/js/theme.min.js" defer></script></body>
+</div><link rel="stylesheet" href="/lib/artalk/Artalk.min.min.css"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/artalk/Artalk.min.js"></script><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"artalk":{"countEl":"artalk-comment-count","editorTravel":true,"el":"#artalk","flatMode":"auto","gravatar":{"default":"","mirror":"www.gravatar.com"},"locale":"zh-CN","maxNesting":3,"pageKey":"http://example.org/posts/shufflenet+ampamp+efficientnet/","pageTitle":"ShuffleNet \u0026 EfficientNet","pvEl":"artalk-visitor-count","server":"https://yourdomain/api/","site":"默认站点"},"enable":true},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"15QOX0ZJ6W","algoliaIndex":"blog","algoliaSearchKey":"dcebd0d15f3842a9ed34474f2a312c92","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30,"type":"algolia"}};</script><script src="/js/theme.min.js" defer></script></body>
 </html>

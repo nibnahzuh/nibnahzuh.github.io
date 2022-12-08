@@ -7,7 +7,7 @@
     <meta name="robots" content="noodp" />
     <title>FCN &amp; U-Net - Hzb&#39;s Study Blog</title><meta name="author" content="">
 <meta name="author-link" content="">
-<meta name="description" content="FCN 简介 FCN（Fully Convolutional Networks，全卷积网络）是Jonathan Long等人于2015年在Fully Convolutional Networks for Semantic Segmentatio" /><meta name="keywords" content='Hugo, FixIt' /><meta itemprop="name" content="FCN &amp; U-Net">
+<meta name="description" content="FCN 简介 FCN（Fully Convolutional Networks，全卷积网络）是Jonathan Long等人于2015年在Fully Convolutional Networks for Semantic Segmentatio" /><meta name="keywords" content='Hugo, HuZhanbin' /><meta itemprop="name" content="FCN &amp; U-Net">
 <meta itemprop="description" content="FCN 简介 FCN（Fully Convolutional Networks，全卷积网络）是Jonathan Long等人于2015年在Fully Convolutional Networks for Semantic Segmentatio"><meta itemprop="datePublished" content="2022-10-27T19:16:59+08:00" />
 <meta itemprop="dateModified" content="2022-10-27T19:16:59+08:00" />
 <meta itemprop="wordCount" content="2259">
@@ -172,7 +172,11 @@
     data-sizes="auto"
     alt="Anonymous"
     title="Anonymous"/>&nbsp;Anonymous</span></span></div>
-      <div class="post-meta-line"><span title=2022-10-27&#32;19:16:59><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-10-27">2022-10-27</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 2259 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 5 分钟</span>&nbsp;</div>
+      <div class="post-meta-line"><span title=2022-10-27&#32;19:16:59><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-10-27">2022-10-27</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 2259 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 5 分钟</span>&nbsp;<span class="comment-visitors" data-flag-title="FCN &amp; U-Net">
+              <i class="fa-regular fa-eye fa-fw" aria-hidden="true"></i>&nbsp;<span id="/posts/fcn&#43;ampamp&#43;u-net/" class="artalk-visitor-count">-</span>&nbsp;次阅读
+            </span>&nbsp;<span class="comment-count" data-flag-title="FCN &amp; U-Net">
+              <i class="fa-regular fa-comments fa-fw" aria-hidden="true"></i>&nbsp;<span data-xid="/posts/fcn&#43;ampamp&#43;u-net/" class="artalk-comment-count">-</span>&nbsp;条评论
+            </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
           <span>目录</span>
@@ -211,12 +215,12 @@
 <li>反卷积层增大图像尺寸，输出精细结果；</li>
 <li>结合不同深度层结果的跳级结构，确保鲁棒性和精确性。</li>
 </ul>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/FCN1.jpg" alt="FCN1" style="zoom:80%;" /></p>
 </li>
 <li>
 <h4 id="网络结构">网络结构</h4>
 <p>FCN是一个端到端，像素对像素的全卷积网络，用于进行图像的语义分割。整体的网络结构分为两个部分：全卷积部分和上采样部分。FCN中，使用了vgg16的卷积部分作为backbone，并将vgg16的最后三个全连接层也改为卷积层。除此之外，还增加了上采样部分，这里是使用转置卷积进行上采样.</p>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/FCN2.jpg" alt="FCN2" style="zoom:80%;" /></p>
 </li>
 <li>
 <h4 id="优缺点分析">优缺点分析</h4>
@@ -240,7 +244,7 @@ FCN网络可以实现端到端的预测，可以接受任意大小的输入图�
 </li>
 <li>
 <h4 id="网络结构-1">网络结构</h4>
-<p><!-- raw HTML omitted --></p>
+<p><img src="/images/unet1.jpg" alt="unet1"  /></p>
 <p>UNet 网络结构如上图所示，其网络结构是对称的，形似英文字母 U，故而被称为 UNet 。就整体而言，UNet 是一个Encoder-Decoder的结构（与 FCN 相同），前半部分是特征提取，后半部分是上采样。</p>
 <ul>
 <li>Encoder：左半部分，由两个 3x3 的卷积层（ReLU）+ 一个 2x2 的 maxpooling 层组成一个下采样模块。由卷积操作和下采样操作组成，所用卷积结构统一为 3x3 的卷积核，padding=0，striding=1。没有 padding 所以每次卷积之后特征图的 H 和 W 变小了，在跳层连接（Skip connection）时需注意特征图的维度。</li>
@@ -323,14 +327,16 @@ FCN网络可以实现端到端的预测，可以接受任意大小的输入图�
   <div class="post-nav"><a href="/posts/retinanet&#43;ampamp&#43;fcos/" class="prev" rel="prev" title="RetinaNet &amp; FCOS"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>RetinaNet &amp; FCOS</a>
       <a href="/posts/test/" class="next" rel="next" title="PSPNet">PSPNet<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
-</article></main><footer class="footer">
+<div id="comments"><div id="artalk" class="comment"></div><noscript>
+        Please enable JavaScript to view the comments powered by <a href="https://github.com/ArtalkJS/Artalk" rel="external nofollow noopener noreferrer">Artalk</a>.
+      </noscript></div></article></main><footer class="footer">
     <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.88.0">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.2.16"><img class="fixit-icon" src="/fixit.min.svg" alt="FixIt logo" />&nbsp;FixIt</a>
         </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
             <span itemprop="copyrightYear">2021 - 2022</span><span class="author" itemprop="copyrightHolder">
               <a href="/"></a></span><span class="license footer-divider"><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div><div class="footer-line statistics"></div></div>
   </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
-        </div></div><div id="mask"></div><noscript>
+        </div><div class="fixed-button view-comments d-none" role="button" aria-label="查看评论"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><noscript>
     <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
   </noscript>
-</div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/lunr/lunr.min.js" defer></script><script src="/lib/lunr/lunr.stemmer.support.min.js" defer></script><script src="/lib/lunr/lunr.zh.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script src="/js/theme.min.js" defer></script></body>
+</div><link rel="stylesheet" href="/lib/artalk/Artalk.min.min.css"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/artalk/Artalk.min.js"></script><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"artalk":{"countEl":"artalk-comment-count","editorTravel":true,"el":"#artalk","flatMode":"auto","gravatar":{"default":"","mirror":"www.gravatar.com"},"locale":"zh-CN","maxNesting":3,"pageKey":"http://example.org/posts/fcn+ampamp+u-net/","pageTitle":"FCN \u0026 U-Net","pvEl":"artalk-visitor-count","server":"https://yourdomain/api/","site":"默认站点"},"enable":true},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"15QOX0ZJ6W","algoliaIndex":"blog","algoliaSearchKey":"dcebd0d15f3842a9ed34474f2a312c92","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30,"type":"algolia"}};</script><script src="/js/theme.min.js" defer></script></body>
 </html>
