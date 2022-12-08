@@ -10,7 +10,7 @@
 <meta name="description" content="description" /><meta name="keywords" content='HPE' /><meta itemprop="name" content="3D Human Pose Estimation">
 <meta itemprop="description" content="description"><meta itemprop="datePublished" content="2022-12-07T10:52:12+08:00" />
 <meta itemprop="dateModified" content="2022-12-07T10:52:12+08:00" />
-<meta itemprop="wordCount" content="2334">
+<meta itemprop="wordCount" content="2773">
 <meta itemprop="keywords" content="HPE," /><meta property="og:title" content="3D Human Pose Estimation" />
 <meta property="og:description" content="description" />
 <meta property="og:type" content="article" />
@@ -33,7 +33,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "http:\/\/example.org\/posts\/hpe\/"
-    },"genre": "posts","keywords": "HPE","wordcount":  2334 ,
+    },"genre": "posts","keywords": "HPE","wordcount":  2773 ,
     "url": "http:\/\/example.org\/posts\/hpe\/","datePublished": "2022-12-07T10:52:12+08:00","dateModified": "2022-12-07T10:52:12+08:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -154,7 +154,7 @@
   <div class="search-dropdown mobile">
     <div id="search-dropdown-mobile"></div>
   </div><main class="container" data-page-style="normal"><aside class="toc" id="toc-auto"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
-      <div class="toc-content" id="toc-content-auto"></div></aside>
+      <div class="toc-content always-active" id="toc-content-auto"></div></aside>
 
   <aside class="aside-custom">
     
@@ -167,11 +167,7 @@
       <div class="post-meta-line"><span class="post-author"><span class="author"><i class="fa-solid fa-user-circle" aria-hidden="true"></i>
       huzhanbin</span></span>
           <span class="post-category">收录于 <a href="/categories/study-blog/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Study Blog</a></span></div>
-      <div class="post-meta-line"><span title=2022-12-07&#32;10:52:12><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-12-07">2022-12-07</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 2334 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 5 分钟</span>&nbsp;<span class="comment-visitors" data-flag-title="3D Human Pose Estimation">
-              <i class="fa-regular fa-eye fa-fw" aria-hidden="true"></i>&nbsp;<span id="/posts/hpe/" class="artalk-visitor-count">-</span>&nbsp;次阅读
-            </span>&nbsp;<span class="comment-count" data-flag-title="3D Human Pose Estimation">
-              <i class="fa-regular fa-comments fa-fw" aria-hidden="true"></i>&nbsp;<span data-xid="/posts/hpe/" class="artalk-comment-count">-</span>&nbsp;条评论
-            </span>&nbsp;</div>
+      <div class="post-meta-line"><span title=2022-12-07&#32;10:52:12><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-12-07">2022-12-07</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 2773 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 6 分钟</span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
           <span>目录</span>
@@ -182,15 +178,21 @@
     <li><a href="#1-任务介绍">1 任务介绍</a></li>
     <li><a href="#2-表示方式">2 表示方式</a></li>
     <li><a href="#3-多人场景">3 多人场景</a></li>
-    <li><a href="#4-主流算法">4 主流算法</a>
+    <li><a href="#4-常用数据集">4 常用数据集</a>
       <ul>
-        <li><a href="#41-基于单目图像的方法">4.1 基于单目图像的方法</a></li>
-        <li><a href="#42-基于多目图像的方法">4.2 基于多目图像的方法</a></li>
-        <li><a href="#43-基于视频的方法">4.3 基于视频的方法</a></li>
-        <li><a href="#44-其他方法">4.4 其他方法</a></li>
+        <li><a href="#41-human36m">4.1 Human3.6M</a></li>
+        <li><a href="#42-mpi-inf-3dhp">4.2 MPI-INF-3DHP</a></li>
+        <li><a href="#43-panoptic-cmu-panoptic-studio">4.3 Panoptic (CMU Panoptic Studio)</a></li>
       </ul>
     </li>
-    <li><a href="#5-常用数据集">5 常用数据集</a></li>
+    <li><a href="#5-主流算法">5 主流算法</a>
+      <ul>
+        <li><a href="#51-基于单目图像的方法">5.1 基于单目图像的方法</a></li>
+        <li><a href="#52-基于多目图像的方法">5.2 基于多目图像的方法</a></li>
+        <li><a href="#53-基于视频的方法">5.3 基于视频的方法</a></li>
+        <li><a href="#54-其他方法">5.4 其他方法</a></li>
+      </ul>
+    </li>
   </ul>
 </nav></div>
       </div><div
@@ -201,16 +203,13 @@
     ><h2 id="1-任务介绍">1 任务介绍</h2>
 <p>3D Human Pose Estimation（以下简称 3D HPE ）的目标是在三维空间中估计人体关键点的位置。3D HPE 的应用非常广泛，包括人机交互、运动分析、康复训练等，它也可以为其他计算机视觉任务（例如行为识别）提供 skeleton 等方面的信息。</p>
 <p>近几年，随着深度学习在人体姿态估计领域的成功应用，2D HPE 的精度和泛化能力都得到了显著提升。然而，相较于 2D HPE，3D HPE 面临着更多的挑战。一方面，受数据采集难度的限制，目前大多数方法都是基于单目图像或视频的，而从 2D 图像到 3D 姿态的映射本就是一个多解问题。另一方面，深度学习算法依赖于大量的训练数据，但由于 3D 姿态标注的难度和成本都比较高，目前的主流数据集基本都是在实验室环境下采集的，这势必会影响到算法在户外数据上的泛化性能。另外，2D HPE 面临的一些难题（例如自遮挡）同样也是 3D HPE 亟待解决的问题。</p>
+<hr>
 <h2 id="2-表示方式">2 表示方式</h2>
 <ul>
-<li>
-<p>骨架关键点：以骨架的形式表示人体姿态，由一系列的人体关键点和关键点之间的连线构成；</p>
-</li>
-<li>
-<p>参数化的人体模型：以mesh（网格）形式表示人体姿态和体型。</p>
-<img src='/images/hpe1.png' align='middle'>
-</li>
+<li>骨架关键点：以骨架的形式表示人体姿态，由一系列的人体关键点和关键点之间的连线构成；</li>
+<li>参数化的人体模型：以mesh（网格）形式表示人体姿态和体型。</li>
 </ul>
+<center><img src='/images/hpe1.png' width="70%"></center>
 <h2 id="3-多人场景">3 多人场景</h2>
 <p>多人场景的3D-HPE和2D-HPE类似，可分为top-down（自顶向下）和bottom-up（自底向上）两类。</p>
 <ul>
@@ -224,29 +223,44 @@
 </li>
 </ul>
 <p>Bottom-up 方法的主要优点在于它的运行时间基本不会受到待检测人体数量的影响，因此在拥挤场景下 bottom-up 方法更有优势。再者，bottom-up 方法的关键点定位是在整体图像的基础上完成的，而 top-down 方法则是在 bounding box 区域内完成的，因此 bottom-up 方法更有利于把握全局信息，从而能更准确地定位人体在相机坐标系下的绝对位置。</p>
-<h2 id="4-主流算法">4 主流算法</h2>
-<h3 id="41-基于单目图像的方法">4.1 基于单目图像的方法</h3>
+<hr>
+<h2 id="4-常用数据集">4 常用数据集</h2>
+<p>由于 3D 关键点标注难度较大，目前的数据集基本上都借助于 MoCap 和可穿戴 IMU设备来完成数据标注，也正因为此，大多数数据集都局限于室内场景。</p>
+<h3 id="41-human36m">4.1 Human3.6M</h3>
+<center><img src='/images/hpe6.png' width="70%"></center>
+<p>Human3.6M 是目前基于多视图的 3D 人体位姿研究最为重要的一个数据集，包含了360万帧图像和对应的 2D/3D 人体姿态。该数据集在实验室环境下采集，通过4个高清相机同步记录4个视角下的场景，并通过 MoCap 系统获取精确的人体三维关键点坐标及关节角。如图所示，Human3.6M 包含了多样化的表演者、动作和视角。</p>
+<p>Human3.6M 的评价指标主要有 Mean Per Joint Position Error (MPJPE) 和 P-MPJPE。其中，MPJPE 是所有关键点预测坐标与 ground truth 坐标之间的平均欧式距离，一般会事先将预测结果与 ground truth 的根关节对齐；P-MPJPE 则是将预测结果通过 Procrustes Analysis 与 ground truth 对齐，再计算 MPJPE。</p>
+<h3 id="42-mpi-inf-3dhp">4.2 MPI-INF-3DHP</h3>
+<p>Human3.6M 尽管数据量大，但场景单一。为了解决这一问题，MPI-INF-3DHP 在数据集中加入了针对前景和背景的数据增强处理。具体来说，其训练集的采集是借助于多目相机在室内绿幕场景下完成的，对于原始的采集数据，先对人体、背景等进行分割，然后用不同的纹理替换背景和前景，从而达到数据增强的目的。测试集则涵盖了三种不同的场景，包括室内绿幕场景、普通室内场景和室外场景。因此，MPI-INF-3DHP 更有助于评估算法的泛化能力。</p>
+<center><img src='/images/hpe7.png' width="70%"></center>
+<p>在评价标准方面，除了 MPJPE，该数据集也把 2D HPE 中广泛使用的 Percentage of Correct Keypoints (PCK) 和 Area Under the Curve (AUC) 扩展到了 3D HPE 中。其中 PCK 是误差小于一定阈值（150 mm）的关键点所占的百分比，AUC 则是 PCK 曲线下的面积。</p>
+<h3 id="43-panoptic-cmu-panoptic-studio">4.3 Panoptic (CMU Panoptic Studio)</h3>
+<center><img src='/images/hpe8.jpg' width="70%"></center>
+<p>CMU Panoptic [13] 是一个大型的多目图像数据集，提供了31个不同视角的高清图像以及10个不同视角的 Kinect 数据，包含了65段视频（总时长5.5 h），3D skeleton 总数超过150万。该数据集还包含了多个多人场景，因此也成为了多人 3D HPE 的 benchmark 之一。</p>
+<p>CMU Panoptic 的评价标准与 Human3.6M 类似，一般采用 MPJPE 和 P-MPJPE 来评估算法精度。</p>
+<hr>
+<h2 id="5-主流算法">5 主流算法</h2>
+<h3 id="51-基于单目图像的方法">5.1 基于单目图像的方法</h3>
 <p>由于单目图像易于获取且不受场景限制，很多方法都以此为输入数据。但是根据 2D 图像估计 3D 姿态是一个不适定问题，即可能存在多个不同的 3D 姿态，它们的 2D 投影是同一个 2D 姿态。并且，基于单目图像的方法也面临着自遮挡、物体遮挡、深度的不确定性等问题。由于缺少 3D 信息，目前的方法大多只能预测 root-relative pose，即以根关节（pelvis）为坐标原点的三维姿态。</p>
 <p>基于单目图像的方法可以根据是否依赖 2D HPE 分成两类，下面将分别介绍这两类方法。</p>
-<h4 id="411-直接预测">4.1.1 直接预测</h4>
+<h4 id="511-直接预测">5.1.1 直接预测</h4>
 <p>这类方法不依赖 2D HPE，直接从图像回归得到 3D 关键点坐标。代表作 C2F-Vol [3] 借鉴了 2D HPE 中的 Hourglass 网络结构，并以 3D Heatmap 的形式表示 3D pose。为了降低三维数据带来的巨大存储消耗，采用了在 depth 维度上逐渐提升分辨率的方法。</p>
-<img src='/images/hpe2.png' align='middle'>
-<p>直接预测可以更好地利用原始图像中的信息。而其最大的缺陷在于，2D-3D 的映射是一个高度非线性问题，且 3D 空间的搜索范围更广，预测难度非常大。</p>
-<h4 id="412-2d-to-3d-lifting">4.1.2 2D-to-3D Lifting</h4>
+<center><img src='/images/hpe2.png' width="70%"></center>
+<h4 id="512-2d-to-3d-lifting">5.1.2 2D-to-3D Lifting</h4>
 <p>得益于 2D HPE 的高精度和泛化能力，许多方法选择以 2D HPE 作为中间步骤，根据 2D pose（和原始图像特征）去估计 3D pose。SimpleBaseline3D [4] 是其中的一种经典方法。该方法以 2D 关键点坐标作为输入，通过残差连接的全连接层直接将 2D pose 映射到 3D 空间。尽管模型非常简单，该算法在当时达到了 SOTA 水平，并通过实验证明了目前大多数 3D HPE 算法的误差主要来源于图像信息的理解（2D HPE）而不是 2D-to-3D lifting 过程。</p>
 <img src='/images/hpe3.jpg' align='middle'>
 <p>由于上述算法仅以 2D pose 作为输入，因此高度依赖 2D pose 的准确性，一旦 2D HPE 失败，将会严重影响后续的 2D-to-3D lifting。为了解决这一问题，也有一些算法同时学习 2D 和 3D 姿态 [5]，这样一方面可以为 2D-to-3D lifting 引入来自于原始图像的信息，另一方面也为 2D/3D 数据集混合训练提供了可能，进一步提升算法的泛化能力。</p>
-<h3 id="42-基于多目图像的方法">4.2 基于多目图像的方法</h3>
+<h3 id="52-基于多目图像的方法">5.2 基于多目图像的方法</h3>
 <p>为了解决遮挡问题，目前最有效的方法之一就是融合多视角信息。为了从多目图像中重建 3D pose，关键在于如何确定场景中同一个点在不同视角下的位置关系。一些方法引入多视角间的一致性约束，例如下图的方法：同时输入两个视角的图像，对于其中某一个视角的 2D pose 输入，根据两个视角间的转换关系，预测另一个视角的 3D pose 输出。也有一些方法借助于立体视觉中的 triangulation 方法，将所有视角下的 2D heatmap 聚合起来构成一个 3D volume，随后再通过三维卷积网络输出 3D heatmap。</p>
 <img src='/images/hpe4.png' align='middle'>
 <p>结合多目图像可以帮助解决遮挡问题，并且也能够在一定程度上解决深度不确定问题。但是这类方法对于数据采集的要求比较高，且模型结构相对复杂，在实际场景中的应用具有一定的局限性。</p>
-<h3 id="43-基于视频的方法">4.3 基于视频的方法</h3>
+<h3 id="53-基于视频的方法">5.3 基于视频的方法</h3>
 <p>基于视频的方法就是在以上两类方法的基础上引入时间维度上的信息。相邻帧提供的上下文信息可以帮助我们更好地预测当前帧的姿态。对于遮挡情况，也可以根据前后几帧的姿态做一些合理推测。另外，由于在一段视频中同一个人的骨骼长度是不变的，因此这类方法通常会引入骨骼长度一致性的约束限制，有助于输出更加稳定的 3D pose。</p>
-<img src='/images/hpe5.png' align='middle'>
-<p>VideoPose3D 以 2D pose 序列作为输入，利用 Temporal Convolutional Network (TCN) 处理序列信息并输出 3D pose。TCN 的本质是在时间域上的卷积，它相对于 RNN 的最大优势在于能够并行处理多个序列，且 TCN 的计算复杂度较低，模型参数量较少。在 VideoPose3D 中，作者进一步利用 dilated convolution 扩大 TCN 的感受野。具体的网络结构与 SimpleBaseline3D 类似，采用了残差连接的全卷积网络。除此以外，VideoPose3D 还包含了一种半监督的训练方法，主要思路是添加一个轨迹预测模型用于预测根关节的绝对坐标，将相机坐标系下绝对的 3D pose 投影回 2D 平面，从而引入重投影损失。半监督方法在 3D label 有限的情况下能够更好地提升精度。</p>
-<h3 id="44-其他方法">4.4 其他方法</h3>
+<center><img src='/images/hpe5.png' width="70%"></center>
+<h3 id="54-其他方法">5.4 其他方法</h3>
 <p>除了 RGB 图像以外，也有越来越多的传感器被应用于 3D HPE 任务中。常见的有深度相机、雷达、IMU（惯性测量单元）等。深度相机和雷达都提供了三维空间上的信息，这对于 3D HPE 来说非常重要，可以帮助缓解或消除深度不确定性问题。IMU 设备可以提供关节方向信息，它不依赖于视觉信号，因此可以帮助解决遮挡问题。</p>
-<h2 id="5-常用数据集">5 常用数据集</h2></div><div class="post-footer" id="post-footer">
+<hr>
+<h1 id="thanks-for-reading"><em>Thanks for reading!</em></h1></div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
       <div class="post-info-mod">
@@ -274,8 +288,8 @@
 
   <div class="post-nav"><a href="/posts/self-supervised&#43;pretrain/" class="prev" rel="prev" title="Self-Supervised PreTrain"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>Self-Supervised PreTrain</a></div>
 </div>
-<div id="comments"><div id="artalk" class="comment"></div><noscript>
-        Please enable JavaScript to view the comments powered by <a href="https://github.com/ArtalkJS/Artalk" rel="external nofollow noopener noreferrer">Artalk</a>.
+<div id="comments"><div id="disqus_thread" class="comment"></div><noscript>
+        Please enable JavaScript to view the comments powered by <a href="https://disqus.com/?ref_noscript" rel="external nofollow noopener noreferrer">Disqus</a>.
       </noscript></div></article></main><footer class="footer">
     <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.88.0">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.2.16"><img class="fixit-icon" src="/fixit.min.svg" alt="FixIt logo" />&nbsp;FixIt</a>
         </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
@@ -285,5 +299,5 @@
         </div><div class="fixed-button view-comments d-none" role="button" aria-label="查看评论"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><noscript>
     <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
   </noscript>
-</div><link rel="stylesheet" href="/lib/artalk/Artalk.min.min.css"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/artalk/Artalk.min.js"></script><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"artalk":{"countEl":"artalk-comment-count","editorTravel":true,"el":"#artalk","flatMode":"auto","gravatar":{"default":"","mirror":"www.gravatar.com"},"locale":"zh-CN","maxNesting":3,"pageKey":"http://example.org/posts/hpe/","pageTitle":"3D Human Pose Estimation","pvEl":"artalk-visitor-count","server":"https://yourdomain/api/","site":"默认站点"},"enable":true},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"15QOX0ZJ6W","algoliaIndex":"blog","algoliaSearchKey":"dcebd0d15f3842a9ed34474f2a312c92","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30,"type":"algolia"}};</script><script src="/js/theme.min.js" defer></script></body>
+</div><link rel="stylesheet" href="/lib/lightgallery/css/lightgallery-bundle.min.css"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="https://nibnahzuh.disqus.com/embed.js" defer></script><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/lightgallery/lightgallery.min.js" defer></script><script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js" defer></script><script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":true},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"lightgallery":true,"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"15QOX0ZJ6W","algoliaIndex":"blog","algoliaSearchKey":"dcebd0d15f3842a9ed34474f2a312c92","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30,"type":"algolia"}};</script><script src="/js/theme.min.js" defer></script></body>
 </html>
