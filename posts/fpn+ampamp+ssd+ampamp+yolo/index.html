@@ -10,7 +10,7 @@
 <meta name="description" content="FPN 提出原因 卷积网络中，深层网络容易响应语义特征，浅层网络容易响应图像特征。然而，在目标检测中往往因为卷积网络的这个特征带来了不少麻烦：高层网" /><meta name="keywords" content='Computer Vision, HuZhanbin' /><meta itemprop="name" content="FPN &amp; SSD &amp; YOLO">
 <meta itemprop="description" content="FPN 提出原因 卷积网络中，深层网络容易响应语义特征，浅层网络容易响应图像特征。然而，在目标检测中往往因为卷积网络的这个特征带来了不少麻烦：高层网"><meta itemprop="datePublished" content="2022-10-26T15:42:33+08:00" />
 <meta itemprop="dateModified" content="2022-10-26T15:42:33+08:00" />
-<meta itemprop="wordCount" content="3444">
+<meta itemprop="wordCount" content="3418">
 <meta itemprop="keywords" content="" /><meta property="og:title" content="FPN &amp; SSD &amp; YOLO" />
 <meta property="og:description" content="FPN 提出原因 卷积网络中，深层网络容易响应语义特征，浅层网络容易响应图像特征。然而，在目标检测中往往因为卷积网络的这个特征带来了不少麻烦：高层网" />
 <meta property="og:type" content="article" />
@@ -24,7 +24,7 @@
 <meta name="application-name" content="FixIt">
 <meta name="apple-mobile-web-app-title" content="FixIt"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://example.org/posts/fpn&#43;ampamp&#43;ssd&#43;ampamp&#43;yolo/" /><link rel="prev" href="http://example.org/posts/rcnn&#43;ampamp&#43;fast-rcnn&#43;ampamp&#43;faster-rcnn/" /><link rel="next" href="http://example.org/posts/retinanet&#43;ampamp&#43;fcos/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://example.org/posts/fpn&#43;ampamp&#43;ssd&#43;ampamp&#43;yolo/" /><link rel="prev" href="http://example.org/posts/shufflenet&#43;ampamp&#43;efficientnet/" /><link rel="next" href="http://example.org/posts/fcn&#43;ampamp&#43;u-net/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
@@ -33,7 +33,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "http:\/\/example.org\/posts\/fpn\u002bampamp\u002bssd\u002bampamp\u002byolo\/"
-    },"genre": "posts","wordcount":  3444 ,
+    },"genre": "posts","wordcount":  3418 ,
     "url": "http:\/\/example.org\/posts\/fpn\u002bampamp\u002bssd\u002bampamp\u002byolo\/","datePublished": "2022-10-26T15:42:33+08:00","dateModified": "2022-10-26T15:42:33+08:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -172,7 +172,7 @@
     data-sizes="auto"
     alt="Anonymous"
     title="Anonymous"/>&nbsp;Anonymous</span></span></div>
-      <div class="post-meta-line"><span title=2022-10-26&#32;15:42:33><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-10-26">2022-10-26</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 3444 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 7 分钟</span>&nbsp;</div>
+      <div class="post-meta-line"><span title=2022-10-26&#32;15:42:33><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-10-26">2022-10-26</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 3418 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 7 分钟</span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
           <span>目录</span>
@@ -303,13 +303,13 @@ SSD借鉴faster rcnn中ancho理念，每个单元设置尺度或者长宽比不�
 </ol>
 <h2 id="citation">Citation</h2>
 <blockquote>
-<p>北信科视觉感知研讨课程（周羿旭老师、赵永瑞同学分享）</p>
 <p><a href="https://blog.csdn.net/weixin_55073640/article/details/122627966"target="_blank" rel="external nofollow noopener noreferrer">深度学习中的FPN详解</a></p>
 <p><a href="https://zhuanlan.zhihu.com/p/397293649"target="_blank" rel="external nofollow noopener noreferrer">什么是FPN(Feature Pyramid Networks&ndash;特征金字塔)？</a></p>
 <p><a href="https://blog.csdn.net/toCVer/article/details/125445322"target="_blank" rel="external nofollow noopener noreferrer">SSD网络介绍</a></p>
 <p><a href="https://blog.csdn.net/jiugeshao/article/details/124362788"target="_blank" rel="external nofollow noopener noreferrer">YOLO系列知识点整理</a></p>
 </blockquote>
-<h1 id="thanks-for-reading"><em>Thanks for reading!</em></h1>
+<br/>
+<h1 id="centerthanks-for-readingcenter"><center><em>Thanks for reading!</em></center></h1>
 </div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
@@ -336,8 +336,8 @@ SSD借鉴faster rcnn中ancho理念，每个单元设置尺度或者长宽比不�
     </section>
   </div>
 
-  <div class="post-nav"><a href="/posts/rcnn&#43;ampamp&#43;fast-rcnn&#43;ampamp&#43;faster-rcnn/" class="prev" rel="prev" title="Rcnn &amp; Fast-Rcnn &amp; Faster-Rcnn"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>Rcnn &amp; Fast-Rcnn &amp; Faster-Rcnn</a>
-      <a href="/posts/retinanet&#43;ampamp&#43;fcos/" class="next" rel="next" title="RetinaNet &amp; FCOS">RetinaNet &amp; FCOS<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+  <div class="post-nav"><a href="/posts/shufflenet&#43;ampamp&#43;efficientnet/" class="prev" rel="prev" title="ShuffleNet &amp; EfficientNet"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>ShuffleNet &amp; EfficientNet</a>
+      <a href="/posts/fcn&#43;ampamp&#43;u-net/" class="next" rel="next" title="FCN &amp; U-Net">FCN &amp; U-Net<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 <div id="comments"><div id="disqus_thread" class="comment"></div><noscript>
         Please enable JavaScript to view the comments powered by <a href="https://disqus.com/?ref_noscript" rel="external nofollow noopener noreferrer">Disqus</a>.

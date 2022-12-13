@@ -10,7 +10,7 @@
 <meta name="description" content="FCN 简介 FCN（Fully Convolutional Networks，全卷积网络）是Jonathan Long等人于2015年在Fully Convolutional Networks for Semantic Segmentatio" /><meta name="keywords" content='Computer Vision, HuZhanbin' /><meta itemprop="name" content="FCN &amp; U-Net">
 <meta itemprop="description" content="FCN 简介 FCN（Fully Convolutional Networks，全卷积网络）是Jonathan Long等人于2015年在Fully Convolutional Networks for Semantic Segmentatio"><meta itemprop="datePublished" content="2022-10-27T19:16:59+08:00" />
 <meta itemprop="dateModified" content="2022-10-27T19:16:59+08:00" />
-<meta itemprop="wordCount" content="2259">
+<meta itemprop="wordCount" content="2233">
 <meta itemprop="keywords" content="" /><meta property="og:title" content="FCN &amp; U-Net" />
 <meta property="og:description" content="FCN 简介 FCN（Fully Convolutional Networks，全卷积网络）是Jonathan Long等人于2015年在Fully Convolutional Networks for Semantic Segmentatio" />
 <meta property="og:type" content="article" />
@@ -24,7 +24,7 @@
 <meta name="application-name" content="FixIt">
 <meta name="apple-mobile-web-app-title" content="FixIt"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://example.org/posts/fcn&#43;ampamp&#43;u-net/" /><link rel="prev" href="http://example.org/posts/retinanet&#43;ampamp&#43;fcos/" /><link rel="next" href="http://example.org/posts/test/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://example.org/posts/fcn&#43;ampamp&#43;u-net/" /><link rel="prev" href="http://example.org/posts/fpn&#43;ampamp&#43;ssd&#43;ampamp&#43;yolo/" /><link rel="next" href="http://example.org/posts/self-supervised&#43;pretrain/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
@@ -33,7 +33,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "http:\/\/example.org\/posts\/fcn\u002bampamp\u002bu-net\/"
-    },"genre": "posts","wordcount":  2259 ,
+    },"genre": "posts","wordcount":  2233 ,
     "url": "http:\/\/example.org\/posts\/fcn\u002bampamp\u002bu-net\/","datePublished": "2022-10-27T19:16:59+08:00","dateModified": "2022-10-27T19:16:59+08:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -172,7 +172,7 @@
     data-sizes="auto"
     alt="Anonymous"
     title="Anonymous"/>&nbsp;Anonymous</span></span></div>
-      <div class="post-meta-line"><span title=2022-10-27&#32;19:16:59><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-10-27">2022-10-27</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 2259 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 5 分钟</span>&nbsp;</div>
+      <div class="post-meta-line"><span title=2022-10-27&#32;19:16:59><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-10-27">2022-10-27</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 2233 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 5 分钟</span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
           <span>目录</span>
@@ -286,14 +286,14 @@ FCN网络可以实现端到端的预测，可以接受任意大小的输入图�
 </ul>
 <h2 id="citation">Citation</h2>
 <blockquote>
-<p>北信科视觉感知研讨课程（周羿旭老师、赵永瑞同学分享）</p>
 <p><a href="https://blog.csdn.net/m0_56192771/article/details/124113078"target="_blank" rel="external nofollow noopener noreferrer">FCN网络解析</a></p>
 <p><a href="https://blog.csdn.net/qq_41731861/article/details/120511148"target="_blank" rel="external nofollow noopener noreferrer">FCN（全卷积神经网络）详解</a></p>
 <p><a href="https://blog.csdn.net/qq_41731861/article/details/120528269"target="_blank" rel="external nofollow noopener noreferrer">UNet 浅析</a></p>
 <p><a href="https://zhuanlan.zhihu.com/p/44958351"target="_blank" rel="external nofollow noopener noreferrer">研习U-Net</a></p>
 <p><a href="https://blog.csdn.net/m0_61899108/article/details/126734117"target="_blank" rel="external nofollow noopener noreferrer">FPN与Unet的异同</a></p>
 </blockquote>
-<h1 id="thanks-for-reading"><em>Thanks for reading!</em></h1>
+<br/>
+<h1 id="centerthanks-for-readingcenter"><center><em>Thanks for reading!</em></center></h1>
 </div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
@@ -320,8 +320,8 @@ FCN网络可以实现端到端的预测，可以接受任意大小的输入图�
     </section>
   </div>
 
-  <div class="post-nav"><a href="/posts/retinanet&#43;ampamp&#43;fcos/" class="prev" rel="prev" title="RetinaNet &amp; FCOS"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>RetinaNet &amp; FCOS</a>
-      <a href="/posts/test/" class="next" rel="next" title="PSPNet">PSPNet<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+  <div class="post-nav"><a href="/posts/fpn&#43;ampamp&#43;ssd&#43;ampamp&#43;yolo/" class="prev" rel="prev" title="FPN &amp; SSD &amp; YOLO"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>FPN &amp; SSD &amp; YOLO</a>
+      <a href="/posts/self-supervised&#43;pretrain/" class="next" rel="next" title="Self-Supervised PreTrain">Self-Supervised PreTrain<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 <div id="comments"><div id="disqus_thread" class="comment"></div><noscript>
         Please enable JavaScript to view the comments powered by <a href="https://disqus.com/?ref_noscript" rel="external nofollow noopener noreferrer">Disqus</a>.

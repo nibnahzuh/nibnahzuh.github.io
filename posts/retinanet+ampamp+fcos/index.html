@@ -8,15 +8,15 @@
     <title>RetinaNet &amp; FCOS - Hzb&#39;s Study Blog</title><meta name="author" content="">
 <meta name="author-link" content="">
 <meta name="description" content="RetinaNet 简介 RetinaNet 是 Tsung-Yi Lin 和 Kaiming He（四作） 于 2018 年发表的论文 Focal Loss for Dense Object Detection。深入分析了极度不平衡的正负（前景背景）样本比例导致 one-stage 检测器精度低" /><meta name="keywords" content='Computer Vision, HuZhanbin' /><meta itemprop="name" content="RetinaNet &amp; FCOS">
-<meta itemprop="description" content="RetinaNet 简介 RetinaNet 是 Tsung-Yi Lin 和 Kaiming He（四作） 于 2018 年发表的论文 Focal Loss for Dense Object Detection。深入分析了极度不平衡的正负（前景背景）样本比例导致 one-stage 检测器精度低"><meta itemprop="datePublished" content="2022-10-27T10:13:28+08:00" />
-<meta itemprop="dateModified" content="2022-10-27T10:13:28+08:00" />
-<meta itemprop="wordCount" content="2331">
+<meta itemprop="description" content="RetinaNet 简介 RetinaNet 是 Tsung-Yi Lin 和 Kaiming He（四作） 于 2018 年发表的论文 Focal Loss for Dense Object Detection。深入分析了极度不平衡的正负（前景背景）样本比例导致 one-stage 检测器精度低"><meta itemprop="datePublished" content="2021-05-27T10:13:28+08:00" />
+<meta itemprop="dateModified" content="2021-05-27T10:13:28+08:00" />
+<meta itemprop="wordCount" content="2311">
 <meta itemprop="keywords" content="" /><meta property="og:title" content="RetinaNet &amp; FCOS" />
 <meta property="og:description" content="RetinaNet 简介 RetinaNet 是 Tsung-Yi Lin 和 Kaiming He（四作） 于 2018 年发表的论文 Focal Loss for Dense Object Detection。深入分析了极度不平衡的正负（前景背景）样本比例导致 one-stage 检测器精度低" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://example.org/posts/retinanet&#43;ampamp&#43;fcos/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2022-10-27T10:13:28+08:00" />
-<meta property="article:modified_time" content="2022-10-27T10:13:28+08:00" />
+<meta property="article:published_time" content="2021-05-27T10:13:28+08:00" />
+<meta property="article:modified_time" content="2021-05-27T10:13:28+08:00" />
 
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="RetinaNet &amp; FCOS"/>
@@ -24,7 +24,7 @@
 <meta name="application-name" content="FixIt">
 <meta name="apple-mobile-web-app-title" content="FixIt"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://example.org/posts/retinanet&#43;ampamp&#43;fcos/" /><link rel="prev" href="http://example.org/posts/fpn&#43;ampamp&#43;ssd&#43;ampamp&#43;yolo/" /><link rel="next" href="http://example.org/posts/fcn&#43;ampamp&#43;u-net/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://example.org/posts/retinanet&#43;ampamp&#43;fcos/" /><link rel="prev" href="http://example.org/posts/rcnn&#43;ampamp&#43;fast-rcnn&#43;ampamp&#43;faster-rcnn/" /><link rel="next" href="http://example.org/posts/%E6%96%B0%E4%B8%80%E4%BB%A3%E8%A7%86%E8%A7%89%E6%84%9F%E7%9F%A5%E7%BB%BC%E8%BF%B0/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
@@ -33,8 +33,8 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "http:\/\/example.org\/posts\/retinanet\u002bampamp\u002bfcos\/"
-    },"genre": "posts","wordcount":  2331 ,
-    "url": "http:\/\/example.org\/posts\/retinanet\u002bampamp\u002bfcos\/","datePublished": "2022-10-27T10:13:28+08:00","dateModified": "2022-10-27T10:13:28+08:00","publisher": {
+    },"genre": "posts","wordcount":  2311 ,
+    "url": "http:\/\/example.org\/posts\/retinanet\u002bampamp\u002bfcos\/","datePublished": "2021-05-27T10:13:28+08:00","dateModified": "2021-05-27T10:13:28+08:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
         "@type": "Person",
@@ -172,7 +172,7 @@
     data-sizes="auto"
     alt="Anonymous"
     title="Anonymous"/>&nbsp;Anonymous</span></span></div>
-      <div class="post-meta-line"><span title=2022-10-27&#32;10:13:28><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-10-27">2022-10-27</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 2331 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 5 分钟</span>&nbsp;</div>
+      <div class="post-meta-line"><span title=2021-05-27&#32;10:13:28><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2021-05-27">2021-05-27</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 2311 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 5 分钟</span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
           <span>目录</span>
@@ -377,18 +377,18 @@
 </ul>
 <h2 id="citation">Citation</h2>
 <blockquote>
-<p>北信科视觉感知研讨课程（高丹阳师姐分享）</p>
 <p><a href="https://www.jianshu.com/p/4dbf876d1fae"target="_blank" rel="external nofollow noopener noreferrer">RetinaNet</a></p>
 <p><a href="https://zhuanlan.zhihu.com/p/410436667"target="_blank" rel="external nofollow noopener noreferrer">一阶段目标检测器-RetinaNet网络详解</a></p>
 <p><a href="https://blog.csdn.net/zl_Dream/article/details/123730886"target="_blank" rel="external nofollow noopener noreferrer">目标检测FCOS的初步理解</a></p>
 <p><a href="https://blog.csdn.net/weixin_45377629/article/details/124844405"target="_blank" rel="external nofollow noopener noreferrer">FCOS理论知识讲解</a></p>
 </blockquote>
-<h1 id="thanks-for-reading"><em>Thanks for reading!</em></h1>
+<br/>
+<h1 id="centerthanks-for-readingcenter"><center><em>Thanks for reading!</em></center></h1>
 </div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
       <div class="post-info-mod">
-        <span title=2022-10-27&#32;10:13:28>更新于 2022-10-27&nbsp;</span>
+        <span title=2021-05-27&#32;10:13:28>更新于 2021-05-27&nbsp;</span>
       </div><div class="post-info-license">
           <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
         </div></div>
@@ -410,8 +410,8 @@
     </section>
   </div>
 
-  <div class="post-nav"><a href="/posts/fpn&#43;ampamp&#43;ssd&#43;ampamp&#43;yolo/" class="prev" rel="prev" title="FPN &amp; SSD &amp; YOLO"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>FPN &amp; SSD &amp; YOLO</a>
-      <a href="/posts/fcn&#43;ampamp&#43;u-net/" class="next" rel="next" title="FCN &amp; U-Net">FCN &amp; U-Net<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+  <div class="post-nav"><a href="/posts/rcnn&#43;ampamp&#43;fast-rcnn&#43;ampamp&#43;faster-rcnn/" class="prev" rel="prev" title="Rcnn &amp; Fast-Rcnn &amp; Faster-Rcnn"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>Rcnn &amp; Fast-Rcnn &amp; Faster-Rcnn</a>
+      <a href="/posts/%E6%96%B0%E4%B8%80%E4%BB%A3%E8%A7%86%E8%A7%89%E6%84%9F%E7%9F%A5%E7%BB%BC%E8%BF%B0/" class="next" rel="next" title="新一代视觉感知综述">新一代视觉感知综述<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 <div id="comments"><div id="disqus_thread" class="comment"></div><noscript>
         Please enable JavaScript to view the comments powered by <a href="https://disqus.com/?ref_noscript" rel="external nofollow noopener noreferrer">Disqus</a>.
