@@ -3,9 +3,17 @@
     <title>Hzb&#39;s Study Blog</title>
     <link>http://example.org/</link>
     <description>Hzb&#39;s Study Blog</description>
-    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Mon, 12 Dec 2022 10:52:12 &#43;0800</lastBuildDate>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Tue, 05 Sep 2023 10:51:29 &#43;0800</lastBuildDate>
       <atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
     <item>
+  <title>LLM&#43;P论文阅读笔记</title>
+  <link>http://example.org/posts/llm&#43;p/</link>
+  <pubDate>Tue, 05 Sep 2023 10:51:29 &#43;0800</pubDate>
+  <author>huzhanbin</author>
+  <guid>http://example.org/posts/llm&#43;p/</guid>
+  <description><![CDATA[LLM+P将传统规划方法的优点整合到LLMs的框架中]]></description>
+</item>
+<item>
   <title>搭建ChatGPT微信对话机器人教程</title>
   <link>http://example.org/posts/chatgpt/</link>
   <pubDate>Mon, 12 Dec 2022 10:52:12 &#43;0800</pubDate>
@@ -76,14 +84,6 @@
   <author>作者</author>
   <guid>http://example.org/posts/alexnet&#43;ampamp&#43;vgg&#43;ampamp&#43;googlenet/</guid>
   <description><![CDATA[AlexNet 简介 AlexNet是2012年ISLVRC 2012（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，分类准确率由传统的 70%+]]></description>
-</item>
-<item>
-  <title>新一代视觉感知综述</title>
-  <link>http://example.org/posts/%E6%96%B0%E4%B8%80%E4%BB%A3%E8%A7%86%E8%A7%89%E6%84%9F%E7%9F%A5%E7%BB%BC%E8%BF%B0/</link>
-  <pubDate>Fri, 13 Aug 2021 23:47:44 &#43;0800</pubDate>
-  <author>作者</author>
-  <guid>http://example.org/posts/%E6%96%B0%E4%B8%80%E4%BB%A3%E8%A7%86%E8%A7%89%E6%84%9F%E7%9F%A5%E7%BB%BC%E8%BF%B0/</guid>
-  <description><![CDATA[经典篇 Visual Perception (视觉感知) Characterizing edges (特征边缘)：边缘是指图像强度函数中急剧变化的位置。 图像滤波：在尽量保留图像细节特征的条件下对目标图像的噪声进行抑]]></description>
 </item>
 </channel>
 </rss>
