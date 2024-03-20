@@ -10,7 +10,7 @@
 <meta name="description" content="将推理（Reson）和行动（Acting）相结合，使得语言模型能够处理多种语言推理和决策任务。" /><meta name="keywords" content='LLM' /><meta itemprop="name" content="【论文阅读】ReAct">
 <meta itemprop="description" content="将推理（Reson）和行动（Acting）相结合，使得语言模型能够处理多种语言推理和决策任务。"><meta itemprop="datePublished" content="2023-10-03T10:51:29+08:00" />
 <meta itemprop="dateModified" content="2023-10-03T10:51:29+08:00" />
-<meta itemprop="wordCount" content="2105">
+<meta itemprop="wordCount" content="2348">
 <meta itemprop="keywords" content="LLM," /><meta property="og:title" content="【论文阅读】ReAct" />
 <meta property="og:description" content="将推理（Reson）和行动（Acting）相结合，使得语言模型能够处理多种语言推理和决策任务。" />
 <meta property="og:type" content="article" />
@@ -33,7 +33,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "http:\/\/example.org\/posts\/react\/"
-    },"genre": "posts","keywords": "LLM","wordcount":  2105 ,
+    },"genre": "posts","keywords": "LLM","wordcount":  2348 ,
     "url": "http:\/\/example.org\/posts\/react\/","datePublished": "2023-10-03T10:51:29+08:00","dateModified": "2023-10-03T10:51:29+08:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -167,7 +167,7 @@
       <div class="post-meta-line"><span class="post-author"><span class="author"><i class="fa-solid fa-user-circle" aria-hidden="true"></i>
       huzhanbin</span></span>
           <span class="post-category">收录于 <a href="/categories/agent/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Agent</a></span></div>
-      <div class="post-meta-line"><span title=2023-10-03&#32;10:51:29><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-10-03">2023-10-03</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 2105 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 5 分钟</span>&nbsp;</div>
+      <div class="post-meta-line"><span title=2023-10-03&#32;10:51:29><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-10-03">2023-10-03</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 2348 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 5 分钟</span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
           <span>目录</span>
@@ -177,9 +177,13 @@
   <ul>
     <li><a href="#react-语言模型中推理和行为的协同作用">ReAct: 语言模型中推理和行为的协同作用</a>
       <ul>
-        <li><a href="#1-pddl介绍">1 PDDL介绍</a></li>
-        <li><a href="#2-文章提出的方法">2 文章提出的方法</a></li>
-        <li><a href="#3-引用">3 引用</a></li>
+        <li><a href="#1-简介">1 简介</a></li>
+        <li><a href="#2-思路">2 思路</a></li>
+        <li><a href="#3-方法">3 方法</a></li>
+        <li><a href="#4-相关工作">4 相关工作</a></li>
+        <li><a href="#4-应用及结果">4 <strong>应用及结果</strong></a></li>
+        <li><a href="#5-结论">5 结论</a></li>
+        <li><a href="#6-引用">6 引用</a></li>
       </ul>
     </li>
   </ul>
@@ -191,49 +195,47 @@
       
     ><h2 id="react-语言模型中推理和行为的协同作用">ReAct: 语言模型中推理和行为的协同作用</h2>
 <p>虽然大型语言模型（LLM）在语言理解和交互式决策方面的任务中表现出印象深刻的表现，但推理能力（例如思维链提示）和动作能力（例如动作规划生成）主要作为单独的主题进行研究。本文探讨LLM的使用，以插入的方式生成推理跟踪和特定任务的动作，从而在两者之间实现更大的协同：推理跟踪有助于模型诱导、跟踪和更新动作规划并处理异常，而动作与外部来源（如知识库或环境）交互并收集其他信息。作者取名ReAct的方法应用于各种语言和决策任务，证明其除了提高可解释性和可信度以外，还在有效性方面超越SOTA基线方法。具体来说，在问答（HotpotQA）和事实验证（Fever）上，ReAct通过与简单的维基百科API交互，克服了思维链推理中常见的幻觉和错误传播问题，并生成类似人类的任务解决轨迹，比没有推理痕迹的基线更具可解释性。此外，在两个交互式决策基准（ALFWorld和WebShop）上，ReAct的性能优于模仿和强化学习方法，绝对成功率分别为34%和10%，其中只有一两个上下文示例提示。</p>
-<center><img src='/images/react1.png' width="50%"></center>
-<h3 id="1-pddl介绍">1 PDDL介绍</h3>
-<p>Planning Domain Definition Language (PDDL) 是一种用于描述人工智能规划问题的语言。它包括领域定义和问题定义两个部分。</p>
-<p>领域定义描述了可能的动作和它们的效果，每个动作都有一些前提条件，这些条件必须满足才能执行该动作，以及每个动作的效果，描述了动作执行后世界的状态如何改变。</p>
-<p>问题定义描述了一个具体的规划问题，包括初始状态和目标状态。初始状态描述了规划问题开始时世界的状态，而目标状态描述了我们希望达到的状态。</p>
-<p>例如，一个简单的&quot;搬箱子&quot;问题可以这样描述：</p>
-<p>领域定义：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">(define (domain move)
-  (:requirements :strips)
-  (:predicates (robot-at ?x) (box-at ?x) (goal-at ?x))
-  (:action move-robot :parameters (?from ?to) :precondition (robot-at ?from) :effect (and (not (robot-at ?from)) (robot-at ?to)))
-  (:action move-box :parameters (?from ?to) :precondition (and (robot-at ?from) (box-at ?from)) :effect (and (not (box-at ?from)) (box-at ?to) (not (robot-at ?from)) (robot-at ?to)))
-)
-</code></pre></div><p>问题定义：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">(define (problem move-1)
-  (:domain move)
-  (:objects location1 location2 location3)
-  (:init (robot-at location1) (box-at location2) (goal-at location3))
-  (:goal (and (box-at location3)))
-)
-</code></pre></div><p>这个例子中，机器人和箱子可以在不同位置移动，目标是将箱子移动到目标位置。</p>
-<p>然后，我们可以使用规划器，如 Fast Downward，来求解这个问题。Fast Downward 是一个非常知名的规划器，它使用了一种名为&quot;因果图&quot;的数据结构来帮助搜索解决方案。Fast Downward 接受 PDDL 描述的问题作为输入，然后使用各种搜索策略和启发式方法来寻找一个解决方案，即一系列的动作序列，这些动作将系统从初始状态引导到目标状态。</p>
-<p>PDDL的优点是可扩展性强，但处理连续动作或状态、不确定效果或不完全信息的能力有限。</p>
-<h3 id="2-文章提出的方法">2 文章提出的方法</h3>
-<p>本节首先使用一个实际的例子探讨如何以PDDL的形式构建规划提示，然后介绍LLM+P方法。</p>
-<h4 id="21-用llm写pddl">2.1 用LLM写PDDL</h4>
-<p>虽然LLMs在规划（或者说长期推理）方面表现得不尽人意，但它们在描述和翻译文本输入方面，包括以PDDL格式重写规划提示，方面做得很好。直观上，我们可以将PDDL视为一种不同于英语的语言，所以将规划提示以PDDL的形式重写其实就是一项“机器翻译”的任务，这是LLMs擅长的领域。这里我们提供了一个由GPT-4写就，没有进行任何优化的PDDL问题文件示例。我们可以看到，生成的文件似乎遵循了正确的PDDL语法，但使用了一个虚构的谓词（empty），并且漏掉了b1在桌子上的初始条件。</p>
-<center><img src='/images/LLM+P1.png' width="45%"></center>
-<h4 id="22-上下文学习">2.2 上下文学习</h4>
-<p>LLMs已经展示出了在不进行微调的情况下进行上下文学习的能力。上下文学习，指的是LLMs仅通过对一些输入-标签对（示例）的条件化，就能执行未见过的下游任务的能力。这里我们提供了一对用自然语言和PDDL描述的问题，作为GPT-4的上下文。当我们将这个上下文与上述示例中的提示结合起来时，生成的PDDL问题文件可以直接由规划器解决。</p>
-<center><img src='/images/LLM+P2.png' width="45%"></center>
-<h4 id="23-大型语言模型--传统规划方法-llmp">2.3 大型语言模型 + 传统规划方法 (LLM+P)</h4>
-<p>在介绍了LLM将问题以PDDL编码和上下文学习的能力后，我们现在准备介绍所提出的LLM+P解决方案（见图1的底部）。具体来说，我们假设对于每个问题领域，一个人类专家可以提供一个领域描述（也就是说，动作的先决条件和效果），这个描述将对该领域中出现的所有问题实例起到固定的作用。虽然自动生成这个描述的问题是另一个有价值的研究课题，但在这项提出的工作中，我们假设这个描述是以一个PDDL领域文件的形式存在的。LLM+P方法可以直接应用为给机器人系统指定任务的自然语言接口。例如，假设我们想要一个机器人扮演酒保的角色来制作鸡尾酒。告诉它可以执行哪些动作是合理的，但让它自己推断如何最有效地利用一组要组合的配料来制作新的鸡尾酒。此外，我们假设该代理人提供了一个最小的示例，演示了在该领域中一个简单问题的PDDL形式是什么样的。接下来，代理人提供了一个新的（可能非常复杂的）问题（P）。然后，LLM利用上下文学习来推断出与P对应的PDDL问题文件。一旦生成了问题的PDDL文件，我们将其与提供的领域PDDL文件一起输入到任何经典的规划方法中，生成一个PDDL方案。最后，LLM将PDDL方案翻译回自然语言，完成了LLM+P的流程。</p>
-<p><strong>总结来说，LLM+P的假设是：</strong></p>
-<ol>
-<li>聊天机器人能够根据与人类用户的对话，知道何时触发LLM+P。</li>
-<li>对于用户提出的问题，提供了一个领域的PDDL文件。</li>
-<li>提供了一个简单问题的自然语言描述和其对应的PDDL文件。</li>
-</ol>
+<center><img src='/images/react4.png' width="90%"></center>
+<p>如图所示：（1）比较4种提示方法，(a).标准方法、(b).思维链（CoT，仅推理）、(c).仅动作、(d).ReAct（推理+动作）等，解决HotpotQA问题；（2） 比较2个提示方法，(a). 仅动作、和 (b). ReAct，去解决 一个AlfWorld 游戏。在这两个方法中，省略提示中的上下文示例，仅显示模型（Act，Thought）和环境（Obs）生成的任务解决轨迹。</p>
+<h3 id="1-简介">1 简介</h3>
+<p>此前LLM的推理能力(如思维链提示)和行动能力(如行动计划生成) 是作为单独的主题进行研究的。</p>
+<p>本文探索了使用LLM以交错的方式生成推理轨迹和用于特定任务的动作，允许两者之间有更大的协同作用。</p>
+<p>在问答（HotpotQA）和事实验证（Fever）方面，ReAct通过与简单的维基百科API交互，克服了思维链推理中普遍存在的幻觉和错误传播问题，并产生了类似人类的任务解决轨迹，比没有推理轨迹的基线更容易解释。</p>
+<h3 id="2-思路">2 思路</h3>
+<p>人类智能的一个独特特征是能够将任务导向的行为与言语推理无缝结合，这在人类认知中起着重要作用，可以实现自我调节或策略化。</p>
+<p>以在厨房里烹饪一道菜为例。在任何两个具体动作之间，我们可以用语言进行推理，以跟踪进度：</p>
+<p>“现在所有的东西都切好了，我应该把锅里的水加热”，</p>
+<p>根据情况处理异常或调整计划：</p>
+<p>“我没有盐，那就让我用酱油和胡椒代替吧”，</p>
+<p>并意识到什么时候需要外部信息：</p>
+<p>“我怎么准备面团?让我上网搜索一下”。</p>
+<p>我们也可以采取行动：</p>
+<p>打开烹饪书阅读食谱，打开冰箱，检查食材</p>
+<p>来支持推理和回答问题：</p>
+<p>“我现在可以做什么菜?”。</p>
+<p>这种“表演”和“推理”之间的紧密协同，即使是在看不见的情况下或面临信息不确定性的情况下，也能使人类快速学习新任务，并执行稳健的决策或推理。</p>
+<h3 id="3-方法">3 方法</h3>
+<p>ReAct提示大型语言模型为给定任务生成口头推理历史步骤和操作。这些提示由少量的上下文示例组成，这些示例指导模型的思考和操作生成。下面的图中给出了一个上下文示例。这些例子引导代理经历一个循环过程:产生一个想法，采取一个行动，然后观察行动的结果。通过结合推理跟踪和操作，ReAct允许模型执行动态推理，这样可以生成高级计划，还可以与外部环境交互以收集额外的信息。</p>
+<center><img src='/images/react4.png' width="90%"></center>
+<h3 id="4-相关工作">4 相关工作</h3>
+<p><strong>针对强调推理的任务，ReAct会交替生成推理路径和动作</strong>，形成多个“推理-动作-观测”步骤。与之相反，对于偏重决策的任务，可能只在有限的步骤内进行推理，因此推理路径在提示中会呈现出稀疏的模式，并由语言模型自主决定是否以异步方式进行推理和动作。</p>
+<p><strong>推理与动作之间的协同作用使模型能够通过状态推理来建立、维护和调整动作计划（推理→动作），同时还能够与外部环境（如维基百科）进行互动</strong>，在推理过程中参考额外信息（动作→推理）。</p>
+<p>使用LLM进行推理的最著名的工作是思维链(Chain-of-Thought，CoT)。它揭示了LLM制定自己的“思维过程”来解决问题的能力。</p>
+<p>此后进行了几项后续工作，包括解决复杂任务的最小到最大（least-to-most）提示，zero-shotCoT(不需要任何训练数据,只需要输入问题,模型就可以生成解决这个新问题的CoT思维链)和自一致性推理（ self-consistency）()。</p>
+<p>最近，Madaan &amp; Yazdanbakhsh 系统地研究了CoT的形成和结构，并观察到符号、模式和文本的存在对CoT的有效性至关重要。其他工作也被扩展到更复杂的推理架构，而不是简单的提示。</p>
+<p>与这些方法相比，ReAct执行的不仅仅是孤立的、固定的推理，还将模型操作及其相应的观察集成到一个连贯的输入流中，以便模型更准确地推理并处理推理之外的任务(例如交互式决策)。</p>
+<center><img src='/images/react5.png' width="90%"></center>
+<h3 id="4-应用及结果">4 <strong>应用及结果</strong></h3>
+<p>研究人员将ReAct应用于多种语言推理和决策任务，包括问题回答、事实验证、基于文本的游戏和网页导航。结果是非常好的，ReAct在可解释性和可信赖性方面始终优于其他最先进的基线。</p>
+<p>在问答和事实验证任务中，ReAct通过与简单的Wikipedia API交互，克服了推理中普遍存在的幻觉和错误传播问题。它生成了类似人类的解决任务的步骤，比没有推理痕迹的基线更容易解释。在交互式决策基准中，ReAct的表现明显优于模仿和强化学习方法，即使只有一两个上下文示例。</p>
+<p>虽然推理、行动和观察步骤交织在一起提高了ReAct的接地性和可信度，但这种结构也约束降低了其制定推理步骤的灵活性，导致在某些任务上的推理错误率高于思维链提示。</p>
+<center><img src='/images/react6.png' width="70%"></center>
+<h3 id="5-结论">5 结论</h3>
+<p>ReAct是一种简洁而高效的方法，能够在语言模型中协同推理和行动。它证明了将模型的推理能力、动作生成以及与外部环境的反馈整合到语言模型中是可行的。这也为语言模型在处理涉及与外部环境交互的任务时充当代理提供了机会。</p>
 <hr>
-<h3 id="3-引用">3 引用</h3>
+<h3 id="6-引用">6 引用</h3>
 <blockquote>
-<p><a href="https://arxiv.org/abs/2304.11477"target="_blank" rel="external nofollow noopener noreferrer">LLM+P: Empowering Large Language Models with Optimal Planning Proficiency</a></p>
+<p><a href="https://arxiv.org/pdf/2210.03629.pdf"target="_blank" rel="external nofollow noopener noreferrer">REACT: SYNERGIZING REASONING AND ACTING IN LANGUAGE MODELS</a></p>
 </blockquote>
 <hr>
 <br/>
@@ -263,14 +265,16 @@
 
   <div class="post-nav"><a href="/posts/emergent_abilities_of_llm/" class="prev" rel="prev" title="【论文阅读】Emergent Abilities of Large Language Models"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>【论文阅读】Emergent Abilities of Large Language Models</a></div>
 </div>
-</article></main><footer class="footer">
+<div id="comments"><div id="disqus_thread" class="comment"></div><noscript>
+        Please enable JavaScript to view the comments powered by <a href="https://disqus.com/?ref_noscript" rel="external nofollow noopener noreferrer">Disqus</a>.
+      </noscript></div></article></main><footer class="footer">
     <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.88.0">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.2.16"><img class="fixit-icon" src="/fixit.min.svg" alt="FixIt logo" />&nbsp;FixIt</a>
         </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
             <span itemprop="copyrightYear">2021 - 2024</span><span class="author" itemprop="copyrightHolder">
               <a href="/"></a></span><span class="license footer-divider"><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div><div class="footer-line statistics"></div></div>
   </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
-        </div></div><div id="mask"></div><noscript>
+        </div><div class="fixed-button view-comments d-none" role="button" aria-label="查看评论"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><noscript>
     <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
   </noscript>
-</div><link rel="stylesheet" href="/lib/lightgallery/css/lightgallery-bundle.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/lightgallery/lightgallery.min.js" defer></script><script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js" defer></script><script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"lightgallery":true,"search":{"algoliaAppID":"15QOX0ZJ6W","algoliaIndex":"blog","algoliaSearchKey":"dcebd0d15f3842a9ed34474f2a312c92","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30,"type":"algolia"}};</script><script src="/js/theme.min.js" defer></script></body>
+</div><link rel="stylesheet" href="/lib/lightgallery/css/lightgallery-bundle.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="https://nibnahzuh.disqus.com/embed.js" defer></script><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/lightgallery/lightgallery.min.js" defer></script><script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js" defer></script><script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":true},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"lightgallery":true,"search":{"algoliaAppID":"15QOX0ZJ6W","algoliaIndex":"blog","algoliaSearchKey":"dcebd0d15f3842a9ed34474f2a312c92","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30,"type":"algolia"}};</script><script src="/js/theme.min.js" defer></script></body>
 </html>
