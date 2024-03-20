@@ -24,7 +24,7 @@
 <meta name="application-name" content="FixIt">
 <meta name="apple-mobile-web-app-title" content="FixIt"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://example.org/posts/fpn&#43;ampamp&#43;ssd&#43;ampamp&#43;yolo/" /><link rel="prev" href="http://example.org/posts/shufflenet&#43;ampamp&#43;efficientnet/" /><link rel="next" href="http://example.org/posts/fcn&#43;ampamp&#43;u-net/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/fpn&#43;ampamp&#43;ssd&#43;ampamp&#43;yolo/" /><link rel="prev" href="http://example.org/posts/shufflenet&#43;ampamp&#43;efficientnet/" /><link rel="next" href="http://example.org/posts/fcn&#43;ampamp&#43;u-net/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
@@ -60,19 +60,68 @@
                 href="/posts/"
                 
                 
-              ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li class="menu-item">
+              >文章</a></li><li class="menu-item has-children">
               <a
                 class="menu-link"
                 href="/categories/"
                 
                 
-              ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              >分类</a><i class="dropdown-icon fa-solid fa-chevron-down" aria-hidden="true"></i>
+                <ul class="sub-menu">
+                  <li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/categories/agent/"
+                          
+                          
+                        >论文阅读</a>
+                      </li><li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/categories/study-blog/"
+                          
+                          
+                        >技术分享</a>
+                      </li></ul></li><li class="menu-item has-children">
               <a
                 class="menu-link"
                 href="/tags/"
                 
                 
-              ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+              >标签</a><i class="dropdown-icon fa-solid fa-chevron-down" aria-hidden="true"></i>
+                <ul class="sub-menu">
+                  <li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/tags/llm/"
+                          
+                          
+                        >LLM</a>
+                      </li><li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/tags/hpe/"
+                          
+                          
+                        >HPE</a>
+                      </li><li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/tags/nlp/"
+                          
+                          
+                        >NLP</a>
+                      </li></ul></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
             <input type="text" placeholder="搜索文章标题或内容 ..." id="search-input-desktop">
             <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
               <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
@@ -129,21 +178,76 @@
                   href="/posts/"
                   
                   
-                ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li
+                >文章</a></li><li
               class="menu-item"
-            ><a
-                  class="menu-link"
-                  href="/categories/"
-                  
-                  
-                ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li
+            ><span class="nested-item">
+                  <a
+                    class="menu-link"
+                    href="/categories/"
+                    
+                    
+                  >分类</a>
+                  <i class="dropdown-icon fa-solid fa-chevron-right" aria-hidden="true"></i>
+                </span>
+                <ul class="sub-menu">
+                  <li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/categories/agent/"
+                          
+                          
+                        >论文阅读</a>
+                      </li><li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/categories/study-blog/"
+                          
+                          
+                        >技术分享</a>
+                      </li></ul></li><li
               class="menu-item"
-            ><a
-                  class="menu-link"
-                  href="/tags/"
-                  
-                  
-                ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item theme-switch" title="切换主题">
+            ><span class="nested-item">
+                  <a
+                    class="menu-link"
+                    href="/tags/"
+                    
+                    
+                  >标签</a>
+                  <i class="dropdown-icon fa-solid fa-chevron-right" aria-hidden="true"></i>
+                </span>
+                <ul class="sub-menu">
+                  <li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/tags/llm/"
+                          
+                          
+                        >LLM</a>
+                      </li><li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/tags/hpe/"
+                          
+                          
+                        >HPE</a>
+                      </li><li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/tags/nlp/"
+                          
+                          
+                        >NLP</a>
+                      </li></ul></li><li class="menu-item theme-switch" title="切换主题">
           <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
         </li></ul>
     </nav>
@@ -207,7 +311,7 @@
 <h4 id="提出原因">提出原因</h4>
 <p>卷积网络中，深层网络容易响应语义特征，浅层网络容易响应图像特征。然而，在目标检测中往往因为卷积网络的这个特征带来了不少麻烦：高层网络虽然能响应语义特征，但是由于Feature Map的尺寸太小，拥有的几何信息并不多，不利于目标的检测；浅层网络虽然包含比较多的几何信息，但是图像的语义特征并不多，不利于图像的分类。这个问题在小目标检测中更为突出。因此需要能够合并深层和浅层特征的网络，同时满足目标检测和图像分类的需要。</p>
 <h4 id="参考思想">参考思想</h4>
-<p><a href="https://arxiv.org/abs/1612.03144"target="_blank" rel="external nofollow noopener noreferrer">FPN</a>使用的是图像金字塔的思想。</p>
+<p><a href="https://arxiv.org/abs/1612.03144"target="_blank" rel="external nofollow noopener noreferrer">FPN<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a>使用的是图像金字塔的思想。</p>
 <p>传统的图像金字塔采用输入多尺度图像的方式构建多尺度的特征。输入一张图像后，可以通过一些手段获得多张不同尺度的图像，将这些不同尺度图像的4个顶点连接起来，就可以构造出一个类似真实金字塔的一个图像金字塔。整个过程有点像是我们看一个物品由远及近的过程（近大远小原理）。</p>
 <p>其中，中间的图像是原始图像，尺寸越来越小的图片是经过下采样处理后的结果，而尺寸越来越大的图片是经过上采样处理后的结果。把高层的特征传下来，补充低层的语义，这样就可以获得高分辨率、强语义的特征，有利于小目标的检测。</p>
 <h4 id="特征金字塔">特征金字塔</h4>
@@ -248,7 +352,7 @@
 </ol>
 <h2 id="ssd">SSD</h2>
 <h4 id="简介">简介</h4>
-<p><a href="https://arxiv.org/pdf/1512.02325.pdf"target="_blank" rel="external nofollow noopener noreferrer">SSD</a>，全称Single Shot MultiBox Detector，是Wei Liu在ECCV 2016上提出的一种目标检测算法，截至目前是主要的检测框架之一，相比Faster RCNN有明显的速度优势，相比YOLO又有明显的mAP优势。</p>
+<p><a href="https://arxiv.org/pdf/1512.02325.pdf"target="_blank" rel="external nofollow noopener noreferrer">SSD<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a>，全称Single Shot MultiBox Detector，是Wei Liu在ECCV 2016上提出的一种目标检测算法，截至目前是主要的检测框架之一，相比Faster RCNN有明显的速度优势，相比YOLO又有明显的mAP优势。</p>
 <h4 id="背景">背景</h4>
 <p>目标检测主流算法分成两个类型：</p>
 <ol>
@@ -303,10 +407,10 @@ SSD借鉴faster rcnn中ancho理念，每个单元设置尺度或者长宽比不�
 </ol>
 <h2 id="citation">Citation</h2>
 <blockquote>
-<p><a href="https://blog.csdn.net/weixin_55073640/article/details/122627966"target="_blank" rel="external nofollow noopener noreferrer">深度学习中的FPN详解</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/397293649"target="_blank" rel="external nofollow noopener noreferrer">什么是FPN(Feature Pyramid Networks&ndash;特征金字塔)？</a></p>
-<p><a href="https://blog.csdn.net/toCVer/article/details/125445322"target="_blank" rel="external nofollow noopener noreferrer">SSD网络介绍</a></p>
-<p><a href="https://blog.csdn.net/jiugeshao/article/details/124362788"target="_blank" rel="external nofollow noopener noreferrer">YOLO系列知识点整理</a></p>
+<p><a href="https://blog.csdn.net/weixin_55073640/article/details/122627966"target="_blank" rel="external nofollow noopener noreferrer">深度学习中的FPN详解<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/397293649"target="_blank" rel="external nofollow noopener noreferrer">什么是FPN(Feature Pyramid Networks&ndash;特征金字塔)？<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a></p>
+<p><a href="https://blog.csdn.net/toCVer/article/details/125445322"target="_blank" rel="external nofollow noopener noreferrer">SSD网络介绍<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a></p>
+<p><a href="https://blog.csdn.net/jiugeshao/article/details/124362788"target="_blank" rel="external nofollow noopener noreferrer">YOLO系列知识点整理<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a></p>
 </blockquote>
 <br/>
 <h1 id="centerthanks-for-readingcenter"><center><em>Thanks for reading!</em></center></h1>
@@ -350,5 +454,5 @@ SSD借鉴faster rcnn中ancho理念，每个单元设置尺度或者长宽比不�
         </div><div class="fixed-button view-comments d-none" role="button" aria-label="查看评论"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><noscript>
     <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
   </noscript>
-</div><link rel="stylesheet" href="/lib/lightgallery/css/lightgallery-bundle.min.css"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="https://nibnahzuh.disqus.com/embed.js" defer></script><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/lightgallery/lightgallery.min.js" defer></script><script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js" defer></script><script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":true},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"lightgallery":true,"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"15QOX0ZJ6W","algoliaIndex":"blog","algoliaSearchKey":"dcebd0d15f3842a9ed34474f2a312c92","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30,"type":"algolia"}};</script><script src="/js/theme.min.js" defer></script></body>
+</div><link rel="stylesheet" href="/lib/lightgallery/css/lightgallery-bundle.min.css"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="https://nibnahzuh.disqus.com/embed.js" defer></script><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/lightgallery/lightgallery.min.js" defer></script><script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js" defer></script><script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":true},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"enablePWA":true,"lightgallery":true,"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"15QOX0ZJ6W","algoliaIndex":"blog","algoliaSearchKey":"dcebd0d15f3842a9ed34474f2a312c92","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30,"type":"algolia"}};</script><script src="/js/theme.min.js" defer></script></body>
 </html>

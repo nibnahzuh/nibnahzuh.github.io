@@ -24,7 +24,7 @@
 <meta name="application-name" content="FixIt">
 <meta name="apple-mobile-web-app-title" content="FixIt"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://example.org/posts/chatgpt/" /><link rel="prev" href="http://example.org/posts/hpe/" /><link rel="next" href="http://example.org/posts/llm&#43;p/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/chatgpt/" /><link rel="prev" href="http://example.org/posts/hpe/" /><link rel="next" href="http://example.org/posts/llm&#43;p/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
@@ -60,19 +60,68 @@
                 href="/posts/"
                 
                 
-              ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li class="menu-item">
+              >文章</a></li><li class="menu-item has-children">
               <a
                 class="menu-link"
                 href="/categories/"
                 
                 
-              ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              >分类</a><i class="dropdown-icon fa-solid fa-chevron-down" aria-hidden="true"></i>
+                <ul class="sub-menu">
+                  <li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/categories/agent/"
+                          
+                          
+                        >论文阅读</a>
+                      </li><li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/categories/study-blog/"
+                          
+                          
+                        >技术分享</a>
+                      </li></ul></li><li class="menu-item has-children">
               <a
                 class="menu-link"
                 href="/tags/"
                 
                 
-              ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+              >标签</a><i class="dropdown-icon fa-solid fa-chevron-down" aria-hidden="true"></i>
+                <ul class="sub-menu">
+                  <li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/tags/llm/"
+                          
+                          
+                        >LLM</a>
+                      </li><li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/tags/hpe/"
+                          
+                          
+                        >HPE</a>
+                      </li><li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/tags/nlp/"
+                          
+                          
+                        >NLP</a>
+                      </li></ul></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
             <input type="text" placeholder="搜索文章标题或内容 ..." id="search-input-desktop">
             <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
               <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
@@ -129,21 +178,76 @@
                   href="/posts/"
                   
                   
-                ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li
+                >文章</a></li><li
               class="menu-item"
-            ><a
-                  class="menu-link"
-                  href="/categories/"
-                  
-                  
-                ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li
+            ><span class="nested-item">
+                  <a
+                    class="menu-link"
+                    href="/categories/"
+                    
+                    
+                  >分类</a>
+                  <i class="dropdown-icon fa-solid fa-chevron-right" aria-hidden="true"></i>
+                </span>
+                <ul class="sub-menu">
+                  <li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/categories/agent/"
+                          
+                          
+                        >论文阅读</a>
+                      </li><li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/categories/study-blog/"
+                          
+                          
+                        >技术分享</a>
+                      </li></ul></li><li
               class="menu-item"
-            ><a
-                  class="menu-link"
-                  href="/tags/"
-                  
-                  
-                ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item theme-switch" title="切换主题">
+            ><span class="nested-item">
+                  <a
+                    class="menu-link"
+                    href="/tags/"
+                    
+                    
+                  >标签</a>
+                  <i class="dropdown-icon fa-solid fa-chevron-right" aria-hidden="true"></i>
+                </span>
+                <ul class="sub-menu">
+                  <li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/tags/llm/"
+                          
+                          
+                        >LLM</a>
+                      </li><li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/tags/hpe/"
+                          
+                          
+                        >HPE</a>
+                      </li><li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/tags/nlp/"
+                          
+                          
+                        >NLP</a>
+                      </li></ul></li><li class="menu-item theme-switch" title="切换主题">
           <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
         </li></ul>
     </nav>
@@ -204,8 +308,8 @@
       
       
     ><h2 id="0-写在前面">0 写在前面</h2>
-<p><a href="https://openai.com/blog/chatgpt/"target="_blank" rel="external nofollow noopener noreferrer">ChatGPT</a>（Conversational Graph-based Pre-trained Transformer）是一种面向对话机器人的预训练Transformer模型，旨在通过训练海量的对话数据来提高机器人的语言理解能力。这是一种基于图模型的预训练Transformer，可以更好地理解上下文和句子之间的关系，并自动学习语言中的模式，以更好地回答用户的问题。</p>
-<p>关于ChatGPT能做什么，参考：<a href="https://mp.weixin.qq.com/s/csyCHucLtUQAsT8QRS5AUw"target="_blank" rel="external nofollow noopener noreferrer">ChatGPT惊人语录大赏</a></p>
+<p><a href="https://openai.com/blog/chatgpt/"target="_blank" rel="external nofollow noopener noreferrer">ChatGPT<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a>（Conversational Graph-based Pre-trained Transformer）是一种面向对话机器人的预训练Transformer模型，旨在通过训练海量的对话数据来提高机器人的语言理解能力。这是一种基于图模型的预训练Transformer，可以更好地理解上下文和句子之间的关系，并自动学习语言中的模式，以更好地回答用户的问题。</p>
+<p>关于ChatGPT能做什么，参考：<a href="https://mp.weixin.qq.com/s/csyCHucLtUQAsT8QRS5AUw"target="_blank" rel="external nofollow noopener noreferrer">ChatGPT惊人语录大赏<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a></p>
 <h3 id="00-准备材料">0.0 准备材料</h3>
 <ol>
 <li>电脑</li>
@@ -224,11 +328,11 @@
 <hr>
 <h2 id="1-注册openai账号">1 注册OpenAI账号</h2>
 <h3 id="10-openai官网">1.0 OpenAI官网</h3>
-<p>挂梯子，进入<a href="https://openai.com/api/"target="_blank" rel="external nofollow noopener noreferrer">OpenAI官网</a>，点击右上角SIGN UP，输入邮箱注册或通过谷歌或微软账号注册，直到输入手机号验证（由于OpenAI在中国不提供服务，需要一个国外的手机号接收验证码验证）。</p>
+<p>挂梯子，进入<a href="https://openai.com/api/"target="_blank" rel="external nofollow noopener noreferrer">OpenAI官网<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a>，点击右上角SIGN UP，输入邮箱注册或通过谷歌或微软账号注册，直到输入手机号验证（由于OpenAI在中国不提供服务，需要一个国外的手机号接收验证码验证）。</p>
 <h3 id="11-sms-activate接收国外手机号验证码">1.1 SMS-Activate接收国外手机号验证码</h3>
 <ol>
 <li>
-<p>挂梯子，进入<a href="https://sms-activate.org/cn"target="_blank" rel="external nofollow noopener noreferrer">SMS-Activate官网</a>，注册账号，邮箱验证有点抽风，需要等一下。</p>
+<p>挂梯子，进入<a href="https://sms-activate.org/cn"target="_blank" rel="external nofollow noopener noreferrer">SMS-Activate官网<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a>，注册账号，邮箱验证有点抽风，需要等一下。</p>
 </li>
 <li>
 <p>账号注册好后在网页左侧搜索openai：</p>
@@ -250,7 +354,7 @@
 <p>填写收到的验证码，完成注册。</p>
 </li>
 </ol>
-<p>至此你可以登录<a href="https://beta.openai.com/overview"target="_blank" rel="external nofollow noopener noreferrer">openai</a>在线试用它提供的所有ai服务，除了ChatGPT外还有ai绘画、文本生成、代码生成等，这些也很有趣。如果想在线体验ChatGPT，可以点击上方的 Try it 按钮。</p>
+<p>至此你可以登录<a href="https://beta.openai.com/overview"target="_blank" rel="external nofollow noopener noreferrer">openai<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a>在线试用它提供的所有ai服务，除了ChatGPT外还有ai绘画、文本生成、代码生成等，这些也很有趣。如果想在线体验ChatGPT，可以点击上方的 Try it 按钮。</p>
 <center><img src='/images/chatgpt6.png' width="70%"></center>
 <hr>
 <h2 id="2-部署chatgpt到微信">2 部署ChatGPT到微信</h2>
@@ -297,7 +401,7 @@
 <p>注：上述过程已经完成了一次在本地的部署，可供短期玩耍，但当本地电脑关机或程序关闭时机器人会失效，部署在云服务器上可解决这一问题，但这种方式需要一些简单的技术功底。</p>
 </blockquote>
 <h4 id="220-租云服务器">2.2.0 租云服务器</h4>
-<p>这里推荐阿里云服务器，新用户注册可以免费使用一个月：<a href="https://www.aliyun.com/activity/new?userCode=aoigip72"target="_blank" rel="external nofollow noopener noreferrer">阿里云新人特惠链接</a></p>
+<p>这里推荐阿里云服务器，新用户注册可以免费使用一个月：<a href="https://www.aliyun.com/activity/new?userCode=aoigip72"target="_blank" rel="external nofollow noopener noreferrer">阿里云新人特惠链接<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a></p>
 <p>反正免费，推荐能选的配置越高越好，还可以折腾折腾别的，推荐租 ubuntu 系统的云服务器。</p>
 <h4 id="221-部署chatgpt到云服务器">2.2.1 部署chatgpt到云服务器</h4>
 <p>进入用户目录：</p>
@@ -319,7 +423,7 @@
 </code></pre><hr>
 <h2 id="3-引用">3 引用</h2>
 <blockquote>
-<p><a href="https://mp.weixin.qq.com/s?__biz=MzI0MDE5OTgyMg==&amp;mid=2649643495&amp;idx=1&amp;sn=d61ec9dc2c605faeb348b6caab800162&amp;scene=21#wechat_redirect"target="_blank" rel="external nofollow noopener noreferrer">OpenAI ChatGPT 接入 个人WeChat(微信)，让AI互动更方便！</a></p>
+<p><a href="https://mp.weixin.qq.com/s?__biz=MzI0MDE5OTgyMg==&amp;mid=2649643495&amp;idx=1&amp;sn=d61ec9dc2c605faeb348b6caab800162&amp;scene=21#wechat_redirect"target="_blank" rel="external nofollow noopener noreferrer">OpenAI ChatGPT 接入 个人WeChat(微信)，让AI互动更方便！<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a></p>
 </blockquote>
 <hr>
 <br/>
@@ -363,5 +467,5 @@
         </div><div class="fixed-button view-comments d-none" role="button" aria-label="查看评论"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><noscript>
     <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
   </noscript>
-</div><link rel="stylesheet" href="/lib/lightgallery/css/lightgallery-bundle.min.css"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="https://nibnahzuh.disqus.com/embed.js" defer></script><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/lightgallery/lightgallery.min.js" defer></script><script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js" defer></script><script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":true},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"lightgallery":true,"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"15QOX0ZJ6W","algoliaIndex":"blog","algoliaSearchKey":"dcebd0d15f3842a9ed34474f2a312c92","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30,"type":"algolia"}};</script><script src="/js/theme.min.js" defer></script></body>
+</div><link rel="stylesheet" href="/lib/lightgallery/css/lightgallery-bundle.min.css"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="https://nibnahzuh.disqus.com/embed.js" defer></script><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/lightgallery/lightgallery.min.js" defer></script><script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js" defer></script><script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":true},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"enablePWA":true,"lightgallery":true,"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"15QOX0ZJ6W","algoliaIndex":"blog","algoliaSearchKey":"dcebd0d15f3842a9ed34474f2a312c92","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30,"type":"algolia"}};</script><script src="/js/theme.min.js" defer></script></body>
 </html>

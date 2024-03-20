@@ -24,7 +24,7 @@
 <meta name="application-name" content="FixIt">
 <meta name="apple-mobile-web-app-title" content="FixIt"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://example.org/posts/senet&#43;ampamp&#43;mobilenet/" /><link rel="prev" href="http://example.org/posts/resnet&#43;ampamp&#43;densenet/" /><link rel="next" href="http://example.org/posts/shufflenet&#43;ampamp&#43;efficientnet/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="http://example.org/posts/senet&#43;ampamp&#43;mobilenet/" /><link rel="prev" href="http://example.org/posts/resnet&#43;ampamp&#43;densenet/" /><link rel="next" href="http://example.org/posts/shufflenet&#43;ampamp&#43;efficientnet/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
@@ -60,19 +60,68 @@
                 href="/posts/"
                 
                 
-              ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li class="menu-item">
+              >文章</a></li><li class="menu-item has-children">
               <a
                 class="menu-link"
                 href="/categories/"
                 
                 
-              ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              >分类</a><i class="dropdown-icon fa-solid fa-chevron-down" aria-hidden="true"></i>
+                <ul class="sub-menu">
+                  <li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/categories/agent/"
+                          
+                          
+                        >论文阅读</a>
+                      </li><li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/categories/study-blog/"
+                          
+                          
+                        >技术分享</a>
+                      </li></ul></li><li class="menu-item has-children">
               <a
                 class="menu-link"
                 href="/tags/"
                 
                 
-              ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+              >标签</a><i class="dropdown-icon fa-solid fa-chevron-down" aria-hidden="true"></i>
+                <ul class="sub-menu">
+                  <li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/tags/llm/"
+                          
+                          
+                        >LLM</a>
+                      </li><li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/tags/hpe/"
+                          
+                          
+                        >HPE</a>
+                      </li><li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/tags/nlp/"
+                          
+                          
+                        >NLP</a>
+                      </li></ul></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
             <input type="text" placeholder="搜索文章标题或内容 ..." id="search-input-desktop">
             <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
               <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
@@ -129,21 +178,76 @@
                   href="/posts/"
                   
                   
-                ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li
+                >文章</a></li><li
               class="menu-item"
-            ><a
-                  class="menu-link"
-                  href="/categories/"
-                  
-                  
-                ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li
+            ><span class="nested-item">
+                  <a
+                    class="menu-link"
+                    href="/categories/"
+                    
+                    
+                  >分类</a>
+                  <i class="dropdown-icon fa-solid fa-chevron-right" aria-hidden="true"></i>
+                </span>
+                <ul class="sub-menu">
+                  <li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/categories/agent/"
+                          
+                          
+                        >论文阅读</a>
+                      </li><li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/categories/study-blog/"
+                          
+                          
+                        >技术分享</a>
+                      </li></ul></li><li
               class="menu-item"
-            ><a
-                  class="menu-link"
-                  href="/tags/"
-                  
-                  
-                ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item theme-switch" title="切换主题">
+            ><span class="nested-item">
+                  <a
+                    class="menu-link"
+                    href="/tags/"
+                    
+                    
+                  >标签</a>
+                  <i class="dropdown-icon fa-solid fa-chevron-right" aria-hidden="true"></i>
+                </span>
+                <ul class="sub-menu">
+                  <li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/tags/llm/"
+                          
+                          
+                        >LLM</a>
+                      </li><li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/tags/hpe/"
+                          
+                          
+                        >HPE</a>
+                      </li><li
+                        class="menu-item"
+                      >
+                        <a
+                          class="menu-link"
+                          href="/tags/nlp/"
+                          
+                          
+                        >NLP</a>
+                      </li></ul></li><li class="menu-item theme-switch" title="切换主题">
           <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
         </li></ul>
     </nav>
@@ -217,7 +321,7 @@
 <ul>
 <li>
 <h4 id="简介">简介</h4>
-<p><a href="https://openaccess.thecvf.com/content_cvpr_2018/papers/Hu_Squeeze-and-Excitation_Networks_CVPR_2018_paper.pdf"target="_blank" rel="external nofollow noopener noreferrer">SENet</a>是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在深度学习领域，已经有很多成果通过在空间维度上对网络的性能进行了提升。而SENet反其道而行之，通过对通道关系进行建模来提升网络的性能。SENet较早的将注意力机制引入CNN中，使用了模块化设计。</p>
+<p><a href="https://openaccess.thecvf.com/content_cvpr_2018/papers/Hu_Squeeze-and-Excitation_Networks_CVPR_2018_paper.pdf"target="_blank" rel="external nofollow noopener noreferrer">SENet<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a>是2017ILSVRC2017（ImageNet Large Scale Visual Recognition Challenge）竞赛的冠军网络，在CVPR2018引用量第一。在深度学习领域，已经有很多成果通过在空间维度上对网络的性能进行了提升。而SENet反其道而行之，通过对通道关系进行建模来提升网络的性能。SENet较早的将注意力机制引入CNN中，使用了模块化设计。</p>
 </li>
 <li>
 <h4 id="亮点">亮点</h4>
@@ -288,7 +392,7 @@
 <ul>
 <li>
 <h4 id="简介-1">简介</h4>
-<p><a href="https://arxiv.org/pdf/1704.04861v1.pdf"target="_blank" rel="external nofollow noopener noreferrer">MobileNet V1</a>是由google2016年提出，2017年发布的文章。其主要创新点在于深度可分离卷积，而整个网络实际上也是深度可分离模块的堆叠。它基于流线型架构，使用深度可分离卷积来构建轻量级深度神经网络，用于移动和嵌入式视觉应用。该网络引入了两个简单的全局超参数——宽度乘数和分辨率乘数，可以有效地在延迟和准确性之间进行权衡。</p>
+<p><a href="https://arxiv.org/pdf/1704.04861v1.pdf"target="_blank" rel="external nofollow noopener noreferrer">MobileNet V1<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a>是由google2016年提出，2017年发布的文章。其主要创新点在于深度可分离卷积，而整个网络实际上也是深度可分离模块的堆叠。它基于流线型架构，使用深度可分离卷积来构建轻量级深度神经网络，用于移动和嵌入式视觉应用。该网络引入了两个简单的全局超参数——宽度乘数和分辨率乘数，可以有效地在延迟和准确性之间进行权衡。</p>
 </li>
 <li>
 <h4 id="亮点-1">亮点</h4>
@@ -335,7 +439,7 @@
 <ul>
 <li>
 <h4 id="简介-2">简介</h4>
-<p><a href="https://arxiv.org/pdf/1801.04381.pdf"target="_blank" rel="external nofollow noopener noreferrer">MobileNet V2</a>基于倒置残差结构(inverted residual structure)，原本的残差结构的主分支是有三个卷积，两个逐点卷积通道数较多，而倒置的残差结构刚好相反，中间的卷积通道数（依旧使用深度分离卷积结构）较多，旁边的较小。此外，发现去除主分支中的非线性变换是有效的，这可以保持模型表现力。论文在多个数据集上做了对比实验，验证了该架构的有效性。</p>
+<p><a href="https://arxiv.org/pdf/1801.04381.pdf"target="_blank" rel="external nofollow noopener noreferrer">MobileNet V2<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a>基于倒置残差结构(inverted residual structure)，原本的残差结构的主分支是有三个卷积，两个逐点卷积通道数较多，而倒置的残差结构刚好相反，中间的卷积通道数（依旧使用深度分离卷积结构）较多，旁边的较小。此外，发现去除主分支中的非线性变换是有效的，这可以保持模型表现力。论文在多个数据集上做了对比实验，验证了该架构的有效性。</p>
 </li>
 <li>
 <h4 id="mobilenet-v1缺点">MobileNet V1缺点</h4>
@@ -386,7 +490,7 @@
 <ul>
 <li>
 <h4 id="简介-3">简介</h4>
-<p><a href="https://arxiv.org/pdf/1905.02244.pdf"target="_blank" rel="external nofollow noopener noreferrer">MobileNet V3</a>是Google继MobileNetV2之后的又一力作，作为MobileNet系列的新成员，自然效果会提升，本文的一个亮点在于，网络的设计利用了NAS（network architecture search）算法以及NetAdapt algorithm算法。并且，本文还介绍了一些提升网络效果的trick，这些trick也提升了不少的精度以及速度。</p>
+<p><a href="https://arxiv.org/pdf/1905.02244.pdf"target="_blank" rel="external nofollow noopener noreferrer">MobileNet V3<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a>是Google继MobileNetV2之后的又一力作，作为MobileNet系列的新成员，自然效果会提升，本文的一个亮点在于，网络的设计利用了NAS（network architecture search）算法以及NetAdapt algorithm算法。并且，本文还介绍了一些提升网络效果的trick，这些trick也提升了不少的精度以及速度。</p>
 </li>
 <li>
 <h4 id="亮点-2">亮点</h4>
@@ -448,14 +552,14 @@
 </ul>
 <h2 id="citation">Citation</h2>
 <blockquote>
-<p><a href="https://github.com/hujie-frank/SENet"target="_blank" rel="external nofollow noopener noreferrer">SENet源码</a></p>
-<p><a href="https://blog.csdn.net/gaoxueyi551/article/details/120233959"target="_blank" rel="external nofollow noopener noreferrer">SENet概览</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/347236731"target="_blank" rel="external nofollow noopener noreferrer">论文解读《SENet》</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/345183296"target="_blank" rel="external nofollow noopener noreferrer">一文带你深入全局平均池化</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/394975928"target="_blank" rel="external nofollow noopener noreferrer">轻量级网络-Mobilenet系列(v1,v2,v3)</a></p>
-<p><a href="https://blog.csdn.net/mzpmzk/article/details/82976871"target="_blank" rel="external nofollow noopener noreferrer">MobileNetV1 &amp; MobileNetV2 简介</a></p>
-<p><a href="https://zhuanlan.zhihu.com/p/402766063"target="_blank" rel="external nofollow noopener noreferrer">轻量化网络——MobileNet</a></p>
-<p><a href="https://blog.csdn.net/Chunfengyanyulove/article/details/91358187"target="_blank" rel="external nofollow noopener noreferrer">mobilenet系列之又一新成员&mdash;mobilenet-v3</a></p>
+<p><a href="https://github.com/hujie-frank/SENet"target="_blank" rel="external nofollow noopener noreferrer">SENet源码<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a></p>
+<p><a href="https://blog.csdn.net/gaoxueyi551/article/details/120233959"target="_blank" rel="external nofollow noopener noreferrer">SENet概览<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/347236731"target="_blank" rel="external nofollow noopener noreferrer">论文解读《SENet》<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/345183296"target="_blank" rel="external nofollow noopener noreferrer">一文带你深入全局平均池化<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/394975928"target="_blank" rel="external nofollow noopener noreferrer">轻量级网络-Mobilenet系列(v1,v2,v3)<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a></p>
+<p><a href="https://blog.csdn.net/mzpmzk/article/details/82976871"target="_blank" rel="external nofollow noopener noreferrer">MobileNetV1 &amp; MobileNetV2 简介<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/402766063"target="_blank" rel="external nofollow noopener noreferrer">轻量化网络——MobileNet<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a></p>
+<p><a href="https://blog.csdn.net/Chunfengyanyulove/article/details/91358187"target="_blank" rel="external nofollow noopener noreferrer">mobilenet系列之又一新成员&mdash;mobilenet-v3<i class="fa-solid fa-external-link-alt fa-fw fa-xs ms-1 text-secondary" aria-hidden="true"></i></a></p>
 </blockquote>
 <br/>
 <h1 id="centerthanks-for-readingcenter"><center><em>Thanks for reading!</em></center></h1>
@@ -499,5 +603,5 @@
         </div><div class="fixed-button view-comments d-none" role="button" aria-label="查看评论"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><noscript>
     <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
   </noscript>
-</div><link rel="stylesheet" href="/lib/lightgallery/css/lightgallery-bundle.min.css"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="https://nibnahzuh.disqus.com/embed.js" defer></script><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/lightgallery/lightgallery.min.js" defer></script><script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js" defer></script><script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":true},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"lightgallery":true,"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"15QOX0ZJ6W","algoliaIndex":"blog","algoliaSearchKey":"dcebd0d15f3842a9ed34474f2a312c92","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30,"type":"algolia"}};</script><script src="/js/theme.min.js" defer></script></body>
+</div><link rel="stylesheet" href="/lib/lightgallery/css/lightgallery-bundle.min.css"><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="https://nibnahzuh.disqus.com/embed.js" defer></script><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/lightgallery/lightgallery.min.js" defer></script><script src="/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.js" defer></script><script src="/lib/lightgallery/plugins/zoom/lg-zoom.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":true},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"enablePWA":true,"lightgallery":true,"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"15QOX0ZJ6W","algoliaIndex":"blog","algoliaSearchKey":"dcebd0d15f3842a9ed34474f2a312c92","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30,"type":"algolia"}};</script><script src="/js/theme.min.js" defer></script></body>
 </html>
