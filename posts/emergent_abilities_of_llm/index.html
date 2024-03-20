@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>【论文阅读】Emergent Abilities of Large Language Models - Hzb&#39;s Study Blog</title><meta name="author" content="">
+<meta name="author-link" content="">
+<meta name="description" content="量变引起质变：涌现的能力指在小模型时并不具有，表现接近随机，而在模型规模越过一个阈值时，表现突然提升" /><meta name="keywords" content='LLM' /><meta itemprop="name" content="【论文阅读】Emergent Abilities of Large Language Models">
+<meta itemprop="description" content="量变引起质变：涌现的能力指在小模型时并不具有，表现接近随机，而在模型规模越过一个阈值时，表现突然提升"><meta itemprop="datePublished" content="2023-09-14T10:19:10+08:00" />
+<meta itemprop="dateModified" content="2023-09-14T10:19:10+08:00" />
+<meta itemprop="wordCount" content="3483">
+<meta itemprop="keywords" content="LLM," /><meta property="og:title" content="【论文阅读】Emergent Abilities of Large Language Models" />
+<meta property="og:description" content="量变引起质变：涌现的能力指在小模型时并不具有，表现接近随机，而在模型规模越过一个阈值时，表现突然提升" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/posts/emergent_abilities_of_llm/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-09-14T10:19:10+08:00" />
+<meta property="article:modified_time" content="2023-09-14T10:19:10+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="【论文阅读】Emergent Abilities of Large Language Models"/>
+<meta name="twitter:description" content="量变引起质变：涌现的能力指在小模型时并不具有，表现接近随机，而在模型规模越过一个阈值时，表现突然提升"/>
+<meta name="application-name" content="FixIt">
+<meta name="apple-mobile-web-app-title" content="FixIt"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://example.org/posts/emergent_abilities_of_llm/" /><link rel="prev" href="http://example.org/posts/llm&#43;p/" /><link rel="next" href="http://example.org/posts/react/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "【论文阅读】Emergent Abilities of Large Language Models",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/example.org\/posts\/emergent_abilities_of_llm\/"
+    },"genre": "posts","keywords": "LLM","wordcount":  3483 ,
+    "url": "http:\/\/example.org\/posts\/emergent_abilities_of_llm\/","datePublished": "2023-09-14T10:19:10+08:00","dateModified": "2023-09-14T10:19:10+08:00","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "huzhanbin"
+      },"description": "量变引起质变：涌现的能力指在小模型时并不具有，表现接近随机，而在模型规模越过一个阈值时，表现突然提升"
+  }
+  </script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><script>(window.localStorage?.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('data-theme', 'dark');</script><div class="wrapper"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="Hzb&#39;s Study Blog"><img
+    class="lazyload logo"
+    src="/svg/loading.min.svg"
+    data-src="/fixit.min.svg"
+    data-srcset="/fixit.min.svg, /fixit.min.svg 1.5x, /fixit.min.svg 2x"
+    data-sizes="auto"
+    alt="Hzb&#39;s Study Blog"
+    title="Hzb&#39;s Study Blog"/><span class="header-title-text">Hzb&#39;s Study Blog</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容 ..." id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="Hzb&#39;s Study Blog"><img
+    class="lazyload logo"
+    src="/svg/loading.min.svg"
+    data-src="/fixit.min.svg"
+    data-srcset="/fixit.min.svg, /fixit.min.svg 1.5x, /fixit.min.svg 2x"
+    data-sizes="auto"
+    alt="/fixit.min.svg"
+    title="/fixit.min.svg"/><span class="header-title-text">Hzb&#39;s Study Blog</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容 ..." id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/posts/"
+                  
+                  
+                ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 文章</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/categories/"
+                  
+                  
+                ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/tags/"
+                  
+                  
+                ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container" data-page-style="normal"><aside class="toc" id="toc-auto"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content always-active" id="toc-content-auto"></div></aside>
+
+  <aside class="aside-custom">
+    
+</aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX">
+        <span title="转载" class="icon-repost"><i class="fa-solid fa-share fa-fw" aria-hidden="true"></i></span><span>【论文阅读】Emergent Abilities of Large Language Models</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><span class="author"><i class="fa-solid fa-user-circle" aria-hidden="true"></i>
+      huzhanbin</span></span>
+          <span class="post-category">收录于 <a href="/categories/emergent-abilities/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Emergent Abilities</a></span></div>
+      <div class="post-meta-line"><span title=2023-09-14&#32;10:19:10><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-09-14">2023-09-14</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 3483 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 7 分钟</span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>目录</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#1-涌现">1 涌现</a></li>
+        <li><a href="#2-大语言模型的新能力">2 大语言模型的新能力</a></li>
+        <li><a href="#3-关于scaling的思考">3 关于Scaling的思考</a></li>
+        <li><a href="#32-更小">3.2 更小</a></li>
+        <li><a href="#4-discussion">4 Discussion</a></li>
+        <li><a href="#5-conclusions">5 Conclusions</a></li>
+        <li><a href="#6-引用">6 引用</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div><div
+      class="content"
+      id="content"
+      
+      
+    ><h1 id="大语言模型涌现的新能力">大语言模型涌现的新能力</h1>
+<p>语言模型是根据已知文本生成未知文本的模型。自GPT-3以来，大型语言模型展现出了惊人的zero-shot和few-shot能力，即不改变参数仅改变输入的in-context learning。这是与此前流行的finetune范式截然不同的新范式。近期的ChatGPT，更是让文本生成从以前人们眼中的玩具，逐渐展现出了生产力工具的潜质。</p>
+<p>本文展现了语言模型的增大（scale up）并非只是提高了一两个点的指标，而是发生了质变，突变式地拥有了小语言模型所不具有的新能力。</p>
+<h3 id="1-涌现">1 涌现</h3>
+<p>涌现（emergence）或称创发、突现、呈展、演生，是一种现象，为许多小实体相互作用后产生了大实体，而这个大实体展现了组成它的小实体所不具有的特性。</p>
+<br/>
+<center><img src='/images/Emergence_1.jpeg' width="60%"><p>水分子聚集后组成了雪花是一个物理上的创发现象</p></center>
+<br/>
+<p>涌现可以用一句经典的话来概括：量变引起质变。</p>
+<p>智能就是一种涌现现象，我们很了解单个神经元的电生理反应，但智能并不蕴含于单个神经元之中。而当大量的神经元相互交互，“智能”却在其中产生了。整体并不简单等于部分之和，其会具有组分所不具有的新功能。涌现有时是很难解释的，毕竟如果我们能解释清楚神经元是如何涌现出的智能，人工智能也就完成大半了。</p>
+<p>具体到语言模型上，涌现的能力指在小模型时并不具有，表现接近随机，而在模型规模越过一个阈值时，表现突然提升。</p>
+<p>扩大（Scaling up）语言模型已被证明可以预测性地提高各种下游任务的性能和样本效率。</p>
+<ol>
+<li>样本效率（Sample efficiency）是指学习算法在使用尽可能少的训练样本的情况下，在某个任务上获得良好表现的能力。换句话说，它衡量了算法在学习任务时需要多少数据才能有效地学习。</li>
+<li>一个样本效率高的算法可以使用较少的样本学习与一个样本效率低的算法相同的任务。这在获取更多的训练数据可能很困难或昂贵的情况下尤为重要，例如医学诊断或机器人领域。</li>
+<li>样本效率受多种因素的影响，包括任务的复杂性、训练数据的质量和相关性以及算法的设计和容量。一些学习算法由于其能够从有限的数据中很好地推广，因此比其他算法更具有样本效率；而其他算法需要更多的数据才能获得良好的性能。</li>
+<li>因此，在评估和比较不同的学习算法时，样本效率是一个重要的指标。</li>
+</ol>
+<h3 id="2-大语言模型的新能力">2 大语言模型的新能力</h3>
+<p>为了观察新能力是如何在模型规模跨过阈值时产生的，首先我们需要有衡量模型规模的指标：使用训练FLOPs和模型参数量是很自然的想法。需要注意的是，我们无法用一个指标来衡量所有影响模型的因素。两个模型可能有同样的FLOPs，但有不同的模型参数量（如MoE）。此外，数据集的质量，优化的好坏也会影响模型的表现。这使得我们无法得到一个具体的涌现发生的规模阈值。</p>
+<p>论文关注的涌现能力是模型的prompting（in-context learning）能力，这是大型语言模型最核心的能力。Prompting是指不需要通过训练改变模型参数，仅需在输入中添加文本（如对任务的描述），使模型在此基础上补充回答。一句话概括结论：prompting相关的能力是随着模型规模的增大而涌现的。下面将从few-shot prompting和augmented prompting strategies两方面进行介绍。</p>
+<h4 id="21-few-shot-prompting">2.1 Few-shot Prompting</h4>
+<p>Few-shot prompting是给出若干个输入-输出对作为prompt，模型需对新输入补充输出。这可能是目前最常见的prompting方法。</p>
+<center><img src='/images/Emergence_2.png' width="50%"></center>
+<p>如下图所示，许多任务随着模型规模跨过阈值而可以被few-shot prompting解决，包括：加减乘除（A），基于知识的问答（G）等。有趣的一点是，在以训练FLOPs为规模指标时，各模型、各任务的涌现阈值均在 1022 量级左右。这就像生物只有大脑足够大才能有高级智能一样，许多高级能力只有在模型达到一定规模时才能获得。</p>
+<center><img src='/images/Emergence_4.png' width="70%"></center>
+<h4 id="22-augmented-prompting-strategies">2.2 Augmented Prompting Strategies</h4>
+<p>除了few-shot prompting以外，还有其他prompting或者finetuning策略可以进一步增加语言模型的能力。比如说对于涉及多步推理和计算的任务，如果让语言模型直接生成答案，往往效果不佳。但通过prompting时给出逐步思考的范例（chain of thought），抑或finetune模型来预测中间过程（scratchpad），都能大幅提高模型表现。</p>
+<p>如下图所示，augmented prompting strategies同样只在模型规模跨过一定阈值后起正面作用，对于小模型甚至起负面作用。</p>
+<center><img src='/images/Emergence_5.png' width="70%"></center>
+<p>大型语言模型的涌现能力列表，以及这些能力出现的规模：</p>
+<center><img src='/images/Emergence_6.png' width="70%"></center>
+<h3 id="3-关于scaling的思考">3 关于Scaling的思考</h3>
+<h4 id="31-更大">3.1 更大</h4>
+<p>BIG-Bench是一个包含超过200个任务的用于评测语言模型的数据集，其中并非所有的任务都会发生涌现（如下图所示）。有的任务表现随scale up而平滑增加，而有的任务至今为止还没有通过scale up超过随机表现。比如同为算术类任务，simple arithmetic会平滑增加，modified arithmetic发生了涌现，multistep arithmetic还没有超过随机表现。</p>
+<p>这些未解决的任务会是进一步研究的对象。这些问题是否能单纯靠scale up解决？涌现的原因是什么？涌现之后scale up是否有性能上限？即使scale up在性能提升上不会遇到瓶颈，计算的负载也会成为巨大的问题。</p>
+<center><img src='/images/Emergence_7.png' width="70%"></center>
+<h3 id="32-更小">3.2 更小</h3>
+<p>影响模型能力的不仅有模型的规模，还有数据、模型结构或是训练方法。在更好的数据、模型结构、训练方法下，我们可以在同样甚至更小的模型规模下实现更好的效果。</p>
+<p>使用更好的数据可以在更低的模型规模下实现涌现：如PaLM 62B以更少的模型参数与更低的FLOPs，突破了LaMDA 137B和GPT-3 175B只能取得随机表现的多个任务。虽然因为高昂的训练成本，不可能进行详尽的消融实验，但一个可能的原因是PaLM使用了更好的数据（如多语言数据、代码数据）。数据本身可能也是涌现的原因，如数据中的长程依赖、稀有类别与few-shot prompting的涌现有关，chain of thought能力可能来自于代码数据。</p>
+<p>更好的模型结构也可以降低涌现的阈值。如encoder-decoder模型要更适合于instruction finetuning。对于decoder模型，instruction finetuning仅对68B以上参数量的模型有效。但encoder-decoder模型仅需要11B。</p>
+<h3 id="4-discussion">4 Discussion</h3>
+<p>我们已经看到，在少量样本提示设置或其他情况下，一系列能力到目前为止只在对足够大的语言模型进行评估时才被观察到。因此，它们的出现不能仅通过小型模型的表现简单外推来预测。具有涌现能力的少量样本提示任务也是不可预测的，因为这些任务并没有在预训练中显式包含，而且我们可能不知道语言模型可以执行的少量样本提示任务的全部范围。</p>
+<p>这引发了一个问题，即进一步扩展是否会赋予更大的语言模型新的涌现能力。语言模型目前无法完成的任务是未来出现的主要候选对象；例如，在 BIG-Bench 中有数十个任务，即使是最大的 GPT-3 和 PaLM 模型也无法实现高于随机的性能。</p>
+<p>BIG-Bench 是一个评估语言模型能力的广泛基准（benchmark），由 AI2、微软和卡内基梅隆大学等机构合作开发。它涵盖了来自多个领域的70个任务，包括自然语言理解、常识推理、知识库问答等等。这些任务旨在测试语言模型在大规模、复杂、多样化的应用场景下的表现，是目前最具挑战性的语言模型测试集之一。BIG-Bench 的任务数量和难度要远高于其他常见的语言模型基准，它的推出对于评估和推动语言模型的发展具有重要意义。</p>
+<p>模型大小并不是解锁涌现能力的唯一因素。随着训练大型语言模型的科学的进步，对于具有新体系结构、更高质量数据或改进的训练过程的较小模型，某些能力可能会被解锁。一个例子是，InstructGPT、ChatGPT、GPT-4 模型提出了一种基于人类反馈的微调和强化学习方法（RLHF），这使得一个参数量 1.3B 的模型在广泛的用例中，在人类评估方面的表现优于更大的模型。</p>
+<p>重要的是，风险也可能会出现，例如，大型语言模型的社会风险，如真实性、偏见和毒性。无论它们是否可以准确地被描述为“涌现”，这些风险都是重要的考虑因素，并且在某些情况下，随着模型规模的增加而增加。由于关于涌现能力的工作鼓励语言模型的规模扩大，因此重要的是要意识到随着模型规模的增加而增加的风险，即使它们不是涌现的。</p>
+<h3 id="5-conclusions">5 Conclusions</h3>
+<p>我们已经讨论了语言模型的涌现能力，迄今为止，只有在一定的计算规模上才观察到有意义的表现。涌现能力可以跨越各种语言模型、任务类型和实验场景。这些能力是最近发现的大型语言模型的结果，它们是如何出现的，以及更多的扩展是否会出现进一步的涌现能力成为 NLP 领域未来重要的研究方向。</p>
+<h3 id="6-引用">6 引用</h3>
+<blockquote>
+<p><a href="https://arxiv.org/abs/2206.07682"target="_blank" rel="external nofollow noopener noreferrer">Emergent Abilities of Large Language Models</a></p>
+</blockquote>
+<hr>
+<br/>
+<h1 id="centerthanks-for-readingcenter"><center><em>Thanks for reading!</em></center></h1></div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title=2023-09-14&#32;10:19:10>更新于 2023-09-14&nbsp;</span>
+      </div></div>
+    <div class="post-info-line">
+      <div class="post-info-md"></div>
+      <div class="post-info-share">
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://example.org/posts/emergent_abilities_of_llm/" data-title="【论文阅读】Emergent Abilities of Large Language Models" data-hashtags="LLM"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://example.org/posts/emergent_abilities_of_llm/" data-hashtag="LLM"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://example.org/posts/emergent_abilities_of_llm/" data-title="【论文阅读】Emergent Abilities of Large Language Models"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/llm/">LLM</a></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div>
+
+  <div class="post-nav"><a href="/posts/llm&#43;p/" class="prev" rel="prev" title="【论文阅读】LLM&#43;P"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>【论文阅读】LLM&#43;P</a>
+      <a href="/posts/react/" class="next" rel="next" title="【论文阅读】ReAct">【论文阅读】ReAct<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.88.0">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.2.16"><img class="fixit-icon" src="/fixit.min.svg" alt="FixIt logo" />&nbsp;FixIt</a>
+        </div><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2021 - 2024</span><span class="author" itemprop="copyrightHolder">
+              <a href="/"></a></span><span class="license footer-divider"><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div><div class="footer-line statistics"></div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
+        </div></div><div id="mask"></div><noscript>
+    <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/lazysizes/lazysizes.min.js" async defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"search":{"algoliaAppID":"15QOX0ZJ6W","algoliaIndex":"blog","algoliaSearchKey":"dcebd0d15f3842a9ed34474f2a312c92","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30,"type":"algolia"}};</script><script src="/js/theme.min.js" defer></script></body>
+</html>

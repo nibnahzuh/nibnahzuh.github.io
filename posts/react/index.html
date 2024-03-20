@@ -5,41 +5,41 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
     <meta name="robots" content="noodp" />
-    <title>【论文阅读】LLM&#43;P - Hzb&#39;s Study Blog</title><meta name="author" content="">
+    <title>【论文阅读】ReAct - Hzb&#39;s Study Blog</title><meta name="author" content="">
 <meta name="author-link" content="">
-<meta name="description" content="LLM&#43;P将传统规划方法的优点整合到LLMs的框架中" /><meta name="keywords" content='LLM' /><meta itemprop="name" content="【论文阅读】LLM&#43;P">
-<meta itemprop="description" content="LLM&#43;P将传统规划方法的优点整合到LLMs的框架中"><meta itemprop="datePublished" content="2023-09-05T10:51:29+08:00" />
-<meta itemprop="dateModified" content="2023-09-05T10:51:29+08:00" />
-<meta itemprop="wordCount" content="2082">
-<meta itemprop="keywords" content="LLM," /><meta property="og:title" content="【论文阅读】LLM&#43;P" />
-<meta property="og:description" content="LLM&#43;P将传统规划方法的优点整合到LLMs的框架中" />
+<meta name="description" content="将推理（Reson）和行动（Acting）相结合，使得语言模型能够处理多种语言推理和决策任务。" /><meta name="keywords" content='LLM' /><meta itemprop="name" content="【论文阅读】ReAct">
+<meta itemprop="description" content="将推理（Reson）和行动（Acting）相结合，使得语言模型能够处理多种语言推理和决策任务。"><meta itemprop="datePublished" content="2023-10-03T10:51:29+08:00" />
+<meta itemprop="dateModified" content="2023-10-03T10:51:29+08:00" />
+<meta itemprop="wordCount" content="2105">
+<meta itemprop="keywords" content="LLM," /><meta property="og:title" content="【论文阅读】ReAct" />
+<meta property="og:description" content="将推理（Reson）和行动（Acting）相结合，使得语言模型能够处理多种语言推理和决策任务。" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://example.org/posts/llm&#43;p/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2023-09-05T10:51:29+08:00" />
-<meta property="article:modified_time" content="2023-09-05T10:51:29+08:00" />
+<meta property="og:url" content="http://example.org/posts/react/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-10-03T10:51:29+08:00" />
+<meta property="article:modified_time" content="2023-10-03T10:51:29+08:00" />
 
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="【论文阅读】LLM&#43;P"/>
-<meta name="twitter:description" content="LLM&#43;P将传统规划方法的优点整合到LLMs的框架中"/>
+<meta name="twitter:title" content="【论文阅读】ReAct"/>
+<meta name="twitter:description" content="将推理（Reson）和行动（Acting）相结合，使得语言模型能够处理多种语言推理和决策任务。"/>
 <meta name="application-name" content="FixIt">
 <meta name="apple-mobile-web-app-title" content="FixIt"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://example.org/posts/llm&#43;p/" /><link rel="prev" href="http://example.org/posts/chatgpt/" /><link rel="next" href="http://example.org/posts/emergent_abilities_of_llm/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" href="http://example.org/posts/react/" /><link rel="prev" href="http://example.org/posts/emergent_abilities_of_llm/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
-    "headline": "【论文阅读】LLM+P",
+    "headline": "【论文阅读】ReAct",
     "inLanguage": "zh-CN",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "http:\/\/example.org\/posts\/llm\u002bp\/"
-    },"genre": "posts","keywords": "LLM","wordcount":  2082 ,
-    "url": "http:\/\/example.org\/posts\/llm\u002bp\/","datePublished": "2023-09-05T10:51:29+08:00","dateModified": "2023-09-05T10:51:29+08:00","publisher": {
+      "@id": "http:\/\/example.org\/posts\/react\/"
+    },"genre": "posts","keywords": "LLM","wordcount":  2105 ,
+    "url": "http:\/\/example.org\/posts\/react\/","datePublished": "2023-10-03T10:51:29+08:00","dateModified": "2023-10-03T10:51:29+08:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
         "@type": "Person",
         "name": "huzhanbin"
-      },"description": "LLM+P将传统规划方法的优点整合到LLMs的框架中"
+      },"description": "将推理（Reson）和行动（Acting）相结合，使得语言模型能够处理多种语言推理和决策任务。"
   }
   </script></head>
   <body data-header-desktop="sticky" data-header-mobile="auto"><script>(window.localStorage?.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('data-theme', 'dark');</script><div class="wrapper"><header class="desktop animate__faster" id="header-desktop">
@@ -162,12 +162,12 @@
 
   <article class="page single">
     <div class="header"><h1 class="single-title animate__animated animate__flipInX">
-        <span title="转载" class="icon-repost"><i class="fa-solid fa-share fa-fw" aria-hidden="true"></i></span><span>【论文阅读】LLM&#43;P</span>
+        <span title="转载" class="icon-repost"><i class="fa-solid fa-share fa-fw" aria-hidden="true"></i></span><span>【论文阅读】ReAct</span>
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><span class="author"><i class="fa-solid fa-user-circle" aria-hidden="true"></i>
       huzhanbin</span></span>
           <span class="post-category">收录于 <a href="/categories/agent/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Agent</a></span></div>
-      <div class="post-meta-line"><span title=2023-09-05&#32;10:51:29><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-09-05">2023-09-05</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 2082 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 5 分钟</span>&nbsp;</div>
+      <div class="post-meta-line"><span title=2023-10-03&#32;10:51:29><i class="fa-regular fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-10-03">2023-10-03</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i> 约 2105 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw" aria-hidden="true"></i> 预计阅读 5 分钟</span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
           <span>目录</span>
@@ -175,7 +175,7 @@
         </div>
         <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
-    <li><a href="#llmp赋予大型语言模型规划能力">LLM+P：赋予大型语言模型规划能力</a>
+    <li><a href="#react-语言模型中推理和行为的协同作用">ReAct: 语言模型中推理和行为的协同作用</a>
       <ul>
         <li><a href="#1-pddl介绍">1 PDDL介绍</a></li>
         <li><a href="#2-文章提出的方法">2 文章提出的方法</a></li>
@@ -189,9 +189,9 @@
       id="content"
       
       
-    ><h2 id="llmp赋予大型语言模型规划能力">LLM+P：赋予大型语言模型规划能力</h2>
-<p>大语言模型(LLMs)已经展示了显著的零样本泛化能力，最先进的聊天机器人能够对日常生活中的常见问题给出合理的回答。然而，目前为止，LLMs并未能可靠地解决长期规划问题。相反，一旦以一种规范的方式给出问题，传统的规划方法就能够运用有效的搜索算法快速找到正确的，甚至是最优的解决方案。为了把这两者的优势结合起来，本文提出了LLM+P，这是第一个将传统规划方法的优点整合到LLMs的框架中。LLM+P接收一个用自然语言描述的规划问题，然后返回一个以自然语言表述的，解决该问题的正确（或最优）方案。LLM+P首先将语言描述转化为一个用规划领域定义语言（PDDL）编写的文件，然后利用传统规划方法快速找到解决方案，最后将找到的解决方案翻译回自然语言。此外，我们还定义了一组取自常见规划场景的基准问题。通过在这些基准问题上进行全面的实验，我们发现LLM+P能够为大多数问题提供最优解决方案，而LLMs在大多数问题上却无法提供可行的方案。</p>
-<center><img src='/images/LLM+P3.png' width="50%"></center>
+    ><h2 id="react-语言模型中推理和行为的协同作用">ReAct: 语言模型中推理和行为的协同作用</h2>
+<p>虽然大型语言模型（LLM）在语言理解和交互式决策方面的任务中表现出印象深刻的表现，但推理能力（例如思维链提示）和动作能力（例如动作规划生成）主要作为单独的主题进行研究。本文探讨LLM的使用，以插入的方式生成推理跟踪和特定任务的动作，从而在两者之间实现更大的协同：推理跟踪有助于模型诱导、跟踪和更新动作规划并处理异常，而动作与外部来源（如知识库或环境）交互并收集其他信息。作者取名ReAct的方法应用于各种语言和决策任务，证明其除了提高可解释性和可信度以外，还在有效性方面超越SOTA基线方法。具体来说，在问答（HotpotQA）和事实验证（Fever）上，ReAct通过与简单的维基百科API交互，克服了思维链推理中常见的幻觉和错误传播问题，并生成类似人类的任务解决轨迹，比没有推理痕迹的基线更具可解释性。此外，在两个交互式决策基准（ALFWorld和WebShop）上，ReAct的性能优于模仿和强化学习方法，绝对成功率分别为34%和10%，其中只有一两个上下文示例提示。</p>
+<center><img src='/images/react1.png' width="50%"></center>
 <h3 id="1-pddl介绍">1 PDDL介绍</h3>
 <p>Planning Domain Definition Language (PDDL) 是一种用于描述人工智能规划问题的语言。它包括领域定义和问题定义两个部分。</p>
 <p>领域定义描述了可能的动作和它们的效果，每个动作都有一些前提条件，这些条件必须满足才能执行该动作，以及每个动作的效果，描述了动作执行后世界的状态如何改变。</p>
@@ -241,14 +241,14 @@
   <div class="post-info">
     <div class="post-info-line">
       <div class="post-info-mod">
-        <span title=2023-09-05&#32;10:51:29>更新于 2023-09-05&nbsp;</span>
+        <span title=2023-10-03&#32;10:51:29>更新于 2023-10-03&nbsp;</span>
       </div></div>
     <div class="post-info-line">
       <div class="post-info-md"></div>
       <div class="post-info-share">
-        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://example.org/posts/llm&#43;p/" data-title="【论文阅读】LLM&#43;P" data-hashtags="LLM"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://example.org/posts/llm&#43;p/" data-hashtag="LLM"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://example.org/posts/llm&#43;p/" data-title="【论文阅读】LLM&#43;P"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="http://example.org/posts/react/" data-title="【论文阅读】ReAct" data-hashtags="LLM"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="http://example.org/posts/react/" data-hashtag="LLM"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="http://example.org/posts/react/" data-title="【论文阅读】ReAct"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
   </span>
       </div>
     </div>
@@ -261,8 +261,7 @@
     </section>
   </div>
 
-  <div class="post-nav"><a href="/posts/chatgpt/" class="prev" rel="prev" title="搭建ChatGPT微信对话机器人教程"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>搭建ChatGPT微信对话机器人教程</a>
-      <a href="/posts/emergent_abilities_of_llm/" class="next" rel="next" title="【论文阅读】Emergent Abilities of Large Language Models">【论文阅读】Emergent Abilities of Large Language Models<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+  <div class="post-nav"><a href="/posts/emergent_abilities_of_llm/" class="prev" rel="prev" title="【论文阅读】Emergent Abilities of Large Language Models"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>【论文阅读】Emergent Abilities of Large Language Models</a></div>
 </div>
 </article></main><footer class="footer">
     <div class="footer-container"><div class="footer-line powered">由 <a href="https://gohugo.io/" target="_blank" rel="external nofollow noopener noreferrer" title="Hugo 0.88.0">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/hugo-fixit/FixIt" target="_blank" rel="external" title="FixIt v0.2.16"><img class="fixit-icon" src="/fixit.min.svg" alt="FixIt logo" />&nbsp;FixIt</a>
